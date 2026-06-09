@@ -1,0 +1,2 @@
+export const formatDate = (dateStr) =>
+  new Date(dateStr).toLocaleDateString("fr-FR");
