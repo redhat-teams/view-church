@@ -4,6 +4,44 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 
+function CountdownCard({ value, label }) {
+  return (
+    <div
+      className="
+        w-[95px]
+        h-[95px]
+        md:w-[120px]
+        md:h-[120px]
+        rounded-xl
+        border
+        border-white/20
+        backdrop-blur-md
+        flex
+        flex-col
+        justify-center
+        items-center
+        shadow-lg
+      "
+    >
+      <span
+        className="
+          text-4xl
+          md:text-6xl
+          font-extrabold
+          leading-none
+          tabular-nums
+        "
+      >
+        {value}
+      </span>
+
+      <span className="mt-2 text-sm md:text-lg">
+        {label}
+      </span>
+    </div>
+  );
+}
+
 export default function MajorEventSection() {
   const [timeLeft, setTimeLeft] = useState({
     days: "00",
@@ -12,68 +50,32 @@ export default function MajorEventSection() {
     seconds: "00",
   });
 
+  const [expired, setExpired] = useState(false);
+
   useEffect(() => {
+    // 22 juillet 2026 à 23:59:59
+    const targetDate = new Date(2026, 6, 22, 23, 59, 59).getTime();
+
     const updateCountdown = () => {
       const now = new Date().getTime();
-
-      const targetDate = new Date(
-        2026,
-        2, // Mars
-        18,
-        23,
-        59,
-        59
-      ).getTime();
-
       const distance = targetDate - now;
 
       if (distance <= 0) {
-        setTimeLeft({
-          days: "00",
-          hours: "00",
-          minutes: "00",
-          seconds: "00",
-        });
+        setTimeLeft({ days: "00", hours: "00", minutes: "00", seconds: "00" });
+        setExpired(true);
         return;
       }
 
       setTimeLeft({
-        days: String(
-          Math.floor(
-            distance / (1000 * 60 * 60 * 24)
-          )
-        ).padStart(2, "0"),
-
-        hours: String(
-          Math.floor(
-            (distance %
-              (1000 * 60 * 60 * 24)) /
-              (1000 * 60 * 60)
-          )
-        ).padStart(2, "0"),
-
-        minutes: String(
-          Math.floor(
-            (distance %
-              (1000 * 60 * 60)) /
-              (1000 * 60)
-          )
-        ).padStart(2, "0"),
-
-        seconds: String(
-          Math.floor(
-            (distance % (1000 * 60)) / 1000
-          )
-        ).padStart(2, "0"),
+        days: String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, "0"),
+        hours: String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, "0"),
+        minutes: String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0"),
+        seconds: String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, "0"),
       });
     };
 
     updateCountdown();
-
-    const timer = setInterval(
-      updateCountdown,
-      1000
-    );
+    const timer = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(timer);
   }, []);
@@ -81,7 +83,6 @@ export default function MajorEventSection() {
   return (
     <section className="relative overflow-hidden bg-[#071F5A] py-24">
       {/* Motif fond */}
-
       <div
         className="
           absolute
@@ -96,7 +97,6 @@ export default function MajorEventSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* Badge */}
-
         <div
           className="
             inline-flex
@@ -116,7 +116,6 @@ export default function MajorEventSection() {
         </div>
 
         {/* Titre */}
-
         <h2
           className="
             mt-8
@@ -132,7 +131,6 @@ export default function MajorEventSection() {
         </h2>
 
         {/* Description */}
-
         <p
           className="
             mt-6
@@ -148,7 +146,6 @@ export default function MajorEventSection() {
         </p>
 
         {/* Infos */}
-
         <div className="flex flex-col lg:flex-row gap-8 mt-10">
           <div className="flex items-center gap-4">
             <div
@@ -162,11 +159,10 @@ export default function MajorEventSection() {
                 justify-center
               "
             >
-              <FaCalendarAlt size={20} />
+              <FaCalendarAlt size={20} className="text-white" />
             </div>
-
             <span className="text-2xl text-white font-semibold">
-              18/03/2026
+              22/07/2026
             </span>
           </div>
 
@@ -182,9 +178,8 @@ export default function MajorEventSection() {
                 justify-center
               "
             >
-              <FaMapMarkerAlt size={20} />
+              <FaMapMarkerAlt size={20} className="text-white" />
             </div>
-
             <span className="text-2xl text-white font-semibold">
               Salle de conférence de l'église
             </span>
@@ -192,7 +187,6 @@ export default function MajorEventSection() {
         </div>
 
         {/* Countdown + CTA */}
-
         <div
           className="
             mt-16
@@ -207,91 +201,43 @@ export default function MajorEventSection() {
           "
         >
           {/* Compteur */}
-
-          <div className="flex flex-wrap gap-6">
-            <CountdownCard
-              value={timeLeft.days}
-              label="Jours"
-            />
-
-            <CountdownCard
-              value={timeLeft.hours}
-              label="Heures"
-            />
-
-            <CountdownCard
-              value={timeLeft.minutes}
-              label="Minutes"
-            />
-
-            <CountdownCard
-              value={timeLeft.seconds}
-              label="Secondes"
-            />
-          </div>
+          {expired ? (
+            <p className="text-2xl font-semibold text-yellow-300">
+              L'événement a eu lieu. Merci pour votre participation !
+            </p>
+          ) : (
+            <div className="flex flex-wrap gap-6">
+              <CountdownCard value={timeLeft.days} label="Jours" />
+              <CountdownCard value={timeLeft.hours} label="Heures" />
+              <CountdownCard value={timeLeft.minutes} label="Minutes" />
+              <CountdownCard value={timeLeft.seconds} label="Secondes" />
+            </div>
+          )}
 
           {/* Bouton */}
-
-          <button
-            className="
-            bg-[#F0B51B]
-            hover:bg-yellow-400
-            text-[#071F5A]
-            font-bold
-            text-lg
-            md:text-xl
-            px-8
-            md:px-12
-            h-[72px]
-            rounded-2xl
-            transition-all
-            duration-300
-            sha"
-          >
-            Rejoindre maintenant
-          </button>
+          {!expired && (
+            <a
+              className="
+                bg-[#F0B51B]
+                hover:bg-yellow-400
+                text-[#071F5A]
+                font-semibold
+                text-base
+                px-6
+                py-3
+                rounded-lg
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:shadow-lg
+              "
+              href="contact"
+            >
+              Rejoindre maintenant
+            </a>
+          )}
         </div>
       </div>
     </section>
-  );
-}
-
-function CountdownCard({
-  value,
-  label,
-}) {
-  return (
-    <div
-      className="
-        w-[95px]
-        h-[95px]
-        md:w-[120px]
-        md:h-[120px]
-        rounded-xl
-        border
-       
-        backdrop-blur-md
-        flex
-        flex-col
-        justify-center
-        items-center
-        shadow-lg
-      "
-    >
-      <span
-        className="
-          text-4xl
-          md:text-6xl
-          font-extrabold
-          leading-none
-        "
-      >
-        {value}
-      </span>
-
-      <span className="mt-2 text-sm md:text-lg">
-        {label}
-      </span>
-    </div>
   );
 }

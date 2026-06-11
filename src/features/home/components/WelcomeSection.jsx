@@ -41,7 +41,8 @@ export default function WelcomeSection() {
           {/* Bouton */}
 
           <div className="flex justify-center lg:justify-end">
-            <button
+            <a
+            href="contact"
               className="
                 bg-[#F0B51B]
                 hover:bg-yellow-400
@@ -49,9 +50,9 @@ export default function WelcomeSection() {
                 font-bold
                 text-xl
                 md:text-2xl
-                px-12
-                md:px-20
-                py-6
+                px-3
+                md:px-10
+                py-3
                 rounded-lg
                 transition-all
                 duration-300
@@ -60,7 +61,7 @@ export default function WelcomeSection() {
               "
             >
               Rejoignez-nous
-            </button>
+            </a>
           </div>
         </div>
       </div>

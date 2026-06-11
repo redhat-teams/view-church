@@ -11,7 +11,7 @@ const events = [
       "Formation approfondie sur le leadership spirituel et l'évangélisation moderne.",
     date: "20 Mars 2026",
     location: "Salle de culte",
-    image: "/images/event1.jpg",
+    image: "/cm.png",
   },
   {
     title: "Soirée de réveil",
@@ -19,7 +19,7 @@ const events = [
       "Formation approfondie sur le leadership spirituel et l'évangélisation moderne.",
     date: "24 Mars 2026",
     location: "Salle de culte",
-    image: "/images/event2.jpg",
+    image: "/sr.png",
   },
   {
     title: "La foi sans les oeuvres",
@@ -27,7 +27,7 @@ const events = [
       "Formation approfondie sur le leadership spirituel et l'évangélisation moderne.",
     date: "28 Mars 2026",
     location: "Salle de culte",
-    image: "/images/event3.jpg",
+    image: "/fo.png",
   },
 ];
 
@@ -133,23 +133,24 @@ export default function UpcomingEvents() {
         {/* BOUTON BAS */}
 
         <div className="flex justify-center mt-16">
-          <button
+          <a
             className="
               bg-[#E8B10F]
               hover:bg-[#d7a40d]
               text-[#071F5A]
               font-bold
               text-xl
-              px-12
-              py-5
+              px-5
+              py-3
               rounded-2xl
               border-2
               border-[#071F5A]
               transition
             "
+            href="teachings"
           >
             Accéder à tous les enseignements
-          </button>
+          </a>
         </div>
       </div>
     </section>

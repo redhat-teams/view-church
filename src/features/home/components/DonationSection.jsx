@@ -133,15 +133,15 @@ export default function DonationSection() {
 
         <div className="flex justify-center mt-20">
 
-          <button className="bg-[#E7B116] hover:bg-[#d7a10f] transition-all duration-300 rounded-full px-10 md:px-20 py-5 flex items-center gap-5 shadow-lg">
+          <button className="bg-[#E7B116] hover:bg-[#d7a10f] transition-all duration-300 rounded-full px-10 md:px-10 py-3 flex items-center gap-5 shadow-lg">
 
             <FaHeart
               size={30}
               className="text-[#071F5A]"
             />
 
-            <span className="text-[#071F5A] text-xl md:text-3xl font-bold">
-              Faire un don maintenant
+            <span className="text-[#071F5A] md:text-xl font-bold">
+              <a href="/">Faire un don maintenant</a>
             </span>
 
           </button>

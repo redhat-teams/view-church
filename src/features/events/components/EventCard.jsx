@@ -4,10 +4,14 @@ export default function EventCard() {
   return (
     <section className="relative h-[85vh] min-h-[650px] flex items-center justify-center overflow-hidden">
       {/* Background */}
-      <img
-        src="/images/about/hero.jpg"
-        alt="Église"
+      <video
+        src="event.mp4"
         className="absolute inset-0 w-full h-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
       />
 
       {/* Dark Overlay */}
@@ -19,13 +23,13 @@ export default function EventCard() {
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
         <h1 className="text-white font-bold leading-tight text-4xl md:text-6xl lg:text-7xl">
-          Grandir à travers la parole
+          Découvrez tous nos événements à travers la parole de DIEU
           
         </h1>
           <br /><br />
 
         <p className="mt-8 max-w-4xl mx-auto text-white/95 text-lg md:text-2xl leading-relaxed">
-          Des enseignements inspirées pour transformer votre vie au  quotidien 
+          Des événements pour vous edifier et transformer votre vie a jamais 
         </p>
 
         <div className="mt-12 flex flex-col sm:flex-row justify-center gap-6">

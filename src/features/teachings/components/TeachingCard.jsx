@@ -4,10 +4,14 @@ export default function TeachingCard() {
   return (
     <section className="relative h-[85vh] min-h-[650px] flex items-center justify-center overflow-hidden">
       {/* Background */}
-      <img
-        src="/images/about/hero.jpg"
-        alt="Église"
+     <video
+        src="back.mp4"
         className="absolute inset-0 w-full h-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
       />
 
       {/* Dark Overlay */}

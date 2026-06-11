@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function HeroSection() {
   const slides = [
@@ -16,6 +17,8 @@ export default function HeroSection() {
           <span className="text-[#F0B51B]">prière exaucée</span>
         </>
       ),
+      buttonText: "Découvrir le Ministère",
+      buttonLink: "#ministere-about",
     },
 
     {
@@ -34,6 +37,8 @@ export default function HeroSection() {
           </span>
         </>
       ),
+      buttonText: "Nos Programmes",
+      buttonLink: "/cellule",
     },
 
     {
@@ -52,6 +57,8 @@ export default function HeroSection() {
           </span>
         </>
       ),
+      buttonText: "Rejoindre la Communauté",
+      buttonLink: "/contact",
     },
   ];
 
@@ -61,14 +68,13 @@ export default function HeroSection() {
     setActiveSlide((prev) => (prev + 1) % slides.length);
   };
 
-  // Changement automatique toutes les 5 secondes
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, []);
 
   return (
     <section
@@ -140,27 +146,36 @@ export default function HeroSection() {
             du Royaume.
           </p>
 
-          {/* Bouton */}
-          <button
-            onClick={(e) => e.stopPropagation()}
-            className="
-              mt-10
-              bg-[#F0B51B]
-              hover:bg-[#dca20f]
-              text-[#071F5A]
-              px-10
-              py-5
-              rounded-lg
-              font-bold
-              text-xl
-              transition-all
-              duration-300
-              hover:scale-105
-              hover:shadow-xl
-            "
-          >
-            Découvrez le Ministère
-          </button>
+          {/* Bouton dynamique */}
+          <a
+              href={slides[activeSlide].buttonLink}
+              onClick={(e) => e.stopPropagation()}
+              className="
+                mt-10
+                inline-flex
+                items-center
+                gap-3
+                bg-[#F0B51B]
+                hover:bg-[#dca20f]
+                text-[#071F5A]
+                px-7
+                py-3
+                rounded-lg
+                font-semibold
+                text-lg
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:shadow-xl
+                group
+              "
+            >
+              {slides[activeSlide].buttonText}
+
+              <span className="transition-transform duration-300 group-hover:translate-y-1">
+                +
+              </span>
+            </a>
 
           {/* Indicateurs */}
           <div className="flex gap-3 mt-12">
@@ -179,7 +194,6 @@ export default function HeroSection() {
               />
             ))}
           </div>
-
         </div>
       </div>
     </section>

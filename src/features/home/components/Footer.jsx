@@ -43,11 +43,11 @@ export default function Footer() {
               Navigation
             </h3>
 
-            <ul className="space-y-10 text-2xl text-[#071F5A]">
+            <ul className="space-y-10 text-xl text-[#071F5A]">
               <a href="/"><li>Accueil</li></a>
-              <a href="/"><li>Qui sommes-nous</li></a>
-              <a href=""><li>Évènements</li></a>
-              <a href="#"><li>Enseignements</li></a>
+              <a href="/apropos"><li>Qui sommes-nous</li></a>
+              <a href="events"><li>Évènements</li></a>
+              <a href="teachings"><li>Enseignements</li></a>
             </ul>
           </div>
 

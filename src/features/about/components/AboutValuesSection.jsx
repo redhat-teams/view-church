@@ -105,7 +105,7 @@ export default function AboutValuesSection() {
             <div className="absolute left-0 bottom-0 w-full h-6 bg-[#071F5A]" />
 
             <img
-              src="/images/values.jpg"
+              src="/fid1.png"
               alt="Nos valeurs"
               className="w-full h-[650px] object-cover"
             />

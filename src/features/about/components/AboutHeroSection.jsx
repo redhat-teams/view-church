@@ -3,12 +3,20 @@ import { Link } from "react-router-dom";
 export default function AboutHeroSection() {
   return (
     <section className="relative h-[85vh] min-h-[650px] flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <img
-        src="/images/about/hero.jpg"
-        alt="Église"
+      {/* Background Video */}
+      <video
         className="absolute inset-0 w-full h-full object-cover"
+        src="/fond-hero.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
       />
+
+      {/* Fallback image si la vidéo ne charge pas */}
+      {/* Retire cette balise si tu n'as pas d'image de fallback */}
+      {/* <img src="/images/about/hero.jpg" alt="" className="absolute inset-0 w-full h-full object-cover -z-10" /> */}
 
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-[#071F5A]/75" />
@@ -19,14 +27,14 @@ export default function AboutHeroSection() {
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
         <h1 className="text-white font-bold leading-tight text-4xl md:text-6xl lg:text-7xl">
-          Un lieu de foi, d’amour et de transformation
+          Un lieu de foi, d'amour et de transformation
           <br />
           où chaque vie compte.
         </h1>
 
         <p className="mt-8 max-w-4xl mx-auto text-white/95 text-lg md:text-2xl leading-relaxed">
           Découvrez une communauté engagée à accompagner chacun dans sa
-          relation avec Dieu, à travers la prière, l’enseignement et la
+          relation avec Dieu, à travers la prière, l'enseignement et la
           communion fraternelle.
         </p>
 
@@ -48,7 +56,7 @@ export default function AboutHeroSection() {
               hover:scale-105
             "
           >
-            Découvrez l’église
+            Découvrez l'église
           </Link>
 
           <Link

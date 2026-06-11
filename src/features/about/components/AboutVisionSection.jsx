@@ -13,7 +13,7 @@ export default function AboutVisionSection() {
             <div className="absolute -bottom-5 -left-5 bg-[#071F5A] w-full h-full" />
 
             <img
-              src="/images/about/about-church.jpg"
+              src="/enfant.png"
               alt=""
               className="relative z-10 w-full h-[650px] object-cover"
             />

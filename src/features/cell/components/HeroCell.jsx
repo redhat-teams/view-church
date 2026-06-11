@@ -489,9 +489,51 @@ export default function HeroCell() {
       {/* ============================================================ */}
 
       <section className="relative min-h-screen flex items-center justify-center bg-[#071F5A] overflow-hidden">
-
         {/* Fond dégradé */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#071F5A] via-[#0B2E7F] to-[#020814]" />
+         
+  {/* Vidéo */}
+          <video
+  src="preawin.mp4"
+  className="
+    absolute
+    inset-0
+    w-full
+    h-full
+    object-cover
+    scale-110
+  "
+  autoPlay
+  muted
+  loop
+  playsInline
+  preload="auto"
+/>
+
+{/* Overlay sombre */}
+<div className="absolute inset-0 bg-[#071F5A]/40" />
+
+{/* Glass bleu */}
+<div
+  className="
+    absolute
+    inset-0
+    backdrop-blur-[10px]
+    bg-gradient-to-br
+    from-[#0B63CE]/25
+    via-[#071F5A]/20
+    to-[#0B63CE]/15
+  "
+/>
+
+{/* Lumière bleue */}
+<div
+  className="
+    absolute
+    inset-0
+    bg-[radial-gradient(circle_at_top_right,rgba(11,99,206,0.35),transparent_40%)]
+  "
+/>
 
         {/* Étoiles */}
         {[...Array(80)].map((_, i) => (
@@ -546,7 +588,7 @@ export default function HeroCell() {
         ))}
 
         {/* Flamme spirituelle */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10">
+        {/* <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10">
           <motion.div
             animate={{
               scaleY: [1, 1.25, 0.95, 1.2, 1],
@@ -554,17 +596,17 @@ export default function HeroCell() {
             }}
             transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
             className="relative w-[180px] h-[280px]"
-          >
+          > */}
             {/* Flamme extérieure */}
-            <div className="absolute inset-0 rounded-[100%_100%_70%_70%] bg-gradient-to-t from-red-700 via-orange-500 to-yellow-300 blur-md" />
+            {/* <div className="absolute inset-0 rounded-[100%_100%_70%_70%] bg-gradient-to-t from-red-700 via-orange-500 to-yellow-300 blur-md" /> */}
 
             {/* Cœur de la flamme */}
-            <div className="absolute left-1/2 bottom-6 -translate-x-1/2 w-[90px] h-[170px] rounded-[100%_100%_70%_70%] bg-gradient-to-t from-orange-400 via-yellow-300 to-white" />
+            {/* <div className="absolute left-1/2 bottom-6 -translate-x-1/2 w-[90px] h-[170px] rounded-[100%_100%_70%_70%] bg-gradient-to-t from-orange-400 via-yellow-300 to-white" /> */}
 
             {/* Lumière */}
-            <div className="absolute left-1/2 -top-8 -translate-x-1/2 w-24 h-24 bg-white rounded-full blur-2xl opacity-60" />
+            {/* <div className="absolute left-1/2 -top-8 -translate-x-1/2 w-24 h-24 bg-white rounded-full blur-2xl opacity-60" />
           </motion.div>
-        </div>
+        </div> */}
 
         {/* Bible flottante en fond */}
         <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none z-10">
@@ -749,7 +791,7 @@ export default function HeroCell() {
             <div className="relative">
               <div className="absolute -top-6 -right-6 w-full h-full border-4 border-[#E5B10E] rounded-[40px]" />
               <img
-                src="/images/church/history.jpg"
+                src="fid2.png"
                 alt="Notre histoire"
                 className="relative rounded-[40px] h-[500px] w-full object-cover shadow-[0_20px_80px_rgba(0,0,0,0.12)]"
               />

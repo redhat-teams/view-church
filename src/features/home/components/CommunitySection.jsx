@@ -26,17 +26,18 @@ export default function CommunitySection() {
               notre génération pour Christ.
             </p>
 
-            <button
+            <a
+            href="contact"
               className="
                 bg-[#F0B51B]
                 hover:bg-yellow-400
                 text-[#071F5A]
                 font-bold
                 text-lg
-                md:text-2xl
+                md:text-1xl
                 px-10
-                md:px-16
-                py-5
+                md:px-9
+                py-3
                 rounded-full
                 transition-all
                 duration-300
@@ -45,7 +46,7 @@ export default function CommunitySection() {
               "
             >
               Rejoindre la communauté
-            </button>
+            </a>
           </div>
 
           {/* Partie droite */}

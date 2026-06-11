@@ -1,13 +1,10 @@
 import {
   Heart,
-  Users,
-  BookOpen,
   Target,
   Eye,
-  Gem,
-  CheckCircle2,
   Globe,
-  Mic2,
+  BookOpen,
+  CheckCircle2,
   MapPin,
 } from "lucide-react";
 import {
@@ -17,7 +14,6 @@ import {
   FaCross,
   FaDove,
 } from "react-icons/fa6";
-
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 
@@ -81,237 +77,229 @@ export default function EvangelisationPage() {
     },
   ];
 
-  return (
-    <section className="bg-[#F8F8F8] overflow-hidden">
+  const temoignages = [
+    {
+      nom: "Marie K.",
+      ville: "Abidjan",
+      texte: "J'étais perdue, sans espoir. Depuis que j'ai accepté Jésus, ma vie a complètement changé. La paix que je ressentais, je ne savais même pas qu'elle existait.",
+    },
+    {
+      nom: "David O.",
+      ville: "Bouaké",
+      texte: "L'Évangile m'a libéré d'une addiction de 10 ans. Ce que les médecins n'ont pas pu faire, Jésus l'a accompli en un instant.",
+    },
+    {
+      nom: "Grace A.",
+      ville: "San Pedro",
+      texte: "Ma famille était déchirée. Depuis que nous avons tous rencontré Christ, nous sommes réconciliés et plus unis que jamais.",
+    },
+  ];
 
-      {/* ===================== HERO ===================== */}
+  return (
+    <div className="bg-[#F8F8F8] overflow-hidden">
+
+      {/* ═══════════════════════ HERO ═══════════════════════ */}
       <section className="relative min-h-screen flex items-center justify-center bg-[#071F5A] overflow-hidden">
 
-        {/* Fond dégradé */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#071F5A] via-[#0B2E7F] to-[#020814]" />
+        {/* Fond dégradé profond */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#071F5A] via-[#0A2470] to-[#020814]" />
 
-        {/* Étoiles */}
+        {/* Étoiles scintillantes */}
         {[...Array(80)].map((_, i) => (
           <motion.div
             key={`star-${i}`}
             className="absolute bg-white rounded-full"
             style={{
-              width: Math.random() * 3 + 1,
-              height: Math.random() * 3 + 1,
+              width: Math.random() * 2.5 + 0.5,
+              height: Math.random() * 2.5 + 0.5,
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
             }}
-            animate={{ opacity: [0.2, 1, 0.2] }}
-            transition={{ duration: 2 + Math.random() * 4, repeat: Infinity }}
+            animate={{ opacity: [0.1, 0.9, 0.1] }}
+            transition={{ duration: 2 + Math.random() * 5, repeat: Infinity, delay: Math.random() * 4 }}
           />
         ))}
 
         {/* Étoiles filantes */}
-        {[...Array(12)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <motion.div
             key={`shoot-${i}`}
-            className="absolute h-[2px] w-[180px] bg-gradient-to-r from-white to-transparent"
-            initial={{ x: -300, y: Math.random() * 400, opacity: 0, rotate: -25 }}
-            animate={{ x: 2200, opacity: [0, 1, 0] }}
-            transition={{ duration: 3, repeat: Infinity, delay: i * 2 }}
+            className="absolute h-px w-48 bg-gradient-to-r from-white/80 to-transparent"
+            style={{ top: `${10 + i * 10}%` }}
+            initial={{ x: -300, opacity: 0, rotate: -20 }}
+            animate={{ x: 2400, opacity: [0, 1, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity, delay: i * 2.5 }}
           />
         ))}
 
-        {/* Halo central */}
+        {/* Halo doré central pulsant */}
         <motion.div
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 6, repeat: Infinity }}
-          className="absolute w-[800px] h-[800px] rounded-full bg-[#E5B10E] blur-[220px] opacity-40"
+          animate={{ scale: [1, 1.25, 1], opacity: [0.25, 0.55, 0.25] }}
+          transition={{ duration: 7, repeat: Infinity }}
+          className="absolute w-[700px] h-[700px] rounded-full bg-[#F0B51B] blur-[250px]"
         />
 
-        {/* Particules */}
-        {[...Array(40)].map((_, i) => (
-          <motion.div
-            key={`particle-${i}`}
-            className="absolute w-2 h-2 bg-yellow-300 rounded-full"
-            initial={{ x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1200), y: 900 }}
-            animate={{ y: -200, opacity: [0, 1, 0] }}
-            transition={{ duration: 10 + Math.random() * 8, repeat: Infinity, delay: i * 0.3 }}
-          />
-        ))}
-
-        {/* Colombe animée en fond */}
+        {/* Colombe flottante en fond */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
           <motion.div
             animate={{
-              x: [0, 300, 600, 300, 0, -300, -600, -300, 0],
-              y: [0, -150, 0, 150, 0, -150, 0, 150, 0],
-              rotate: [-5, 5, -5],
-              scale: [1, 1.05, 1],
+              x: [0, 280, 500, 280, 0, -280, -500, -280, 0],
+              y: [0, -120, 0, 120, 0, -120, 0, 120, 0],
+              rotate: [-4, 4, -4],
             }}
-            transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
-            className="opacity-10"
+            transition={{ duration: 38, repeat: Infinity, ease: "linear" }}
+            className="opacity-[0.07]"
           >
-            <FaDove className="text-white text-[220px]" />
+            <FaDove className="text-white text-[280px]" />
           </motion.div>
         </div>
 
-        {/* Flamme spirituelle */}
-        {/* <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10">
+        {/* Particules montantes */}
+        {[...Array(25)].map((_, i) => (
           <motion.div
-            animate={{
-              scaleY: [1, 1.25, 0.95, 1.2, 1],
-              scaleX: [1, 0.95, 1.05, 0.9, 1],
-            }}
-            transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-            className="relative w-[180px] h-[280px]"
-          >
-            <div className="absolute inset-0 rounded-[100%_100%_70%_70%] bg-gradient-to-t from-red-700 via-orange-500 to-yellow-300 blur-md" />
-            <div className="absolute left-1/2 bottom-6 -translate-x-1/2 w-[90px] h-[170px] rounded-[100%_100%_70%_70%] bg-gradient-to-t from-orange-400 via-yellow-300 to-white" />
-            <div className="absolute left-1/2 -top-8 -translate-x-1/2 w-24 h-24 bg-white rounded-full blur-2xl opacity-60" />
-          </motion.div>
-        </div> */}
+            key={`p-${i}`}
+            className="absolute w-1.5 h-1.5 bg-[#F0B51B]/60 rounded-full"
+            style={{ left: `${Math.random() * 100}%` }}
+            initial={{ y: 900, opacity: 0 }}
+            animate={{ y: -100, opacity: [0, 0.8, 0] }}
+            transition={{ duration: 10 + Math.random() * 8, repeat: Infinity, delay: i * 0.5 }}
+          />
+        ))}
 
-        {/* Contenu principal */}
-        <div className="relative z-20 max-w-7xl mx-auto px-6 text-center">
-
+        {/* Contenu */}
+        <div className="relative z-20 max-w-5xl mx-auto px-6 text-center">
           <motion.div
-            animate={{ y: [0, -15, 0] }}
+            animate={{ y: [0, -14, 0] }}
             transition={{ duration: 4, repeat: Infinity }}
           >
-            <FaDove className="mx-auto text-7xl text-[#F0B51B]" />
+            <FaDove className="mx-auto text-8xl text-[#F0B51B] drop-shadow-[0_0_30px_rgba(240,181,27,0.7)]" />
           </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+            className="text-white text-5xl md:text-7xl font-black mt-8 leading-tight drop-shadow-[0_2px_30px_rgba(255,255,255,0.15)]"
+          >
+            Jésus-Christ
+            <span className="block text-[#F0B51B] drop-shadow-[0_0_40px_rgba(240,181,27,0.5)]">
+              t'appelle aujourd'hui
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="text-white/80 max-w-2xl mx-auto mt-8 text-xl leading-relaxed"
+          >
+            Tu n'es pas ici par hasard. Dieu t'aime profondément et désire
+            une relation personnelle avec toi. Découvre la vie abondante
+            qu'Il t'a préparée.
+          </motion.p>
 
           <motion.div
-            animate={{
-              y: [0, -20, 10, -15, 0],
-              x: [0, 10, -10, 5, 0],
-              rotate: [0, 1, -1, 0.5, 0],
-            }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-            className="relative"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="flex flex-wrap justify-center gap-6 mt-12"
           >
-            <motion.h1
-              initial={{ opacity: 0, y: 80 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="text-white text-5xl md:text-7xl font-black mt-8 drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]"
-            >
-              Jésus-Christ
-              <span className="block text-[#F0B51B]">
-                t'appelle aujourd'hui
-              </span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-white/80 max-w-3xl mx-auto mt-8 text-xl leading-relaxed"
-            >
-              Tu n'es pas ici par hasard. Dieu t'aime profondément
-              et désire une relation personnelle avec toi.
-              Découvre la vie abondante qu'Il t'a préparée.
-            </motion.p>
-          </motion.div>
-
-          <div className="flex flex-wrap justify-center gap-6 mt-12">
             <button
               onClick={() =>
-                document
-                  .getElementById("priere")
-                  ?.scrollIntoView({
-                    behavior: "smooth",
-                  })
+                document.getElementById("priere")?.scrollIntoView({ behavior: "smooth" })
               }
-              className="
-                bg-[#E5B10E]
-                text-[#071F5A]
-                px-10
-                py-4
-                rounded-2xl
-                font-bold
-                shadow-[0_0_25px_rgba(255,80,0,0.8),0_0_50px_rgba(255,140,0,0.7),0_0_80px_rgba(255,215,0,0.5)]
-
-              "
+              className="bg-[#F0B51B] text-[#071F5A] px-10 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-[0_8px_40px_rgba(240,181,27,0.55)]"
             >
               Faire la prière
             </button>
-
             <button
-             onClick={() =>
-                document
-                  .getElementById("1")
-                  ?.scrollIntoView({
-                    behavior: "smooth",
-                  })
+              onClick={() =>
+                document.getElementById("etapes")?.scrollIntoView({ behavior: "smooth" })
               }
-              className="border-2 border-white text-white px-10 py-4 
-              rounded-2xl font-bold
-               hover:bg-white hover:text-[#071F5A] transition-all duration-300
-              shadow-[0_0_25px_rgba(255,80,0,0.8),0_0_50px_rgba(255,140,0,0.7),0_0_80px_rgba(255,215,0,0.5)]"
-
+              className="border-2 border-white/70 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-white hover:text-[#071F5A] transition-all duration-300 backdrop-blur-sm"
             >
               En savoir plus
             </button>
-          </div>
+          </motion.div>
+        </div>
 
+        {/* Vague bas */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#F8F8F8" />
+          </svg>
         </div>
       </section>
 
-      {/* ===================== MESSAGE DE L'ÉVANGILE ===================== */}
-      <section className="py-24" >
+      {/* ═══════════════════════ BONNE NOUVELLE ═══════════════════════ */}
+      <section className="py-28 bg-[#F8F8F8]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
 
-            <div>
-              <span className="text-[#E5B10E] font-semibold">
-                LA BONNE NOUVELLE
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <span className="inline-block text-sm font-bold tracking-widest uppercase text-[#0B63CE] border border-[#0B63CE]/30 bg-[#0B63CE]/8 px-4 py-2 rounded-full">
+                La Bonne Nouvelle
               </span>
 
-              <h2 className="text-5xl font-bold text-[#071F5A] mt-4">
+              <h2 className="text-5xl font-black text-[#071F5A] mt-6 leading-tight">
                 Un message qui change tout.
               </h2>
 
-              <p className="mt-8 text-gray-600 leading-relaxed">
-                L'Évangile — du grec « bonne nouvelle » — est le message
-                le plus transformateur de l'histoire humaine : Dieu, dans
-                Son amour infini, a envoyé Son Fils Jésus-Christ pour
-                réconcilier l'humanité avec Lui.
+              <p className="mt-8 text-gray-600 leading-relaxed text-lg">
+                L'Évangile — du grec « bonne nouvelle » — est le message le plus transformateur
+                de l'histoire humaine : Dieu, dans Son amour infini, a envoyé Son Fils
+                Jésus-Christ pour réconcilier l'humanité avec Lui.
               </p>
 
-              <p className="mt-6 text-gray-600 leading-relaxed">
-                Ce n'est pas une religion de règles, mais une relation
-                vivante avec le Créateur de l'univers. Une relation qui
-                commence par un simple oui à Jésus-Christ.
+              <p className="mt-5 text-gray-600 leading-relaxed text-lg">
+                Ce n'est pas une religion de règles, mais une relation vivante avec
+                le Créateur de l'univers. Une relation qui commence par un simple oui à Jésus-Christ.
               </p>
 
-              <blockquote className="mt-8 border-l-4 border-[#E5B10E] pl-6 italic text-[#071F5A] font-medium text-lg">
-                « Car Dieu a tant aimé le monde qu'il a donné son Fils unique,
-                afin que quiconque croit en lui ne périsse pas,
-                mais qu'il ait la vie éternelle. »
-                <span className="block mt-2 text-sm not-italic text-gray-500">Jean 3:16</span>
+              <blockquote className="mt-10 border-l-4 border-[#F0B51B] pl-6 italic text-[#071F5A] font-medium text-lg bg-white rounded-r-2xl py-5 pr-6 shadow-md">
+                « Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que
+                quiconque croit en lui ne périsse pas, mais qu'il ait la vie éternelle. »
+                <span className="block mt-3 text-sm not-italic text-gray-400 font-normal">— Jean 3:16</span>
               </blockquote>
-            </div>
+            </motion.div>
 
-            <div className="relative">
-              <div className="absolute -top-6 -right-6 w-full h-full border-4 border-[#E5B10E] rounded-[40px]" />
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="relative"
+            >
+              <div className="absolute -top-5 -right-5 w-full h-full border-4 border-[#0B63CE]/40 rounded-[40px]" />
+              <div className="absolute -bottom-5 -left-5 w-full h-full border-2 border-[#F0B51B]/30 rounded-[40px]" />
               <img
-                src="/images/evangelisation/bonne-nouvelle.jpg"
+                src="/etern.png"
                 alt="La Bonne Nouvelle"
-                className="relative rounded-[40px] h-[500px] w-full object-cover shadow-[0_20px_80px_rgba(0,0,0,0.12)]"
+                className="relative rounded-[40px] h-[500px] w-full object-cover shadow-[0_30px_80px_rgba(7,31,90,0.18)]"
               />
-            </div>
+            </motion.div>
 
           </div>
         </div>
       </section>
 
-      {/* ===================== 4 ÉTAPES DU SALUT ===================== */}
-      <section className="py-24 bg-white" id="1">
+      {/* ═══════════════════════ 4 ÉTAPES ═══════════════════════ */}
+      <section className="py-28 bg-white" id="etapes">
         <div className="max-w-7xl mx-auto px-6">
 
-          <div className="text-center">
-            <span className="text-[#E5B10E] font-semibold">COMMENT ÊTRE SAUVÉ</span>
-            <h2 className="text-5xl font-bold text-[#071F5A] mt-4">
+          <div className="text-center max-w-2xl mx-auto">
+            <span className="inline-block text-sm font-bold tracking-widest uppercase text-[#0B63CE] border border-[#0B63CE]/30 bg-[#0B63CE]/8 px-4 py-2 rounded-full">
+              Comment être sauvé
+            </span>
+            <h2 className="text-5xl font-black text-[#071F5A] mt-6">
               4 étapes vers la vie éternelle
             </h2>
-            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+            <p className="mt-5 text-gray-500 text-lg">
               Le chemin du salut est simple et accessible à tous,
               quel que soit ton passé ou tes erreurs.
             </p>
@@ -323,22 +311,22 @@ export default function EvangelisationPage() {
                 key={index}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.15 }}
+                transition={{ delay: index * 0.12 }}
                 viewport={{ once: true }}
-                className="relative bg-[#F8F8F8] p-10 rounded-[32px] shadow-xl hover:-translate-y-3 transition-all duration-500"
+                className="relative bg-[#F8F8F8] p-10 rounded-[32px] shadow-lg hover:-translate-y-3 hover:shadow-2xl transition-all duration-500 group"
               >
-                <span className="text-6xl font-black text-[#E5B10E]/20 absolute top-4 right-6">
+                {/* Numéro en fond */}
+                <span className="text-7xl font-black text-[#071F5A]/8 absolute top-4 right-6 select-none leading-none">
                   {etape.num}
                 </span>
-                <div className="text-[#E5B10E] relative z-10">
+
+                {/* Icône avec cercle bleu */}
+                <div className="relative z-10 w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0B63CE] to-[#071F5A] flex items-center justify-center text-white shadow-[0_8px_30px_rgba(11,99,206,0.35)] group-hover:shadow-[0_8px_40px_rgba(11,99,206,0.5)] transition-all duration-500">
                   {etape.icon}
                 </div>
-                <h3 className="mt-6 text-2xl font-bold text-[#071F5A]">
-                  {etape.titre}
-                </h3>
-                <p className="mt-4 text-gray-600 text-sm leading-relaxed">
-                  {etape.texte}
-                </p>
+
+                <h3 className="mt-7 text-2xl font-black text-[#071F5A]">{etape.titre}</h3>
+                <p className="mt-3 text-gray-500 text-sm leading-relaxed">{etape.texte}</p>
               </motion.div>
             ))}
           </div>
@@ -346,99 +334,158 @@ export default function EvangelisationPage() {
         </div>
       </section>
 
-      {/* ===================== MISSION VISION VALEURS ===================== */}
-      <section className="py-24">
+      {/* ═══════════════════════ MISSION / VISION / IMPACT ═══════════════════════ */}
+      <section className="py-28 bg-[#F8F8F8]">
         <div className="max-w-7xl mx-auto px-6">
+
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-black text-[#071F5A]">Notre raison d'être</h2>
+          </div>
+
           <div className="grid md:grid-cols-3 gap-8">
-
-            <div className="bg-white p-10 rounded-[32px] shadow-xl">
-              <Target className="text-[#E5B10E]" size={42} />
-              <h3 className="mt-6 text-3xl font-bold text-[#071F5A]">Mission</h3>
-              <p className="mt-4 text-gray-600">
-                Partager l'Évangile à toute créature et faire de toutes les nations des disciples de Christ.
-              </p>
-            </div>
-
-            <div className="bg-white p-10 rounded-[32px] shadow-xl">
-              <Eye className="text-[#E5B10E]" size={42} />
-              <h3 className="mt-6 text-3xl font-bold text-[#071F5A]">Vision</h3>
-              <p className="mt-4 text-gray-600">
-                Voir chaque homme, femme et enfant rencontrer Jésus-Christ personnellement.
-              </p>
-            </div>
-
-            <div className="bg-white p-10 rounded-[32px] shadow-xl">
-              <Globe className="text-[#E5B10E]" size={42} />
-              <h3 className="mt-6 text-3xl font-bold text-[#071F5A]">Impact</h3>
-              <p className="mt-4 text-gray-600">
-                Transformer la société de l'intérieur, une vie à la fois, par la puissance de l'Évangile.
-              </p>
-            </div>
-
+            {[
+              {
+                icon: <Target size={36} />,
+                title: "Mission",
+                desc: "Partager l'Évangile à toute créature et faire de toutes les nations des disciples de Christ.",
+              },
+              {
+                icon: <Eye size={36} />,
+                title: "Vision",
+                desc: "Voir chaque homme, femme et enfant rencontrer Jésus-Christ personnellement.",
+                featured: true,
+              },
+              {
+                icon: <Globe size={36} />,
+                title: "Impact",
+                desc: "Transformer la société de l'intérieur, une vie à la fois, par la puissance de l'Évangile.",
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className={`p-10 rounded-[32px] shadow-lg transition-all duration-500 hover:-translate-y-2 ${
+                  item.featured
+                    ? "bg-gradient-to-br from-[#071F5A] to-[#0B63CE] text-white shadow-[0_20px_60px_rgba(11,99,206,0.35)]"
+                    : "bg-white text-[#071F5A]"
+                }`}
+              >
+                <div className={`${item.featured ? "text-[#F0B51B]" : "text-[#0B63CE]"}`}>
+                  {item.icon}
+                </div>
+                <h3 className="mt-6 text-3xl font-black">{item.title}</h3>
+                <p className={`mt-4 leading-relaxed ${item.featured ? "text-white/80" : "text-gray-500"}`}>
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ===================== LES 3 PILIERS ===================== */}
-      <section className="py-24 bg-white">
+      {/* ═══════════════════════ LES 3 PILIERS ═══════════════════════ */}
+      <section className="py-28 bg-white">
         <div className="max-w-7xl mx-auto px-6">
 
-          <div className="text-center">
-            <h2 className="text-5xl font-bold text-[#071F5A]">
-              Ce que Dieu t'offre
-            </h2>
+          <div className="text-center mb-16">
+            <span className="inline-block text-sm font-bold tracking-widest uppercase text-[#0B63CE] border border-[#0B63CE]/30 bg-[#0B63CE]/8 px-4 py-2 rounded-full">
+              Les fondements
+            </span>
+            <h2 className="text-5xl font-black text-[#071F5A] mt-6">Ce que Dieu t'offre</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mt-16">
+          <div className="grid md:grid-cols-3 gap-8">
             {pilliers.map((pillier, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="p-10 rounded-[32px] shadow-xl hover:-translate-y-3 transition-all duration-500 bg-[#F8F8F8]"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group p-10 rounded-[32px] bg-[#F8F8F8] shadow-lg hover:-translate-y-3 hover:shadow-2xl transition-all duration-500 relative overflow-hidden"
               >
-                <div className="text-[#E5B10E]">{pillier.icon}</div>
-                <h3 className="mt-6 text-3xl font-bold text-[#071F5A]">{pillier.title}</h3>
-                <p className="mt-4 text-gray-600">{pillier.desc}</p>
-              </div>
+                {/* Halo hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0B63CE]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[32px]" />
+
+                <div className="relative z-10 w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0B63CE] to-[#071F5A] flex items-center justify-center text-white shadow-[0_8px_30px_rgba(11,99,206,0.3)]">
+                  {pillier.icon}
+                </div>
+                <h3 className="mt-7 text-2xl font-black text-[#071F5A]">{pillier.title}</h3>
+                <p className="mt-4 text-gray-500 leading-relaxed">{pillier.desc}</p>
+              </motion.div>
             ))}
           </div>
 
         </div>
       </section>
 
-      {/* ===================== CHIFFRES ===================== */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* ═══════════════════════ STATISTIQUES ═══════════════════════ */}
+      <section className="py-24 bg-gradient-to-br from-[#071F5A] to-[#0B2E7F] relative overflow-hidden">
+
+        {/* Halo */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-[700px] h-[300px] bg-[#F0B51B]/15 blur-[120px] rounded-full" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="bg-white p-10 rounded-[32px] text-center shadow-xl"
+                initial={{ opacity: 0, scale: 0.85 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center py-10 px-6 rounded-[32px] bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 transition-all duration-300"
               >
-                <h3 className="text-5xl font-bold text-[#E5B10E]">{stat.value}</h3>
-                <p className="mt-4 text-[#071F5A] font-semibold">{stat.label}</p>
-              </div>
+                <h3 className="text-5xl font-black text-[#F0B51B] drop-shadow-[0_0_20px_rgba(240,181,27,0.5)]">
+                  {stat.value}
+                </h3>
+                <p className="mt-3 text-white/80 font-semibold">{stat.label}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===================== PRIÈRE DU SALUT ===================== */}
-      <section className="py-24 bg-[#071F5A]" id="priere">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      {/* ═══════════════════════ PRIÈRE DU SALUT ═══════════════════════ */}
+      <section className="py-28 bg-[#071F5A] relative overflow-hidden" id="priere">
 
-          <span className="text-[#E5B10E] font-semibold">PRIÈRE DU SALUT</span>
-          <h2 className="text-white text-5xl font-bold mt-4">
+        {/* Halo pulsant */}
+        <motion.div
+          animate={{ scale: [1, 1.3, 1], opacity: [0.15, 0.4, 0.15] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute w-[600px] h-[600px] rounded-full bg-[#F0B51B] blur-[200px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        />
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity }}
+          >
+            <FaHandsPraying className="mx-auto text-6xl text-[#F0B51B] drop-shadow-[0_0_30px_rgba(240,181,27,0.6)] mb-4" />
+          </motion.div>
+
+          <span className="inline-block text-sm font-bold tracking-widest uppercase text-[#F0B51B] border border-[#F0B51B]/40 px-4 py-2 rounded-full mb-6">
+            Prière du Salut
+          </span>
+
+          <h2 className="text-white text-5xl font-black leading-tight">
             Prie cette prière maintenant
           </h2>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="mt-12 bg-white/10 backdrop-blur-md rounded-[40px] p-10 text-white text-left border border-white/20"
+            className="mt-12 bg-white/10 backdrop-blur-md rounded-[40px] p-10 md:p-14 text-left border border-white/20 shadow-[0_20px_80px_rgba(0,0,0,0.3)]"
           >
-            <FaHandsPraying className="text-[#E5B10E] text-4xl mb-6" />
-            <p className="text-xl leading-relaxed italic">
+            <FaHandsPraying className="text-[#F0B51B] text-4xl mb-6" />
+            <p className="text-white text-xl leading-relaxed italic">
               « Seigneur Jésus, je reconnais que je suis pécheur et que j'ai besoin de toi.
               Je crois que tu es mort pour mes péchés et que tu es ressuscité d'entre les morts.
               Je te reçois aujourd'hui comme mon Seigneur et mon Sauveur.
@@ -447,20 +494,21 @@ export default function EvangelisationPage() {
             </p>
           </motion.div>
 
-          <p className="text-white/60 mt-8 text-lg">
-            Si tu viens de prier cette prière sincèrement, tu es maintenant né de nouveau. Bienvenue dans la famille de Dieu !
+          <p className="text-white/60 mt-8 text-lg max-w-2xl mx-auto leading-relaxed">
+            Si tu viens de prier cette prière sincèrement, tu es maintenant né de nouveau.
+            Bienvenue dans la famille de Dieu !
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 mt-10">
             <NavLink
               to="/contact"
-              className="bg-[#E5B10E] text-[#071F5A] px-10 py-4 rounded-2xl font-bold hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(229,177,14,0.5)]"
+              className="bg-[#F0B51B] text-[#071F5A] px-10 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-[0_8px_40px_rgba(240,181,27,0.5)]"
             >
               Je viens de prier — contactez-moi
             </NavLink>
             <NavLink
               to="/apropos"
-              className="border-2 border-white text-white px-10 py-4 rounded-2xl font-bold hover:bg-white hover:text-[#071F5A] transition-all duration-300"
+              className="border-2 border-white/70 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-white hover:text-[#071F5A] transition-all duration-300"
             >
               Trouver une église
             </NavLink>
@@ -469,77 +517,75 @@ export default function EvangelisationPage() {
         </div>
       </section>
 
-      {/* ===================== POURQUOI ACCEPTER JESUS ===================== */}
-      <section className="py-24 bg-[#F8F8F8]">
+      {/* ═══════════════════════ POURQUOI ACCEPTER JÉSUS ═══════════════════════ */}
+      <section className="py-28 bg-[#F8F8F8]">
         <div className="max-w-5xl mx-auto px-6 text-center">
 
-          <h2 className="text-[#071F5A] text-5xl font-bold">
+          <span className="inline-block text-sm font-bold tracking-widest uppercase text-[#0B63CE] border border-[#0B63CE]/30 bg-[#0B63CE]/8 px-4 py-2 rounded-full">
+            Ses promesses
+          </span>
+          <h2 className="text-[#071F5A] text-5xl font-black mt-6 mb-16">
             Pourquoi accepter Jésus ?
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-6 mt-16">
+          <div className="grid md:grid-cols-2 gap-6">
             {promesses.map((promesse, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="bg-white rounded-3xl p-6 text-[#071F5A] flex items-center gap-4 shadow-xl"
+                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-3xl p-7 text-[#071F5A] flex items-center gap-5 shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
               >
-                <CheckCircle2 className="text-[#E5B10E] shrink-0" size={28} />
-                <span className="font-medium">{promesse}</span>
-              </div>
+                <div className="shrink-0 w-10 h-10 rounded-full bg-[#0B63CE]/10 flex items-center justify-center">
+                  <CheckCircle2 className="text-[#0B63CE]" size={22} />
+                </div>
+                <span className="font-semibold text-left text-lg">{promesse}</span>
+              </motion.div>
             ))}
           </div>
 
         </div>
       </section>
 
-      {/* ===================== TÉMOIGNAGES ===================== */}
-      <section className="py-24 bg-white">
+      {/* ═══════════════════════ TÉMOIGNAGES ═══════════════════════ */}
+      <section className="py-28 bg-white">
         <div className="max-w-7xl mx-auto px-6">
 
           <div className="text-center mb-16">
-            <span className="text-[#E5B10E] font-semibold">TÉMOIGNAGES</span>
-            <h2 className="text-5xl font-bold text-[#071F5A] mt-4">
-              Des vies transformées
-            </h2>
+            <span className="inline-block text-sm font-bold tracking-widest uppercase text-[#0B63CE] border border-[#0B63CE]/30 bg-[#0B63CE]/8 px-4 py-2 rounded-full">
+              Témoignages
+            </span>
+            <h2 className="text-5xl font-black text-[#071F5A] mt-6">Des vies transformées</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                nom: "Marie K.",
-                ville: "Abidjan",
-                texte: "J'étais perdue, sans espoir. Depuis que j'ai accepté Jésus, ma vie a complètement changé. La paix que je ressentais, je ne savais même pas qu'elle existait.",
-              },
-              {
-                nom: "David O.",
-                ville: "Bouaké",
-                texte: "L'Évangile m'a libéré d'une addiction de 10 ans. Ce que les médecins n'ont pas pu faire, Jésus l'a accompli en un instant.",
-              },
-              {
-                nom: "Grace A.",
-                ville: "San Pedro",
-                texte: "Ma famille était déchirée. Depuis que nous avons tous rencontré Christ, nous sommes réconciliés et plus unis que jamais.",
-              },
-            ].map((temoignage, index) => (
+            {temoignages.map((t, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-[#F8F8F8] p-8 rounded-[32px] shadow-xl"
+                className="bg-[#F8F8F8] p-8 rounded-[32px] shadow-lg hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 flex flex-col justify-between"
               >
-                <p className="text-gray-600 italic leading-relaxed">
-                  "{temoignage.texte}"
-                </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-[#E5B10E]/20 flex items-center justify-center">
-                    <Heart className="text-[#E5B10E]" size={20} />
+                {/* Guillemet décoratif */}
+                <div>
+                  <span className="text-6xl text-[#0B63CE]/20 font-black leading-none select-none">"</span>
+                  <p className="text-gray-600 leading-relaxed -mt-4">
+                    {t.texte}
+                  </p>
+                </div>
+
+                <div className="mt-8 flex items-center gap-4 border-t border-gray-100 pt-6">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0B63CE] to-[#071F5A] flex items-center justify-center shadow-md">
+                    <Heart className="text-white" size={18} />
                   </div>
                   <div>
-                    <p className="font-bold text-[#071F5A]">{temoignage.nom}</p>
-                    <p className="text-sm text-gray-500 flex items-center gap-1">
-                      <MapPin size={12} /> {temoignage.ville}
+                    <p className="font-bold text-[#071F5A]">{t.nom}</p>
+                    <p className="text-sm text-gray-400 flex items-center gap-1 mt-0.5">
+                      <MapPin size={11} /> {t.ville}
                     </p>
                   </div>
                 </div>
@@ -550,31 +596,45 @@ export default function EvangelisationPage() {
         </div>
       </section>
 
-      {/* ===================== CTA FINAL ===================== */}
-      <section className="py-24 bg-gradient-to-b from-[#071F5A] to-[#020814] relative overflow-hidden">
+      {/* ═══════════════════════ CTA FINAL ═══════════════════════ */}
+      <section className="py-28 bg-gradient-to-b from-[#071F5A] to-[#020814] relative overflow-hidden">
 
-        {/* Halo */}
+        {/* Halo pulsant */}
         <motion.div
-          animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.5, 0.2] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute w-[600px] h-[600px] rounded-full bg-[#E5B10E] blur-[200px] opacity-30 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          animate={{ scale: [1, 1.35, 1], opacity: [0.15, 0.45, 0.15] }}
+          transition={{ duration: 9, repeat: Infinity }}
+          className="absolute w-[700px] h-[700px] rounded-full bg-[#F0B51B] blur-[220px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         />
+
+        {/* Étoiles légères */}
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute bg-white rounded-full opacity-20"
+            style={{
+              width: Math.random() * 2 + 1,
+              height: Math.random() * 2 + 1,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+            }}
+          />
+        ))}
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
 
           <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 3, repeat: Infinity }}
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity }}
           >
-            <FaHandsPraying className="mx-auto text-7xl text-[#F0B51B] mb-8" />
+            <FaHandsPraying className="mx-auto text-7xl text-[#F0B51B] drop-shadow-[0_0_40px_rgba(240,181,27,0.7)] mb-8" />
           </motion.div>
 
           <h2 className="text-white text-5xl md:text-6xl font-black leading-tight">
             Ton heure est
-            <span className="text-[#F0B51B] block">maintenant.</span>
+            <span className="text-[#F0B51B] block drop-shadow-[0_0_30px_rgba(240,181,27,0.5)]">maintenant.</span>
           </h2>
 
-          <p className="text-white/70 mt-6 text-xl max-w-2xl mx-auto leading-relaxed">
+          <p className="text-white/70 mt-8 text-xl max-w-2xl mx-auto leading-relaxed">
             Ne remets pas à demain ce que Dieu veut accomplir dans ta vie aujourd'hui.
             Fais le pas. Une seule décision peut tout changer.
           </p>
@@ -582,13 +642,13 @@ export default function EvangelisationPage() {
           <div className="flex flex-wrap justify-center gap-6 mt-12">
             <NavLink
               to="/priere-salut"
-              className="bg-[#E5B10E] text-[#071F5A] px-12 py-5 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-[0_0_40px_rgba(229,177,14,0.6)]"
+              className="bg-[#F0B51B] text-[#071F5A] px-12 py-5 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-[0_8px_50px_rgba(240,181,27,0.55)]"
             >
               Je veux connaître Jésus
             </NavLink>
             <NavLink
               to="/contact"
-              className="border-2 border-white text-white px-12 py-5 rounded-2xl font-bold text-lg hover:bg-white hover:text-[#071F5A] transition-all duration-300"
+              className="border-2 border-white/70 text-white px-12 py-5 rounded-2xl font-bold text-lg hover:bg-white hover:text-[#071F5A] transition-all duration-300"
             >
               Parler à quelqu'un
             </NavLink>
@@ -597,6 +657,6 @@ export default function EvangelisationPage() {
         </div>
       </section>
 
-    </section>
+    </div>
   );
 }

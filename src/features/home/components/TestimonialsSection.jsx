@@ -4,9 +4,9 @@ import { FaQuoteRight } from "react-icons/fa";
 const testimonials = [
   {
     id: 1,
-    name: "Martin Scurbi",
+    name: "Martin bogo",
     image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300",
+      "/t1.png",
     text:
       "À travers les enseignements du ministère, j'ai retrouvé une nouvelle force dans ma foi. Les moments de prière et les messages partagés m'ont beaucoup encouragé et m'ont aidé à avancer avec confiance.",
   },
@@ -14,7 +14,7 @@ const testimonials = [
     id: 2,
     name: "Marie Théa",
     image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300",
+      "/t3.png",
     text:
       "À travers les enseignements du ministère, j'ai retrouvé une nouvelle force dans ma foi. Les moments de prière et les messages partagés m'ont beaucoup encouragé et m'ont aidé à avancer avec confiance.",
   },
@@ -22,7 +22,7 @@ const testimonials = [
     id: 3,
     name: "Jean Koffi",
     image:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300",
+      "/t2.png",
     text:
       "Le Seigneur a transformé ma vie grâce aux enseignements et à la communion fraternelle. Je recommande ce ministère à toute personne désirant grandir spirituellement.",
   },

@@ -2,7 +2,7 @@ import { Eye, Target } from "lucide-react";
 
 export default function FoundationsSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-r from-[#07235D] via-[#0B4FAE] to-[#1E90FF] py-24">
+    <section id="ministere" className="relative overflow-hidden bg-gradient-to-r from-[#07235D] via-[#0B4FAE] to-[#1E90FF] py-24">
       {/* Décorations arrière-plan */}
       <div className="absolute top-0 right-0 w-96 h-96 rounded-full border-[40px] border-blue-300/20" />
       <div className="absolute top-8 right-8 w-72 h-72 rounded-full border-[30px] border-blue-200/20" />

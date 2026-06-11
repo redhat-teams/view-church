@@ -1,13 +1,50 @@
+import { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
+
+function AnimatedCounter({ target, prefix = "", duration = 2000 }) {
+  const [count, setCount] = useState(0);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    let startTime = null;
+
+    const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = easeOutExpo(progress);
+      setCount(Math.round(eased * target));
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [target, duration]);
+
+  return (
+    <>
+      {prefix}
+      {count.toLocaleString("fr-FR")}
+    </>
+  );
+}
+
 export default function AboutSection() {
   return (
-    <section className="bg-[#F3F3F3] py-24 overflow-hidden">
+    <section className="bg-[#F3F3F3] py-24 overflow-hidden" id="ministere-about">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           {/* IMAGE */}
           <div className="relative group">
             <div className="overflow-hidden rounded-[25px] shadow-xl">
               <img
-                src="/images/about.jpg"
+                src="/ado.png"
                 alt="Qui sommes-nous"
                 className="
                   w-full
@@ -45,12 +82,16 @@ export default function AboutSection() {
               "
             >
               <div className="text-center">
-                <h3 className="text-5xl font-bold text-[#F38B00]">+8</h3>
+                <h3 className="text-5xl font-bold text-[#F38B00]">
+                  <AnimatedCounter target={8} prefix="+" duration={1400} />
+                </h3>
                 <p className="mt-2 text-gray-700">Existence</p>
               </div>
 
               <div className="text-center">
-                <h3 className="text-5xl font-bold text-[#F38B00]">07</h3>
+                <h3 className="text-5xl font-bold text-[#F38B00]">
+                  <AnimatedCounter target={7} duration={1200} />
+                </h3>
                 <p className="mt-2 text-gray-700">Annexes</p>
               </div>
             </div>
@@ -63,7 +104,7 @@ export default function AboutSection() {
             </h2>
 
             <p className="text-lg md:text-xl text-gray-800 leading-relaxed mb-8">
-              Nous sommes une plateforme de prière, d’évangélisation et de
+              Nous sommes une plateforme de prière, d'évangélisation et de
               réveil spirituel, inspirée et instituée par le Seigneur Jésus et
               motivée par le désir de voir des vies transformées par
               Jésus-Christ et des nations revenir à Dieu.
@@ -82,42 +123,48 @@ export default function AboutSection() {
             {/* STATS */}
             <div className="flex flex-wrap items-center gap-10 mb-14">
               <div className="transition duration-300 hover:scale-110">
-                <h3 className="text-5xl font-bold text-[#F38B00]">+5000</h3>
+                <h3 className="text-5xl font-bold text-[#F38B00]">
+                  <AnimatedCounter target={5000} prefix="+" duration={2200} />
+                </h3>
                 <p className="text-xl text-gray-900">Vies impactées</p>
               </div>
 
               <div className="hidden md:block h-20 border-l border-[#F38B00]" />
 
               <div className="transition duration-300 hover:scale-110">
-                <h3 className="text-5xl font-bold text-[#F38B00]">+120</h3>
-                <p className="text-xl text-gray-900">
-                  Actions spirituelles
-                </p>
+                <h3 className="text-5xl font-bold text-[#F38B00]">
+                  <AnimatedCounter target={120} prefix="+" duration={1800} />
+                </h3>
+                <p className="text-xl text-gray-900">Actions spirituelles</p>
               </div>
             </div>
 
             {/* Bouton */}
-            <button
+            <a
+              href="#ministere"
               className="
-                relative
-                overflow-hidden
+                inline-flex
+                items-center
+                gap-3
                 bg-[#D49A13]
-                hover:bg-[#c58d0f]
                 text-white
-                font-bold
-                text-xl
-                md:text-2xl
-                px-10
-                py-5
-                rounded-xl
+                font-semibold
+                px-7
+                py-3
+                rounded-lg
                 transition-all
-                duration-500
-                hover:scale-105
-                hover:shadow-[0_15px_35px_rgba(212,154,19,0.4)]
+                duration-300
+                hover:bg-[#c58d0f]
+                hover:translate-y-[-3px]
+                hover:shadow-lg
+                group
               "
             >
               Découvrez le Ministère
-            </button>
+              <span className="transition-transform duration-300 group-hover:translate-y-1">
+                ↓
+              </span>
+            </a>
           </div>
         </div>
       </div>

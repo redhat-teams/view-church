@@ -194,8 +194,8 @@ export default function WorshipSection() {
                           className="
                             bg-[#F0B51B]
                             hover:bg-yellow-400
-                            px-8
-                            py-4
+                            px-4
+                            py-3
                             rounded-full
                             font-bold
                             text-[#071F5A]
