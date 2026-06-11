@@ -109,7 +109,7 @@ export default function PublicLayout() {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
               <img
-                src="/public/logo.png"
+                src="/logo.png"
                 alt="Logo"
                 className="h-12 sm:h-16 md:h-20 w-auto"
               />
