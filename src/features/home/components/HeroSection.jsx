@@ -147,10 +147,11 @@ export default function HeroSection() {
           </p>
 
           {/* Bouton dynamique */}
-          <a
-              href={slides[activeSlide].buttonLink}
-              onClick={(e) => e.stopPropagation()}
-              className="
+          
+            <Link
+            to={slides[activeSlide].buttonLink}
+            onClick={(e) => e.stopPropagation()}
+            className="
                 mt-10
                 inline-flex
                 items-center
@@ -169,13 +170,12 @@ export default function HeroSection() {
                 hover:shadow-xl
                 group
               "
-            >
-              {slides[activeSlide].buttonText}
-
-              <span className="transition-transform duration-300 group-hover:translate-y-1">
+          >
+            {slides[activeSlide].buttonText}
+            <span className="transition-transform duration-300 group-hover:translate-y-1">
                 +
-              </span>
-            </a>
+            </span>
+          </Link>
 
           {/* Indicateurs */}
           <div className="flex gap-3 mt-12">

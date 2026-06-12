@@ -488,7 +488,7 @@ export default function HeroCell() {
       {/* SECTION 1 — HERO                                             */}
       {/* ============================================================ */}
 
-      <section className="relative min-h-screen flex items-center justify-center bg-[#071F5A] overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center bg-[#071F5A] overflow-hidden" id="cellule">
         {/* Fond dégradé */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#071F5A] via-[#0B2E7F] to-[#020814]" />
          
