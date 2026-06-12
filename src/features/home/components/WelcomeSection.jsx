@@ -1,3 +1,6 @@
+import { NavLink, Link } from "react-router-dom";
+
+
 export default function WelcomeSection() {
   return (
     <section className="relative overflow-hidden bg-[#071F5A] py-20">
@@ -41,18 +44,18 @@ export default function WelcomeSection() {
           {/* Bouton */}
 
           <div className="flex justify-center lg:justify-end">
-            <a
-            href="contact"
+            <Link
+            to="/contact"
               className="
                 bg-[#F0B51B]
                 hover:bg-yellow-400
                 text-[#071F5A]
                 font-bold
                 text-xl
-                md:text-2xl
+                md:text-xl
                 px-3
                 md:px-10
-                py-3
+                py-2
                 rounded-lg
                 transition-all
                 duration-300
@@ -61,7 +64,7 @@ export default function WelcomeSection() {
               "
             >
               Rejoignez-nous
-            </a>
+            </Link>
           </div>
         </div>
       </div>

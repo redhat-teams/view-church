@@ -1,5 +1,5 @@
 import { FaPaperPlane } from "react-icons/fa";
-
+import { NavLink, Link } from "react-router-dom";
 export default function CommunitySection() {
   return (
     <section className="relative overflow-hidden py-20 bg-gradient-to-r from-[#071F5A] via-[#0A3C90] to-[#1260D6]">
@@ -26,8 +26,8 @@ export default function CommunitySection() {
               notre génération pour Christ.
             </p>
 
-            <a
-            href="contact"
+            <Link
+              to="/contact"
               className="
                 bg-[#F0B51B]
                 hover:bg-yellow-400
@@ -46,7 +46,7 @@ export default function CommunitySection() {
               "
             >
               Rejoindre la communauté
-            </a>
+            </Link>
           </div>
 
           {/* Partie droite */}
