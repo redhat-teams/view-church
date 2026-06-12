@@ -3,6 +3,7 @@ import {
   FaMapMarkerAlt,
   FaArrowRight,
 } from "react-icons/fa";
+import { NavLink, Link } from "react-router-dom";
 
 const events = [
   {
@@ -133,7 +134,8 @@ export default function UpcomingEvents() {
         {/* BOUTON BAS */}
 
         <div className="flex justify-center mt-16">
-          <a
+          <Link
+          to="/teachings"
             className="
               bg-[#E8B10F]
               hover:bg-[#d7a40d]
@@ -147,10 +149,10 @@ export default function UpcomingEvents() {
               border-[#071F5A]
               transition
             "
-            href="teachings"
+            
           >
             Accéder à tous les enseignements
-          </a>
+          </Link>
         </div>
       </div>
     </section>

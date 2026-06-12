@@ -3,7 +3,7 @@ import {
   FaCalendarAlt,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-
+import { NavLink, Link } from "react-router-dom";
 function CountdownCard({ value, label }) {
   return (
     <div
@@ -216,7 +216,8 @@ export default function MajorEventSection() {
 
           {/* Bouton */}
           {!expired && (
-            <a
+            <Link
+              to='/contact'
               className="
                 bg-[#F0B51B]
                 hover:bg-yellow-400
@@ -231,10 +232,10 @@ export default function MajorEventSection() {
                 hover:-translate-y-1
                 hover:shadow-lg
               "
-              href="contact"
+             
             >
               Rejoindre maintenant
-            </a>
+            </Link>
           )}
         </div>
       </div>

@@ -38,7 +38,7 @@ export default function HeroSection() {
         </>
       ),
       buttonText: "Nos Programmes",
-      buttonLink: "cellule",
+      buttonLink: "/cellule",
     },
 
     {
@@ -58,7 +58,7 @@ export default function HeroSection() {
         </>
       ),
       buttonText: "Rejoindre la Communauté",
-      buttonLink: "contact",
+      buttonLink: "/contact",
     },
   ];
 
@@ -149,33 +149,33 @@ export default function HeroSection() {
           {/* Bouton dynamique */}
           
             <Link
-            to={slides[activeSlide].buttonLink}
-            onClick={(e) => e.stopPropagation()}
-            className="
-                mt-10
-                inline-flex
-                items-center
-                gap-3
-                bg-[#F0B51B]
-                hover:bg-[#dca20f]
-                text-[#071F5A]
-                px-7
-                py-3
-                rounded-lg
-                font-semibold
-                text-lg
-                transition-all
-                duration-300
-                hover:-translate-y-1
-                hover:shadow-xl
-                group
-              "
-          >
-            {slides[activeSlide].buttonText}
-            <span className="transition-transform duration-300 group-hover:translate-y-1">
-                +
-            </span>
-          </Link>
+                to={slides[activeSlide].buttonLink}
+                onClick={(e) => e.stopPropagation()}
+                className="
+                  mt-10
+                  inline-flex
+                  items-center
+                  gap-3
+                  bg-[#F0B51B]
+                  hover:bg-[#dca20f]
+                  text-[#071F5A]
+                  px-7
+                  py-3
+                  rounded-lg
+                  font-semibold
+                  text-lg
+                  transition-all
+                  duration-300
+                  hover:-translate-y-1
+                  hover:shadow-xl
+                  group
+                "
+              >
+                {slides[activeSlide].buttonText}
+                <span className="transition-transform duration-300 group-hover:translate-y-1">
+                    +
+                </span>
+              </Link>
 
           {/* Indicateurs */}
           <div className="flex gap-3 mt-12">
