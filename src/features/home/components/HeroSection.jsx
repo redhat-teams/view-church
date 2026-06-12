@@ -38,7 +38,7 @@ export default function HeroSection() {
         </>
       ),
       buttonText: "Nos Programmes",
-      buttonLink: "/cellule",
+      buttonLink: "cellule",
     },
 
     {
@@ -58,7 +58,7 @@ export default function HeroSection() {
         </>
       ),
       buttonText: "Rejoindre la Communauté",
-      buttonLink: "/contact",
+      buttonLink: "contact",
     },
   ];
 
