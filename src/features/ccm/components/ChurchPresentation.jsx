@@ -50,6 +50,40 @@ export default function ChurchPresentation() {
       {/* HERO */}
 
       <section className="relative py-32 bg-[#071F5A] overflow-hidden">
+       <div className="absolute inset-0 overflow-hidden">
+  {/* Vidéo principale */}
+  <video
+    src="/ccm-fond-evangile.mp4"
+    className="
+      absolute
+      inset-0
+      w-full
+      h-full
+      object-cover
+      scale-110
+    "
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="auto"
+  />
+
+  {/* Overlay bleu principal */}
+  <div className="absolute inset-0 bg-[#071F5A]/70" />
+
+  {/* Gradient subtil pour profondeur */}
+  <div
+    className="
+      absolute
+      inset-0
+      bg-gradient-to-t
+      from-[#071F5A]/80
+      via-[#071F5A]/40
+      to-transparent
+    "
+  />
+</div>
 
         <motion.div
           animate={{
@@ -89,7 +123,7 @@ export default function ChurchPresentation() {
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
 
           <h1 className="text-white text-6xl font-bold mt-6">
-            Bienvenue à CCM
+            Bienvenue au Ministère
           </h1>
 
           <p className="text-white/80 max-w-3xl mx-auto mt-8 text-xl leading-relaxed">
@@ -193,7 +227,7 @@ export default function ChurchPresentation() {
               />
 
               <img
-                src="/images/church/history.jpg"
+                src="/p4.png"
                 alt=""
                 className="
                   relative
@@ -275,30 +309,63 @@ export default function ChurchPresentation() {
 
             {values.map((value, index) => (
               <div
-                key={index}
-                className="
-                  p-10
-                  rounded-[32px]
-                  shadow-xl
-                  hover:-translate-y-3
-                  transition-all
-                  duration-500
-                  bg-[#F8F8F8]
-                "
-              >
-                <div className="text-[#E5B10E]">
-                  {value.icon}
-                </div>
+  key={index}
+  className="
+    h-full
+    rounded-2xl
+    md:rounded-[32px]
 
-                <h3 className="mt-6 text-3xl font-bold text-[#071F5A]">
-                  {value.title}
-                </h3>
+    bg-[#F8F8F8]
 
-                <p className="mt-4 text-gray-600">
-                  {value.desc}
-                </p>
+    p-6
+    sm:p-8
+    lg:p-10
 
-              </div>
+    shadow-lg
+    hover:shadow-2xl
+
+    transition-all
+    duration-500
+
+    md:hover:-translate-y-3
+  "
+>
+  <div className="text-[#E5B10E]">
+    <div className="scale-90 sm:scale-100 origin-left">
+      {value.icon}
+    </div>
+  </div>
+
+  <h3
+    className="
+      mt-4
+      sm:mt-6
+
+      text-2xl
+      sm:text-3xl
+
+      font-bold
+      text-[#071F5A]
+    "
+  >
+    {value.title}
+  </h3>
+
+  <p
+    className="
+      mt-3
+      sm:mt-4
+
+      text-sm
+      sm:text-base
+
+      leading-relaxed
+      text-gray-600
+    "
+  >
+    {value.desc}
+  </p>
+</div>
             ))}
 
           </div>

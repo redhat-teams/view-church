@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Play,
   X,
   ChevronLeft,
   ChevronRight,
+  ImageIcon,
 } from "lucide-react";
 
 export default function ChurchGallery() {
   const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [visibleItems, setVisibleItems] = useState(8);
 
   const categories = [
     "Tous",
@@ -22,7 +24,7 @@ export default function ChurchGallery() {
 
   const gallery = [
     {
-      image: "/images/gallery/gallery1.jpg",
+      image: "/oratrice.jpg",
       category: "Cultes",
     },
     {
@@ -53,14 +55,46 @@ export default function ChurchGallery() {
       image: "/images/gallery/gallery8.jpg",
       category: "Événements",
     },
+    {
+      image: "/images/gallery/gallery9.jpg",
+      category: "Cultes",
+    },
+    {
+      image: "/images/gallery/gallery10.jpg",
+      category: "Conférences",
+    },
+    {
+      image: "/images/gallery/gallery11.jpg",
+      category: "Jeunesse",
+    },
+    {
+      image: "/images/gallery/gallery12.jpg",
+      category: "Baptêmes",
+    },
   ];
 
-  const filteredImages =
-    selectedCategory === "Tous"
-      ? gallery
-      : gallery.filter(
-          (item) => item.category === selectedCategory
-        );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const filteredImages = useMemo(() => {
+    const data =
+      selectedCategory === "Tous"
+        ? gallery
+        : gallery.filter(
+            (item) => item.category === selectedCategory
+          );
+
+    return data.slice(0, visibleItems);
+  }, [selectedCategory, visibleItems]);
+
+  useEffect(() => {
+    setVisibleItems(8);
+  }, [selectedCategory]);
 
   const currentIndex = gallery.findIndex(
     (item) => item.image === selectedImage
@@ -81,76 +115,109 @@ export default function ChurchGallery() {
     setSelectedImage(gallery[prev].image);
   };
 
-  return (
-    <section className="bg-[#F8F8F8] overflow-hidden">
+  const SkeletonCard = () => (
+    <div
+      className="
+        relative
+        overflow-hidden
+        rounded-[32px]
+        bg-slate-200
+        h-[340px]
+      "
+    >
+      <div
+        className="
+          absolute
+          inset-0
+          -translate-x-full
+          animate-[shimmer_2s_infinite]
+          bg-gradient-to-r
+          from-transparent
+          via-white/60
+          to-transparent
+        "
+      />
+    </div>
+  );
 
+  return (
+    <main className="bg-slate-50 min-h-screen overflow-hidden">
       {/* HERO */}
 
-      <section className="relative bg-[#071F5A] py-28 overflow-hidden">
+      <section className="relative overflow-hidden bg-slate-950 py-28 md:py-36">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e3a8a_0%,transparent_60%)]" />
 
         <motion.div
           animate={{
             rotate: 360,
           }}
           transition={{
-            duration: 40,
+            duration: 50,
             repeat: Infinity,
             ease: "linear",
           }}
           className="
             absolute
             left-1/2
-            top-1/2
+            top-0
+            h-[700px]
+            w-[700px]
             -translate-x-1/2
-            -translate-y-1/2
-            w-[1500px]
-            h-[1500px]
           "
         >
           <div
             className="
               absolute
-              top-0
               left-1/2
+              top-20
+              h-[350px]
+              w-[350px]
               -translate-x-1/2
-              w-[500px]
-              h-[500px]
-              bg-[#E5B10E]
-              opacity-30
-              blur-[180px]
               rounded-full
+              bg-yellow-400/20
+              blur-[140px]
             "
           />
         </motion.div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-
-          <span className="text-[#E5B10E] font-semibold">
-            GALERIE CCM
+        <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
+          <span
+            className="
+              inline-flex
+              rounded-full
+              border
+              border-yellow-500/20
+              bg-yellow-500/10
+              px-5
+              py-2
+              text-sm
+              font-medium
+              text-yellow-400
+            "
+          >
+            Galerie CCM
           </span>
 
-          <h1 className="text-6xl font-bold text-white mt-6">
-            Revivez nos moments forts
+          <h1 className="mt-8 text-5xl md:text-7xl font-bold text-white">
+            Revivez nos
+            <span className="block text-yellow-400">
+              moments forts
+            </span>
           </h1>
 
-          <p className="text-white/80 text-xl mt-8 max-w-3xl mx-auto">
-            Découvrez les moments marquants de la vie
-            de notre communauté à travers des images
-            inspirantes.
+          <p className="mx-auto mt-8 max-w-2xl text-lg text-slate-400">
+            Découvrez les événements, cultes,
+            baptêmes et moments marquants de notre
+            communauté.
           </p>
-
         </div>
-
       </section>
 
       {/* FILTRES */}
 
-      <section className="py-16">
-
-        <div className="max-w-7xl mx-auto px-6">
-
-          <div className="flex flex-wrap justify-center gap-4">
-
+      <section className="py-14">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex flex-wrap justify-center gap-3">
             {categories.map((category) => (
               <button
                 key={category}
@@ -158,177 +225,313 @@ export default function ChurchGallery() {
                   setSelectedCategory(category)
                 }
                 className={`
-                  px-8 py-4 rounded-2xl font-semibold transition-all
+                  rounded-full
+                  px-6
+                  py-3
+                  text-sm
+                  font-medium
+                  transition-all
+                  duration-300
+
                   ${
                     selectedCategory === category
-                      ? "bg-[#E5B10E] text-[#071F5A]"
-                      : "bg-white shadow-lg"
+                      ? "bg-[#071F5A] text-white shadow-xl"
+                      : "bg-white border border-slate-200 hover:border-[#071F5A]/20 hover:shadow-lg"
                   }
                 `}
               >
                 {category}
               </button>
             ))}
-
           </div>
-
         </div>
-
       </section>
 
       {/* GALLERY */}
 
-      <section className="pb-24">
+      <section className="pb-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedCategory}
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -20,
+              }}
+              transition={{
+                duration: 0.35,
+              }}
+              className="
+                columns-1
+                md:columns-2
+                xl:columns-4
+                gap-6
+              "
+            >
+              {loading ? (
+                [...Array(8)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="mb-6 break-inside-avoid"
+                  >
+                    <SkeletonCard />
+                  </div>
+                ))
+              ) : (
+                <>
+                  {filteredImages.map(
+                    (item, index) => (
+                      <motion.div
+                        key={index}
+                        layout
+                        whileHover={{
+                          y: -8,
+                        }}
+                        onClick={() =>
+                          setSelectedImage(
+                            item.image
+                          )
+                        }
+                        className="
+                          group
+                          relative
+                          mb-6
+                          break-inside-avoid
+                          cursor-pointer
+                          overflow-hidden
+                          rounded-[32px]
+                          bg-white
+                          shadow-[0_20px_60px_rgba(0,0,0,.08)]
+                        "
+                      >
+                        <img
+                          src={item.image}
+                          alt=""
+                          className="
+                            w-full
+                            object-cover
+                            transition-all
+                            duration-700
+                            group-hover:scale-110
+                          "
+                        />
 
-        <div className="max-w-7xl mx-auto px-6">
+                        <div
+                          className="
+                            absolute
+                            inset-0
+                            bg-gradient-to-t
+                            from-black/70
+                            via-black/10
+                            to-transparent
+                            opacity-0
+                            transition-all
+                            duration-500
+                            group-hover:opacity-100
+                          "
+                        />
 
-          <div className="columns-1 md:columns-2 lg:columns-4 gap-6">
+                        <div
+                          className="
+                            absolute
+                            bottom-5
+                            left-5
+                            translate-y-6
+                            opacity-0
+                            transition-all
+                            duration-500
+                            group-hover:translate-y-0
+                            group-hover:opacity-100
+                          "
+                        >
+                          <span
+                            className="
+                              rounded-full
+                              bg-white/15
+                              px-4
+                              py-2
+                              text-sm
+                              text-white
+                              backdrop-blur-xl
+                            "
+                          >
+                            {item.category}
+                          </span>
+                        </div>
+                      </motion.div>
+                    )
+                  )}
+                </>
+              )}
+            </motion.div>
+          </AnimatePresence>
 
-            {filteredImages.map((item, index) => (
-              <motion.div
-                key={index}
-                whileHover={{
-                  scale: 1.03,
-                }}
-                className="
-                  mb-6
-                  break-inside-avoid
-                  cursor-pointer
-                "
-                onClick={() =>
-                  setSelectedImage(item.image)
-                }
-              >
-                <img
-                  src={item.image}
-                  alt=""
+          {!loading &&
+            filteredImages.length <
+              (selectedCategory === "Tous"
+                ? gallery.length
+                : gallery.filter(
+                    (item) =>
+                      item.category ===
+                      selectedCategory
+                  ).length) && (
+              <div className="mt-16 flex justify-center">
+                <button
+                  onClick={() =>
+                    setVisibleItems(
+                      (prev) => prev + 8
+                    )
+                  }
                   className="
-                    rounded-[30px]
-                    shadow-[0_20px_80px_rgba(0,0,0,0.08)]
-                    hover:shadow-[0_30px_100px_rgba(0,0,0,0.15)]
+                    rounded-2xl
+                    bg-[#071F5A]
+                    px-8
+                    py-4
+                    font-semibold
+                    text-white
                     transition-all
-                    duration-500
+                    duration-300
+                    hover:-translate-y-1
+                    hover:shadow-2xl
                   "
-                />
-              </motion.div>
-            ))}
-
-          </div>
-
+                >
+                  Charger plus
+                </button>
+              </div>
+            )}
         </div>
-
       </section>
 
-      {/* VIDEOS */}
+      {/* VIDEOS PLACEHOLDER */}
 
-      <section className="pb-24">
-
-        <div className="max-w-7xl mx-auto px-6">
-
+      <section className="pb-32">
+        <div className="mx-auto max-w-7xl px-6">
           <div className="text-center">
+            <span className="text-yellow-500 font-medium">
+              MÉDIAS
+            </span>
 
-            <h2 className="text-5xl font-bold text-[#071F5A]">
-              Nos vidéos
+            <h2 className="mt-4 text-4xl md:text-5xl font-bold text-slate-900">
+              Messages & Vidéos
             </h2>
-
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-
-            {[1, 2, 3].map((video) => (
+          <div className="mt-16 grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+            {[1, 2, 3].map((item) => (
               <div
-                key={video}
+                key={item}
                 className="
+                  group
                   relative
                   overflow-hidden
-                  rounded-[30px]
-                  group
-                  shadow-[0_20px_80px_rgba(0,0,0,0.08)]
+                  rounded-[32px]
+                  bg-gradient-to-br
+                  from-[#071F5A]
+                  via-[#0d2b7c]
+                  to-[#153c9d]
+                  p-10
+                  min-h-[280px]
                 "
               >
-                <img
-                  src={`/images/gallery/video${video}.jpg`}
-                  alt=""
-                  className="
-                    h-[300px]
-                    w-full
-                    object-cover
-                    group-hover:scale-110
-                    transition-all
-                    duration-700
-                  "
-                />
-
                 <div
                   className="
                     absolute
-                    inset-0
-                    flex
-                    items-center
-                    justify-center
+                    right-0
+                    top-0
+                    h-48
+                    w-48
+                    rounded-full
+                    bg-yellow-400/10
+                    blur-[100px]
                   "
-                >
-                  <button
+                />
+
+                <div className="relative z-10">
+                  <div
                     className="
-                      w-20
-                      h-20
-                      rounded-full
-                      bg-[#E5B10E]
                       flex
+                      h-16
+                      w-16
                       items-center
                       justify-center
-                      shadow-2xl
+                      rounded-2xl
+                      bg-white/10
+                      backdrop-blur-xl
                     "
                   >
-                    <Play
-                      fill="#071F5A"
-                      className="text-[#071F5A]"
-                    />
-                  </button>
-                </div>
+                    <ImageIcon className="text-white" />
+                  </div>
 
+                  <h3 className="mt-8 text-2xl font-bold text-white">
+                    Message inspirant
+                  </h3>
+
+                  <p className="mt-4 text-white/70">
+                    Ajoutez ici vos vidéos
+                    YouTube, Facebook ou Vimeo.
+                  </p>
+                </div>
               </div>
             ))}
-
           </div>
-
         </div>
-
       </section>
 
       {/* LIGHTBOX */}
 
       <AnimatePresence>
-
         {selectedImage && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+            }}
             className="
               fixed
               inset-0
-              bg-black/90
-              backdrop-blur-xl
               z-[999]
               flex
               items-center
               justify-center
+              bg-black/95
+              backdrop-blur-2xl
             "
           >
-
             <button
               onClick={() =>
                 setSelectedImage(null)
               }
               className="
                 absolute
-                top-8
                 right-8
+                top-8
+                flex
+                h-14
+                w-14
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-white/10
+                bg-white/10
                 text-white
+                backdrop-blur-xl
               "
             >
-              <X size={40} />
+              <X />
             </button>
 
             <button
@@ -336,19 +539,45 @@ export default function ChurchGallery() {
               className="
                 absolute
                 left-8
+                flex
+                h-14
+                w-14
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-white/10
+                bg-white/10
                 text-white
+                backdrop-blur-xl
               "
             >
-              <ChevronLeft size={50} />
+              <ChevronLeft />
             </button>
 
-            <img
+            <motion.img
               src={selectedImage}
               alt=""
+              initial={{
+                scale: 0.85,
+                opacity: 0,
+              }}
+              animate={{
+                scale: 1,
+                opacity: 1,
+              }}
+              exit={{
+                scale: 0.85,
+                opacity: 0,
+              }}
+              transition={{
+                duration: 0.35,
+              }}
               className="
-                max-w-[90vw]
                 max-h-[90vh]
-                rounded-[30px]
+                max-w-[90vw]
+                rounded-[32px]
+                shadow-[0_30px_100px_rgba(0,0,0,.5)]
               "
             />
 
@@ -357,38 +586,24 @@ export default function ChurchGallery() {
               className="
                 absolute
                 right-8
+                flex
+                h-14
+                w-14
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-white/10
+                bg-white/10
                 text-white
+                backdrop-blur-xl
               "
             >
-              <ChevronRight size={50} />
+              <ChevronRight />
             </button>
-
           </motion.div>
         )}
-
       </AnimatePresence>
-
-      {/* LOAD MORE */}
-
-      <div className="pb-24 flex justify-center">
-
-        <button
-          className="
-            bg-[#E5B10E]
-            text-[#071F5A]
-            font-bold
-            px-12
-            py-5
-            rounded-2xl
-            hover:scale-105
-            transition-all
-          "
-        >
-          Charger plus
-        </button>
-
-      </div>
-
-    </section>
+    </main>
   );
 }
