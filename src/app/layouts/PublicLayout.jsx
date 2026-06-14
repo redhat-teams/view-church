@@ -29,7 +29,7 @@ const navLinks = [
   { to: "/teachings",     end: false, icon: <FaBookOpen />,     label: "Enseignements" },
   { to: "/events",        end: false, icon: <FaCalendarAlt />,  label: "Évènements" },
   {
-  to: "/ccm",
+  to: "/cellule",
   end: true,
   icon: (
     <img
@@ -38,10 +38,10 @@ const navLinks = [
       className="w-6 h-6 object-contain"
     />
   ),
-  label: "Preyer Win"
+  label: "Prayer Win"
 },
    {
-  to: "/ccm",
+  to: "/evangelisation",
   end: true,
   icon: (
     <img
