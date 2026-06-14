@@ -26,11 +26,7 @@ function fmtTime(sec) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 function initials(name) {
-  return name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("");
+  return name.split(" ").map((w) => w[0]).slice(0, 2).join("");
 }
 
 // ── data ─────────────────────────────────────────────────────────────────────
@@ -43,6 +39,7 @@ const messages = [
     author: "Evg. Pascal Huiler",
     type: "Vidéo",
     tag: "Foi",
+    youtubeId: "dQw4w9WgXcQ", // ← remplace par le vrai ID YouTube
   },
   {
     image: "https://images.unsplash.com/photo-1601987077677-5346c0c57d3f?w=800&q=80",
@@ -52,6 +49,7 @@ const messages = [
     author: "Pasteur Claude Ope",
     type: "Audio",
     tag: "Grâce",
+    youtubeId: null,
   },
   {
     image: "https://images.unsplash.com/photo-1478147427282-58a87a120781?w=800&q=80",
@@ -61,6 +59,7 @@ const messages = [
     author: "Pasteur Claude Ope",
     type: "Vidéo",
     tag: "Prière",
+    youtubeId: "dQw4w9WgXcQ",
   },
   {
     image: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&q=80",
@@ -70,6 +69,7 @@ const messages = [
     author: "Evg. Pascal Huiler",
     type: "Audio",
     tag: "Espérance",
+    youtubeId: null,
   },
   {
     image: "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=800&q=80",
@@ -79,6 +79,7 @@ const messages = [
     author: "Pasteur Claude Ope",
     type: "Vidéo",
     tag: "Parole",
+    youtubeId: "dQw4w9WgXcQ",
   },
   {
     image: "https://images.unsplash.com/photo-1533000759938-aa0ba70beceb?w=800&q=80",
@@ -88,6 +89,7 @@ const messages = [
     author: "Evg. Pascal Huiler",
     type: "Audio",
     tag: "Paix",
+    youtubeId: null,
   },
 ];
 
@@ -122,49 +124,26 @@ function AudioPlayer({ message }) {
     setPlaying((p) => !p);
   };
 
-  const seek = (val) => {
-    setCurrent(Number(val));
-  };
-
-  const skip = (delta) => {
-    setCurrent((p) => Math.min(total, Math.max(0, p + delta)));
-  };
-
+  const seek = (val) => setCurrent(Number(val));
+  const skip = (delta) => setCurrent((p) => Math.min(total, Math.max(0, p + delta)));
   const cycleSpeed = () => {
-    if (playing) {
-      clearInterval(timerRef.current);
-      setPlaying(false);
-    }
+    if (playing) { clearInterval(timerRef.current); setPlaying(false); }
     setSpeedIdx((i) => (i + 1) % speeds.length);
   };
 
-  const pct = total > 0 ? (current / total) * 100 : 0;
-
   return (
     <div className="bg-[#F4F6FB] rounded-2xl p-4">
-      {/* mini header */}
       <div className="flex items-center gap-3 mb-4">
-        <img
-          src={message.image}
-          alt=""
-          className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
-        />
+        <img src={message.image} alt="" className="w-12 h-12 rounded-xl object-cover flex-shrink-0" />
         <div>
-          <p className="text-sm font-bold text-[#071F5A] leading-snug line-clamp-1">
-            {message.title}
-          </p>
+          <p className="text-sm font-bold text-[#071F5A] leading-snug line-clamp-1">{message.title}</p>
           <p className="text-xs text-gray-500">{message.author}</p>
         </div>
       </div>
 
-      {/* progress */}
       <div className="mb-3">
         <input
-          type="range"
-          min={0}
-          max={total}
-          step={1}
-          value={current}
+          type="range" min={0} max={total} step={1} value={current}
           onChange={(e) => seek(e.target.value)}
           className="w-full h-1.5 accent-[#071F5A] cursor-pointer"
         />
@@ -174,13 +153,8 @@ function AudioPlayer({ message }) {
         </div>
       </div>
 
-      {/* controls */}
       <div className="flex items-center justify-center gap-5 mb-4">
-        <button
-          onClick={() => skip(-15)}
-          className="text-[#071F5A] hover:opacity-70 transition-opacity"
-          aria-label="Reculer 15 secondes"
-        >
+        <button onClick={() => skip(-15)} className="text-[#071F5A] hover:opacity-70 transition-opacity" aria-label="Reculer 15s">
           <SkipBack size={22} />
         </button>
         <button
@@ -188,47 +162,25 @@ function AudioPlayer({ message }) {
           className="w-12 h-12 rounded-full bg-[#071F5A] flex items-center justify-center text-white hover:bg-[#0a2d7a] transition-colors"
           aria-label={playing ? "Pause" : "Lire"}
         >
-          {playing ? (
-            <Pause size={20} fill="white" />
-          ) : (
-            <Play size={20} fill="white" className="ml-0.5" />
-          )}
+          {playing ? <Pause size={20} fill="white" /> : <Play size={20} fill="white" className="ml-0.5" />}
         </button>
-        <button
-          onClick={() => skip(15)}
-          className="text-[#071F5A] hover:opacity-70 transition-opacity"
-          aria-label="Avancer 15 secondes"
-        >
+        <button onClick={() => skip(15)} className="text-[#071F5A] hover:opacity-70 transition-opacity" aria-label="Avancer 15s">
           <SkipForward size={22} />
         </button>
       </div>
 
-      {/* volume + speed */}
       <div className="flex items-center gap-3">
-        <button
-          onClick={() => setMuted((m) => !m)}
-          className="text-[#071F5A] hover:opacity-70 transition-opacity flex-shrink-0"
-          aria-label={muted ? "Activer le son" : "Couper le son"}
-        >
+        <button onClick={() => setMuted((m) => !m)} className="text-[#071F5A] hover:opacity-70 transition-opacity flex-shrink-0">
           {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
         </button>
         <input
-          type="range"
-          min={0}
-          max={100}
-          step={1}
-          value={muted ? 0 : volume}
-          onChange={(e) => {
-            setVolume(Number(e.target.value));
-            if (muted) setMuted(false);
-          }}
+          type="range" min={0} max={100} step={1} value={muted ? 0 : volume}
+          onChange={(e) => { setVolume(Number(e.target.value)); if (muted) setMuted(false); }}
           className="flex-1 h-1 accent-[#071F5A] cursor-pointer"
-          aria-label="Volume"
         />
         <button
           onClick={cycleSpeed}
           className="text-xs font-bold text-[#071F5A] bg-[#071F5A]/10 px-2.5 py-1 rounded-lg hover:bg-[#071F5A]/20 transition-colors flex-shrink-0"
-          aria-label="Vitesse de lecture"
         >
           {speeds[speedIdx]}×
         </button>
@@ -237,101 +189,17 @@ function AudioPlayer({ message }) {
   );
 }
 
-// ── VideoPlayer ───────────────────────────────────────────────────────────────
-function VideoPlayer({ message }) {
-  const total = parseDur(message.duration);
-  const [playing, setPlaying] = useState(false);
-  const [current, setCurrent] = useState(0);
-  const [muted, setMuted] = useState(false);
-  const [speedIdx, setSpeedIdx] = useState(0);
-  const speeds = [1, 1.25, 1.5, 2];
-  const timerRef = useRef(null);
-
-  useEffect(() => () => clearInterval(timerRef.current), []);
-
-  const togglePlay = () => {
-    if (!playing) {
-      timerRef.current = setInterval(() => {
-        setCurrent((prev) => {
-          if (prev >= total) {
-            clearInterval(timerRef.current);
-            setPlaying(false);
-            return prev;
-          }
-          return prev + speeds[speedIdx];
-        });
-      }, 1000);
-    } else {
-      clearInterval(timerRef.current);
-    }
-    setPlaying((p) => !p);
-  };
-
+// ── YouTubePlayer ─────────────────────────────────────────────────────────────
+function YouTubePlayer({ youtubeId }) {
   return (
-    <div className="rounded-2xl overflow-hidden bg-[#0a1540]">
-      {/* placeholder screen */}
-      <div className="relative h-[200px] flex items-center justify-center bg-[#071F5A]/90">
-        <img
-          src={message.image}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
-        />
-        <div className="relative z-10 text-center">
-          <Play size={48} className="text-[#E6B012] mx-auto mb-2" />
-          <p className="text-white/70 text-sm">Aperçu · {message.duration}</p>
-          <p className="text-white/40 text-xs mt-1">
-            Connectez votre source vidéo pour la lecture réelle
-          </p>
-        </div>
-      </div>
-
-      {/* controls bar */}
-      <div className="flex items-center gap-2 px-3 py-2 bg-[#0a1540]">
-        <button
-          onClick={togglePlay}
-          className="w-8 h-8 rounded-full bg-[#E6B012] flex items-center justify-center flex-shrink-0"
-          aria-label={playing ? "Pause" : "Lire"}
-        >
-          {playing ? (
-            <Pause size={14} fill="#071F5A" className="text-[#071F5A]" />
-          ) : (
-            <Play size={14} fill="#071F5A" className="text-[#071F5A] ml-0.5" />
-          )}
-        </button>
-
-        <input
-          type="range"
-          min={0}
-          max={total}
-          step={1}
-          value={current}
-          onChange={(e) => setCurrent(Number(e.target.value))}
-          className="flex-1 h-1 accent-[#E6B012] cursor-pointer"
-          aria-label="Progression"
-        />
-
-        <span className="text-white/60 text-xs whitespace-nowrap">
-          {fmtTime(current)} / {message.duration}
-        </span>
-
-        <button
-          onClick={() => setMuted((m) => !m)}
-          className="text-white/70 hover:text-white transition-colors"
-          aria-label={muted ? "Activer le son" : "Couper le son"}
-        >
-          {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-        </button>
-
-        <button
-          onClick={() =>
-            setSpeedIdx((i) => (i + 1) % speeds.length)
-          }
-          className="text-[#E6B012] text-xs font-bold px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 transition-colors"
-          aria-label="Vitesse"
-        >
-          {speeds[speedIdx]}×
-        </button>
-      </div>
+    <div className="rounded-2xl overflow-hidden w-full" style={{ aspectRatio: "16/9" }}>
+      <iframe
+        src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        className="w-full h-full border-0"
+      />
     </div>
   );
 }
@@ -341,59 +209,55 @@ function PlayerModal({ message, onClose }) {
   const isVideo = message.type === "Vidéo";
 
   useEffect(() => {
-    const handler = (e) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handler = (e) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-3 sm:p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
-      aria-label={`Lecteur : ${message.title}`}
     >
-      <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl">
-        {/* header image */}
-        <div className="relative h-48 overflow-hidden">
-          <img
-            src={message.image}
-            alt=""
-            className="w-full h-full object-cover brightness-50"
-          />
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/70 transition-colors"
-            aria-label="Fermer"
-          >
-            <X size={16} />
-          </button>
-          <div className="absolute bottom-4 left-4 flex gap-2">
-            <span
-              className={`flex items-center gap-1.5 text-xs font-bold uppercase px-3 py-1.5 rounded-full ${
-                isVideo
-                  ? "bg-[#071F5A]/80 text-white"
-                  : "bg-[#E6B012]/90 text-[#071F5A]"
-              }`}
+      <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto">
+        {/* Header image — seulement pour audio */}
+        {!isVideo && (
+          <div className="relative h-48 overflow-hidden">
+            <img src={message.image} alt="" className="w-full h-full object-cover brightness-50" />
+            <button
+              onClick={onClose}
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+              aria-label="Fermer"
             >
-              {isVideo ? (
-                <Play size={11} fill="currentColor" />
-              ) : (
-                <Headphones size={11} />
-              )}
-              {message.type}
-            </span>
-            <span className="text-xs font-semibold bg-white/20 text-white border border-white/30 px-3 py-1.5 rounded-full">
-              {message.tag}
-            </span>
+              <X size={16} />
+            </button>
+            <div className="absolute bottom-4 left-4 flex gap-2">
+              <span className="flex items-center gap-1.5 text-xs font-bold uppercase px-3 py-1.5 rounded-full bg-[#E6B012]/90 text-[#071F5A]">
+                <Headphones size={11} /> {message.type}
+              </span>
+              <span className="text-xs font-semibold bg-white/20 text-white border border-white/30 px-3 py-1.5 rounded-full">
+                {message.tag}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* body */}
-        <div className="p-5">
+        {/* Bouton fermer pour vidéo */}
+        {isVideo && (
+          <div className="flex justify-end px-4 pt-4">
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"
+              aria-label="Fermer"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
+
+        <div className={`p-4 sm:p-5 ${isVideo ? "pt-2" : ""}`}>
           <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
             <CalendarDays size={12} className="text-[#E6B012]" />
             {message.date}
@@ -401,13 +265,16 @@ function PlayerModal({ message, onClose }) {
             <Clock3 size={12} className="text-[#E6B012]" />
             {message.duration}
           </div>
-          <h2 className="text-lg font-bold text-[#071F5A] leading-snug mb-1">
-            {message.title}
-          </h2>
+          <h2 className="text-lg font-bold text-[#071F5A] leading-snug mb-1">{message.title}</h2>
           <p className="text-sm text-gray-500 mb-4">{message.author}</p>
 
-          {isVideo ? (
-            <VideoPlayer message={message} />
+          {isVideo && message.youtubeId ? (
+            <YouTubePlayer youtubeId={message.youtubeId} />
+          ) : isVideo ? (
+            // Fallback si pas de youtubeId
+            <div className="rounded-2xl overflow-hidden bg-[#0a1540] flex items-center justify-center h-48">
+              <p className="text-white/50 text-sm text-center px-4">Aucune vidéo YouTube associée.</p>
+            </div>
           ) : (
             <AudioPlayer message={message} />
           )}
@@ -429,13 +296,12 @@ export default function TeachingPlayer() {
     const matchSearch =
       message.title.toLowerCase().includes(search.toLowerCase()) ||
       message.author.toLowerCase().includes(search.toLowerCase());
-    const matchType =
-      selectedType === "Tous" || message.type === selectedType;
+    const matchType = selectedType === "Tous" || message.type === selectedType;
     return matchSearch && matchType;
   });
 
   return (
-    <section className="bg-[#F4F6FB] min-h-screen py-24">
+    <section className="bg-[#F4F6FB] min-h-screen py-16 sm:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* ── INTRO ── */}
@@ -443,43 +309,43 @@ export default function TeachingPlayer() {
           <span className="inline-block text-xs font-bold tracking-[0.25em] uppercase text-[#E6B012] bg-[#E6B012]/10 px-4 py-2 rounded-full mb-6">
             Bibliothèque spirituelle
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#071F5A] leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-[#071F5A] leading-tight">
             Messages &amp; Enseignements
           </h1>
-          <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+          <p className="mt-4 text-base sm:text-lg text-gray-600 leading-relaxed px-2">
             Découvrez des messages puissants, ancrés dans la Parole de Dieu,
             pour accompagner votre croissance spirituelle et renforcer votre foi.
           </p>
         </div>
 
         {/* ── FILTRES ── */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-14">
+        <div className="flex flex-col gap-3 mt-10 sm:mt-14 sm:flex-row sm:justify-center sm:gap-4">
           {/* Recherche */}
-          <div className="flex items-center gap-4 bg-white border-2 border-[#071F5A]/10 focus-within:border-[#071F5A] rounded-2xl h-14 sm:h-16 px-5 w-full sm:w-[420px] shadow-sm transition-all duration-300">
-            <Search size={20} className="text-gray-400 shrink-0" />
+          <div className="flex items-center gap-3 bg-white border-2 border-[#071F5A]/10 focus-within:border-[#071F5A] rounded-2xl h-14 px-4 w-full sm:w-[420px] shadow-sm transition-all duration-300">
+            <Search size={18} className="text-gray-400 shrink-0" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Thème, prédicateur…"
-              className="w-full bg-transparent outline-none text-gray-700 text-sm sm:text-base placeholder:text-gray-400"
+              className="w-full bg-transparent outline-none text-gray-700 text-sm placeholder:text-gray-400"
             />
           </div>
 
           {/* Dropdown */}
-          <div className="relative w-full sm:w-[280px]">
+          <div className="relative w-full sm:w-[220px]">
             <button
               onClick={() => setOpenFilter(!openFilter)}
-              className="flex items-center justify-between bg-white border-2 border-[#071F5A]/10 focus:border-[#071F5A] rounded-2xl h-14 sm:h-16 px-5 w-full shadow-sm transition-all duration-300"
+              className="flex items-center justify-between bg-white border-2 border-[#071F5A]/10 rounded-2xl h-14 px-4 w-full shadow-sm transition-all duration-300"
             >
               <div className="flex items-center gap-3">
-                <Filter size={18} className="text-[#071F5A]" />
-                <span className="text-gray-600 text-sm sm:text-base">
+                <Filter size={16} className="text-[#071F5A]" />
+                <span className="text-gray-600 text-sm">
                   {selectedType === "Tous" ? "Tous les types" : selectedType}
                 </span>
               </div>
               <ChevronDown
-                size={18}
+                size={16}
                 className={`text-[#071F5A] transition-transform duration-300 ${openFilter ? "rotate-180" : ""}`}
               />
             </button>
@@ -489,10 +355,7 @@ export default function TeachingPlayer() {
                 {["Tous", "Audio", "Vidéo"].map((option) => (
                   <button
                     key={option}
-                    onClick={() => {
-                      setSelectedType(option);
-                      setOpenFilter(false);
-                    }}
+                    onClick={() => { setSelectedType(option); setOpenFilter(false); }}
                     className={`w-full text-left px-5 py-3.5 text-sm hover:bg-[#071F5A]/5 transition-colors flex items-center gap-3
                       ${selectedType === option ? "text-[#071F5A] font-bold bg-[#071F5A]/5" : "text-gray-700"}`}
                   >
@@ -509,13 +372,13 @@ export default function TeachingPlayer() {
 
         {/* ── COMPTEUR ── */}
         {filteredMessages.length > 0 && (
-          <p className="text-center text-sm text-gray-400 mt-5">
+          <p className="text-center text-sm text-gray-400 mt-4">
             {filteredMessages.length} message{filteredMessages.length > 1 ? "s" : ""} trouvé{filteredMessages.length > 1 ? "s" : ""}
           </p>
         )}
 
         {/* ── GRILLE ── */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 mt-10 sm:mt-12">
           {filteredMessages.map((message, index) => (
             <article
               key={index}
@@ -531,7 +394,7 @@ export default function TeachingPlayer() {
               `}
             >
               {/* IMAGE */}
-              <div className="relative h-[220px] sm:h-[240px] overflow-hidden">
+              <div className="relative h-[200px] sm:h-[240px] overflow-hidden">
                 <img
                   src={message.image}
                   alt={message.title}
@@ -569,27 +432,25 @@ export default function TeachingPlayer() {
               </div>
 
               {/* CONTENU */}
-              <div className="p-5 sm:p-6">
+              <div className="p-4 sm:p-6">
                 <div className="flex items-center gap-2 text-xs text-gray-400 font-medium">
                   <CalendarDays size={13} className="text-[#E6B012]" />
                   {message.date}
                 </div>
 
                 <h3 className={`
-                  mt-3 text-lg font-bold leading-snug transition-colors duration-300
+                  mt-3 text-base sm:text-lg font-bold leading-snug transition-colors duration-300
                   ${hoveredIndex === index ? "text-[#071F5A]" : "text-gray-800"}
                 `}>
                   {message.title}
                 </h3>
 
-                <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-full bg-[#071F5A] flex items-center justify-center text-white text-xs font-bold shrink-0">
                       {initials(message.author)}
                     </div>
-                    <span className="text-sm font-medium text-gray-700">
-                      {message.author}
-                    </span>
+                    <span className="text-xs sm:text-sm font-medium text-gray-700">{message.author}</span>
                   </div>
                   <span className={`
                     text-xs font-bold text-[#071F5A] transition-all duration-300
@@ -613,7 +474,7 @@ export default function TeachingPlayer() {
         )}
 
         {/* ── CHARGER PLUS ── */}
-        <div className="flex justify-center mt-16 sm:mt-20">
+        <div className="flex justify-center mt-12 sm:mt-20">
           <button className="
             group flex items-center gap-3
             bg-[#071F5A] hover:bg-[#0a2d7a]
@@ -631,10 +492,7 @@ export default function TeachingPlayer() {
 
       {/* ── PLAYER MODAL ── */}
       {activeMessage && (
-        <PlayerModal
-          message={activeMessage}
-          onClose={() => setActiveMessage(null)}
-        />
+        <PlayerModal message={activeMessage} onClose={() => setActiveMessage(null)} />
       )}
     </section>
   );

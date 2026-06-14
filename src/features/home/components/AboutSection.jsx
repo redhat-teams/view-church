@@ -1,31 +1,31 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
-function AnimatedCounter({ target, prefix = "", duration = 2000 }) {
+function AnimatedCounter({ target, prefix = "", duration = 2000, trigger }) {
   const [count, setCount] = useState(0);
   const rafRef = useRef(null);
 
   useEffect(() => {
-    let startTime = null;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    setCount(0);
 
+    let startTime = null;
     const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
     const animate = (timestamp) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      const eased = easeOutExpo(progress);
-      setCount(Math.round(eased * target));
+      setCount(Math.round(easeOutExpo(progress) * target));
       if (progress < 1) {
         rafRef.current = requestAnimationFrame(animate);
       }
     };
 
     rafRef.current = requestAnimationFrame(animate);
-
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [target, duration]);
+  }, [trigger, target, duration]);
 
   return (
     <>
@@ -36,8 +36,44 @@ function AnimatedCounter({ target, prefix = "", duration = 2000 }) {
 }
 
 export default function AboutSection() {
+  const [tick, setTick] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (isVisible) {
+      setTick((t) => t + 1);
+      intervalRef.current = setInterval(() => {
+        setTick((t) => t + 1);
+      }, 5000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+    return () => clearInterval(intervalRef.current);
+  }, [isVisible]);
+
   return (
-    <section className="bg-[#F3F3F3] py-24 overflow-hidden" id="ministere-about">
+    <section
+      ref={sectionRef}
+      className="bg-[#F3F3F3] py-24 overflow-hidden"
+      id="ministere-about"
+    >
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           {/* IMAGE */}
@@ -83,14 +119,14 @@ export default function AboutSection() {
             >
               <div className="text-center">
                 <h3 className="text-5xl font-bold text-[#F38B00]">
-                  <AnimatedCounter target={8} prefix="+" duration={1400} />
+                  <AnimatedCounter target={8} prefix="+" duration={1400} trigger={tick} />
                 </h3>
                 <p className="mt-2 text-gray-700">Existence</p>
               </div>
 
               <div className="text-center">
                 <h3 className="text-5xl font-bold text-[#F38B00]">
-                  <AnimatedCounter target={7} duration={1200} />
+                  <AnimatedCounter target={7} duration={1200} trigger={tick} />
                 </h3>
                 <p className="mt-2 text-gray-700">Annexes</p>
               </div>
@@ -124,7 +160,7 @@ export default function AboutSection() {
             <div className="flex flex-wrap items-center gap-10 mb-14">
               <div className="transition duration-300 hover:scale-110">
                 <h3 className="text-5xl font-bold text-[#F38B00]">
-                  <AnimatedCounter target={5000} prefix="+" duration={2200} />
+                  <AnimatedCounter target={5000} prefix="+" duration={2200} trigger={tick} />
                 </h3>
                 <p className="text-xl text-gray-900">Vies impactées</p>
               </div>
@@ -133,15 +169,15 @@ export default function AboutSection() {
 
               <div className="transition duration-300 hover:scale-110">
                 <h3 className="text-5xl font-bold text-[#F38B00]">
-                  <AnimatedCounter target={120} prefix="+" duration={1800} />
+                  <AnimatedCounter target={120} prefix="+" duration={1800} trigger={tick} />
                 </h3>
                 <p className="text-xl text-gray-900">Actions spirituelles</p>
               </div>
             </div>
 
             {/* Bouton */}
-            <a
-              href="#ministere"
+            <Link
+              to="/ccm"
               className="
                 inline-flex
                 items-center
@@ -161,10 +197,10 @@ export default function AboutSection() {
               "
             >
               Découvrez le Ministère
-              <span className="transition-transform duration-300 group-hover:translate-y-1">
+              {/* <span className="transition-transform duration-300 group-hover:translate-y-1">
                 ↓
-              </span>
-            </a>
+              </span> */}
+            </Link>
           </div>
         </div>
       </div>

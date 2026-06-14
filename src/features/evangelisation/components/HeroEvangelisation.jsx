@@ -21,6 +21,7 @@ import {
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 
+
 export default function EvangelisationPage() {
   const pilliers = [
     {
