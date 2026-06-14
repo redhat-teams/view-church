@@ -11,13 +11,47 @@ import {
 import QRCode from "react-qr-code";
 
 const navLinks = [
-  { to: "/",              end: true,  icon: <FaHome />,         label: "Accueil" },
-  { to: "/ccm",           end: true,  icon: <FaHome />,         label: "Ministère" },
+{ to: "/", end: true, icon: <FaHome />, label: "Accueil" },
+
+{
+  to: "/ccm",
+  end: true,
+  icon: (
+    <img
+      src="/ccm-logo.png"
+      alt="CCM"
+      className="w-6 h-6 object-contain"
+    />
+  ),
+  label: "ccm"
+},
   { to: "/apropos",       end: false, icon: <FaInfoCircle />,   label: "À propos" },
   { to: "/teachings",     end: false, icon: <FaBookOpen />,     label: "Enseignements" },
   { to: "/events",        end: false, icon: <FaCalendarAlt />,  label: "Évènements" },
-  { to: "/cellule",       end: false, icon: <FaPrayingHands />, label: "Prayer win" },
-  { to: "/evangelisation",end: false, icon: <FaChurch />,       label: "Evangelism" },
+  {
+  to: "/ccm",
+  end: true,
+  icon: (
+    <img
+      src="/preawin-logo.jpeg"
+      alt="CCM"
+      className="w-6 h-6 object-contain"
+    />
+  ),
+  label: "Preyer Win"
+},
+   {
+  to: "/ccm",
+  end: true,
+  icon: (
+    <img
+      src="/evan.png"
+      alt="CCM"
+      className="w-6 h-6 object-contain"
+    />
+  ),
+  label: "Evangelisation"
+},
   { to: "/contact",       end: false, icon: <FaEnvelope />,     label: "Contact" },
 ];
 
