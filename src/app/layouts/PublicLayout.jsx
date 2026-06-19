@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, Link, NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Footer from "../../features/home/components/Footer";
 import {
   FaFacebookF, FaTwitter, FaYoutube, FaInstagram,
@@ -206,7 +206,7 @@ export default function PublicLayout() {
       </header>
 
       {/* ===== PAGE ===== */}
-      <main className="flex-1"><Outlet /></main>
+      <main className="flex-1"><RouteLoader /></main>
 
       {/* ===== MODAL DON ===== */}
       {donModal && (
@@ -341,7 +341,7 @@ export default function PublicLayout() {
 
 
 
-      <RouteLoader />
+      
       <Footer />
 
 
