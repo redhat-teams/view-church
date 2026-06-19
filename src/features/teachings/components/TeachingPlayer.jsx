@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Search,
   Filter,
@@ -13,143 +13,119 @@ import {
   SkipForward,
   Volume2,
   VolumeX,
+  Loader2,
 } from "lucide-react";
+import api from "../../../shared/services/api";
+import { formatDate } from "../../../shared/utils";
+
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800&q=80";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
-function parseDur(str) {
-  const [m, s] = str.split(":").map(Number);
-  return m * 60 + s;
-}
-function fmtTime(sec) {
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60);
-  return `${m}:${s.toString().padStart(2, "0")}`;
-}
-function initials(name) {
-  return name.split(" ").map((w) => w[0]).slice(0, 2).join("");
+function initials(name = "") {
+  return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
 }
 
-// ── data ─────────────────────────────────────────────────────────────────────
-const messages = [
-  {
-    image: "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800&q=80",
-    title: "La puissance de la foi qui déplace les montagnes",
-    date: "5 Mars 2026",
-    duration: "45:30",
-    author: "Evg. Pascal Huiler",
-    type: "Vidéo",
-    tag: "Foi",
-    youtubeId: "dQw4w9WgXcQ", // ← remplace par le vrai ID YouTube
-  },
-  {
-    image: "https://images.unsplash.com/photo-1601987077677-5346c0c57d3f?w=800&q=80",
-    title: "Marcher dans la grâce de Dieu chaque jour",
-    date: "12 Mars 2026",
-    duration: "38:15",
-    author: "Pasteur Claude Ope",
-    type: "Audio",
-    tag: "Grâce",
-    youtubeId: null,
-  },
-  {
-    image: "https://images.unsplash.com/photo-1478147427282-58a87a120781?w=800&q=80",
-    title: "Vivre une vie de prière efficace et constante",
-    date: "20 Mars 2026",
-    duration: "52:10",
-    author: "Pasteur Claude Ope",
-    type: "Vidéo",
-    tag: "Prière",
-    youtubeId: "dQw4w9WgXcQ",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&q=80",
-    title: "L'espérance qui transforme le cœur de l'homme",
-    date: "28 Mars 2026",
-    duration: "41:05",
-    author: "Evg. Pascal Huiler",
-    type: "Audio",
-    tag: "Espérance",
-    youtubeId: null,
-  },
-  {
-    image: "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=800&q=80",
-    title: "La parole de Dieu : lumière sur mon chemin",
-    date: "4 Avril 2026",
-    duration: "49:00",
-    author: "Pasteur Claude Ope",
-    type: "Vidéo",
-    tag: "Parole",
-    youtubeId: "dQw4w9WgXcQ",
-  },
-  {
-    image: "https://images.unsplash.com/photo-1533000759938-aa0ba70beceb?w=800&q=80",
-    title: "Trouver la paix dans les tempêtes de la vie",
-    date: "11 Avril 2026",
-    duration: "36:45",
-    author: "Evg. Pascal Huiler",
-    type: "Audio",
-    tag: "Paix",
-    youtubeId: null,
-  },
-];
+/**
+ * Extrait l'ID YouTube depuis n'importe quel format d'URL courant
+ * (watch?v=, youtu.be/, /live/, /embed/).
+ */
+function extractYoutubeId(url) {
+  if (!url) return null;
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/live\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+  ];
+  for (const re of patterns) {
+    const match = url.match(re);
+    if (match) return match[1];
+  }
+  return null;
+}
+
+/** Détermine le type d'affichage : Vidéo (YouTube) ou Audio */
+function getTeachingType(teaching) {
+  if (teaching.video_url && extractYoutubeId(teaching.video_url)) return "Vidéo";
+  if (teaching.audio_url) return "Audio";
+  return teaching.video_url ? "Vidéo" : "Audio";
+}
 
 // ── AudioPlayer ───────────────────────────────────────────────────────────────
-function AudioPlayer({ message }) {
-  const total = parseDur(message.duration);
+function AudioPlayer({ teaching }) {
   const [playing, setPlaying] = useState(false);
   const [current, setCurrent] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(80);
   const [muted, setMuted] = useState(false);
   const [speedIdx, setSpeedIdx] = useState(0);
   const speeds = [1, 1.25, 1.5, 2, 0.75];
-  const timerRef = useRef(null);
+  const audioRef = useRef(null);
 
-  useEffect(() => () => clearInterval(timerRef.current), []);
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = muted ? 0 : volume / 100;
+    audio.playbackRate = speeds[speedIdx];
+  }, [volume, muted, speedIdx]);
 
   const togglePlay = () => {
-    if (!playing) {
-      timerRef.current = setInterval(() => {
-        setCurrent((prev) => {
-          if (prev >= total) {
-            clearInterval(timerRef.current);
-            setPlaying(false);
-            return prev;
-          }
-          return prev + speeds[speedIdx];
-        });
-      }, 1000);
-    } else {
-      clearInterval(timerRef.current);
-    }
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (playing) audio.pause();
+    else audio.play();
     setPlaying((p) => !p);
   };
 
-  const seek = (val) => setCurrent(Number(val));
-  const skip = (delta) => setCurrent((p) => Math.min(total, Math.max(0, p + delta)));
-  const cycleSpeed = () => {
-    if (playing) { clearInterval(timerRef.current); setPlaying(false); }
-    setSpeedIdx((i) => (i + 1) % speeds.length);
+  const seek = (val) => {
+    if (audioRef.current) audioRef.current.currentTime = Number(val);
+    setCurrent(Number(val));
+  };
+
+  const skip = (delta) => {
+    if (!audioRef.current) return;
+    const next = Math.min(duration, Math.max(0, audioRef.current.currentTime + delta));
+    audioRef.current.currentTime = next;
+    setCurrent(next);
+  };
+
+  const fmtTime = (sec) => {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
   return (
     <div className="bg-[#F4F6FB] rounded-2xl p-4">
+      <audio
+        ref={audioRef}
+        src={teaching.audio_url}
+        onTimeUpdate={(e) => setCurrent(e.target.currentTime)}
+        onLoadedMetadata={(e) => setDuration(e.target.duration || 0)}
+        onEnded={() => setPlaying(false)}
+      />
+
       <div className="flex items-center gap-3 mb-4">
-        <img src={message.image} alt="" className="w-12 h-12 rounded-xl object-cover flex-shrink-0" />
+        <img
+          src={teaching.thumbnail || FALLBACK_IMAGE}
+          alt=""
+          className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
+        />
         <div>
-          <p className="text-sm font-bold text-[#071F5A] leading-snug line-clamp-1">{message.title}</p>
-          <p className="text-xs text-gray-500">{message.author}</p>
+          <p className="text-sm font-bold text-[#071F5A] leading-snug line-clamp-1">
+            {teaching.title}
+          </p>
+          <p className="text-xs text-gray-500">{teaching.speaker}</p>
         </div>
       </div>
 
       <div className="mb-3">
         <input
-          type="range" min={0} max={total} step={1} value={current}
+          type="range" min={0} max={duration || 0} step={1} value={current}
           onChange={(e) => seek(e.target.value)}
           className="w-full h-1.5 accent-[#071F5A] cursor-pointer"
         />
         <div className="flex justify-between text-xs text-gray-400 mt-1">
           <span>{fmtTime(current)}</span>
-          <span>{message.duration}</span>
+          <span>{fmtTime(duration)}</span>
         </div>
       </div>
 
@@ -179,7 +155,7 @@ function AudioPlayer({ message }) {
           className="flex-1 h-1 accent-[#071F5A] cursor-pointer"
         />
         <button
-          onClick={cycleSpeed}
+          onClick={() => setSpeedIdx((i) => (i + 1) % speeds.length)}
           className="text-xs font-bold text-[#071F5A] bg-[#071F5A]/10 px-2.5 py-1 rounded-lg hover:bg-[#071F5A]/20 transition-colors flex-shrink-0"
         >
           {speeds[speedIdx]}×
@@ -205,8 +181,10 @@ function YouTubePlayer({ youtubeId }) {
 }
 
 // ── PlayerModal ───────────────────────────────────────────────────────────────
-function PlayerModal({ message, onClose }) {
-  const isVideo = message.type === "Vidéo";
+function PlayerModal({ teaching, onClose }) {
+  const type = getTeachingType(teaching);
+  const isVideo = type === "Vidéo";
+  const youtubeId = extractYoutubeId(teaching.video_url);
 
   useEffect(() => {
     const handler = (e) => { if (e.key === "Escape") onClose(); };
@@ -225,7 +203,11 @@ function PlayerModal({ message, onClose }) {
         {/* Header image — seulement pour audio */}
         {!isVideo && (
           <div className="relative h-48 overflow-hidden">
-            <img src={message.image} alt="" className="w-full h-full object-cover brightness-50" />
+            <img
+              src={teaching.thumbnail || FALLBACK_IMAGE}
+              alt=""
+              className="w-full h-full object-cover brightness-50"
+            />
             <button
               onClick={onClose}
               className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/70 transition-colors"
@@ -235,11 +217,13 @@ function PlayerModal({ message, onClose }) {
             </button>
             <div className="absolute bottom-4 left-4 flex gap-2">
               <span className="flex items-center gap-1.5 text-xs font-bold uppercase px-3 py-1.5 rounded-full bg-[#E6B012]/90 text-[#071F5A]">
-                <Headphones size={11} /> {message.type}
+                <Headphones size={11} /> {type}
               </span>
-              <span className="text-xs font-semibold bg-white/20 text-white border border-white/30 px-3 py-1.5 rounded-full">
-                {message.tag}
-              </span>
+              {teaching.category && (
+                <span className="text-xs font-semibold bg-white/20 text-white border border-white/30 px-3 py-1.5 rounded-full capitalize">
+                  {teaching.category.replace("_", " ")}
+                </span>
+              )}
             </div>
           </div>
         )}
@@ -260,23 +244,23 @@ function PlayerModal({ message, onClose }) {
         <div className={`p-4 sm:p-5 ${isVideo ? "pt-2" : ""}`}>
           <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
             <CalendarDays size={12} className="text-[#E6B012]" />
-            {message.date}
-            <span className="mx-1">·</span>
-            <Clock3 size={12} className="text-[#E6B012]" />
-            {message.duration}
+            {formatDate(teaching.date)}
           </div>
-          <h2 className="text-lg font-bold text-[#071F5A] leading-snug mb-1">{message.title}</h2>
-          <p className="text-sm text-gray-500 mb-4">{message.author}</p>
+          <h2 className="text-lg font-bold text-[#071F5A] leading-snug mb-1">{teaching.title}</h2>
+          <p className="text-sm text-gray-500 mb-4">{teaching.speaker}</p>
 
-          {isVideo && message.youtubeId ? (
-            <YouTubePlayer youtubeId={message.youtubeId} />
+          {isVideo && youtubeId ? (
+            <YouTubePlayer youtubeId={youtubeId} />
           ) : isVideo ? (
-            // Fallback si pas de youtubeId
             <div className="rounded-2xl overflow-hidden bg-[#0a1540] flex items-center justify-center h-48">
               <p className="text-white/50 text-sm text-center px-4">Aucune vidéo YouTube associée.</p>
             </div>
+          ) : teaching.audio_url ? (
+            <AudioPlayer teaching={teaching} />
           ) : (
-            <AudioPlayer message={message} />
+            <div className="rounded-2xl overflow-hidden bg-[#0a1540] flex items-center justify-center h-32">
+              <p className="text-white/50 text-sm text-center px-4">Aucun média associé à cet enseignement.</p>
+            </div>
           )}
         </div>
       </div>
@@ -286,19 +270,52 @@ function PlayerModal({ message, onClose }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function TeachingPlayer() {
+  const [teachings, setTeachings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [search, setSearch] = useState("");
   const [openFilter, setOpenFilter] = useState(false);
   const [selectedType, setSelectedType] = useState("Tous");
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [activeMessage, setActiveMessage] = useState(null);
+  const [activeTeaching, setActiveTeaching] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(6);
 
-  const filteredMessages = messages.filter((message) => {
+  useEffect(() => {
+    let cancelled = false;
+
+    api
+      .get("/teachings/", { params: { page_size: 100 } })
+      .then((res) => {
+        if (cancelled) return;
+        const data = res.data;
+        const list = Array.isArray(data) ? data : data?.results || [];
+        setTeachings(list);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const filteredTeachings = teachings.filter((teaching) => {
+    const title = teaching.title || "";
+    const speaker = teaching.speaker || "";
     const matchSearch =
-      message.title.toLowerCase().includes(search.toLowerCase()) ||
-      message.author.toLowerCase().includes(search.toLowerCase());
-    const matchType = selectedType === "Tous" || message.type === selectedType;
+      title.toLowerCase().includes(search.toLowerCase()) ||
+      speaker.toLowerCase().includes(search.toLowerCase());
+    const matchType = selectedType === "Tous" || getTeachingType(teaching) === selectedType;
     return matchSearch && matchType;
   });
+
+  const visibleTeachings = filteredTeachings.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredTeachings.length;
 
   return (
     <section className="bg-[#F4F6FB] min-h-screen py-16 sm:py-24">
@@ -371,101 +388,122 @@ export default function TeachingPlayer() {
         </div>
 
         {/* ── COMPTEUR ── */}
-        {filteredMessages.length > 0 && (
+        {!loading && filteredTeachings.length > 0 && (
           <p className="text-center text-sm text-gray-400 mt-4">
-            {filteredMessages.length} message{filteredMessages.length > 1 ? "s" : ""} trouvé{filteredMessages.length > 1 ? "s" : ""}
+            {filteredTeachings.length} message{filteredTeachings.length > 1 ? "s" : ""} trouvé{filteredTeachings.length > 1 ? "s" : ""}
           </p>
         )}
 
+        {/* ── CHARGEMENT ── */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center mt-20 gap-4">
+            <Loader2 size={36} className="text-[#071F5A] animate-spin" />
+            <p className="text-gray-400">Chargement des enseignements...</p>
+          </div>
+        )}
+
+        {/* ── ERREUR ── */}
+        {!loading && error && (
+          <div className="text-center mt-20">
+            <p className="text-lg text-red-500">
+              Impossible de charger les enseignements pour le moment.
+            </p>
+          </div>
+        )}
+
         {/* ── GRILLE ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 mt-10 sm:mt-12">
-          {filteredMessages.map((message, index) => (
-            <article
-              key={index}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => setActiveMessage(message)}
-              className={`
-                group relative bg-white rounded-3xl overflow-hidden
-                border border-gray-100
-                shadow-[0_4px_24px_rgba(7,31,90,0.06)]
-                transition-all duration-500 cursor-pointer
-                ${hoveredIndex === index ? "-translate-y-2 shadow-[0_20px_60px_rgba(7,31,90,0.15)]" : ""}
-              `}
-            >
-              {/* IMAGE */}
-              <div className="relative h-[200px] sm:h-[240px] overflow-hidden">
-                <img
-                  src={message.image}
-                  alt={message.title}
-                  className={`w-full h-full object-cover transition-transform duration-700 ${hoveredIndex === index ? "scale-110" : "scale-100"}`}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+        {!loading && !error && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 mt-10 sm:mt-12">
+            {visibleTeachings.map((teaching, index) => {
+              const type = getTeachingType(teaching);
+              return (
+                <article
+                  key={teaching.id}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  onClick={() => setActiveTeaching(teaching)}
+                  className={`
+                    group relative bg-white rounded-3xl overflow-hidden
+                    border border-gray-100
+                    shadow-[0_4px_24px_rgba(7,31,90,0.06)]
+                    transition-all duration-500 cursor-pointer
+                    ${hoveredIndex === index ? "-translate-y-2 shadow-[0_20px_60px_rgba(7,31,90,0.15)]" : ""}
+                  `}
+                >
+                  {/* IMAGE */}
+                  <div className="relative h-[200px] sm:h-[240px] overflow-hidden">
+                    <img
+                      src={teaching.thumbnail || FALLBACK_IMAGE}
+                      alt={teaching.title}
+                      className={`w-full h-full object-cover transition-transform duration-700 ${hoveredIndex === index ? "scale-110" : "scale-100"}`}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-                <div className={`
-                  absolute top-4 left-4 flex items-center gap-1.5
-                  text-xs font-bold tracking-wide uppercase px-3 py-1.5 rounded-full backdrop-blur-sm
-                  ${message.type === "Vidéo" ? "bg-[#071F5A]/80 text-white" : "bg-[#E6B012]/90 text-[#071F5A]"}
-                `}>
-                  {message.type === "Vidéo" ? <Play size={11} fill="currentColor" /> : <Headphones size={11} />}
-                  {message.type}
-                </div>
-
-                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/30">
-                  {message.tag}
-                </div>
-
-                <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
-                  <Clock3 size={12} />
-                  {message.duration}
-                </div>
-
-                <div className={`
-                  absolute inset-0 flex items-center justify-center
-                  transition-opacity duration-300
-                  ${hoveredIndex === index ? "opacity-100" : "opacity-0"}
-                `}>
-                  <div className="w-16 h-16 rounded-full bg-[#E6B012] flex items-center justify-center shadow-2xl scale-95 group-hover:scale-100 transition-transform duration-300">
-                    <Play size={22} fill="#071F5A" className="text-[#071F5A] ml-1" />
-                  </div>
-                </div>
-              </div>
-
-              {/* CONTENU */}
-              <div className="p-4 sm:p-6">
-                <div className="flex items-center gap-2 text-xs text-gray-400 font-medium">
-                  <CalendarDays size={13} className="text-[#E6B012]" />
-                  {message.date}
-                </div>
-
-                <h3 className={`
-                  mt-3 text-base sm:text-lg font-bold leading-snug transition-colors duration-300
-                  ${hoveredIndex === index ? "text-[#071F5A]" : "text-gray-800"}
-                `}>
-                  {message.title}
-                </h3>
-
-                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-[#071F5A] flex items-center justify-center text-white text-xs font-bold shrink-0">
-                      {initials(message.author)}
+                    <div className={`
+                      absolute top-4 left-4 flex items-center gap-1.5
+                      text-xs font-bold tracking-wide uppercase px-3 py-1.5 rounded-full backdrop-blur-sm
+                      ${type === "Vidéo" ? "bg-[#071F5A]/80 text-white" : "bg-[#E6B012]/90 text-[#071F5A]"}
+                    `}>
+                      {type === "Vidéo" ? <Play size={11} fill="currentColor" /> : <Headphones size={11} />}
+                      {type}
                     </div>
-                    <span className="text-xs sm:text-sm font-medium text-gray-700">{message.author}</span>
+
+                    {teaching.category && (
+                      <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/30 capitalize">
+                        {teaching.category.replace("_", " ")}
+                      </div>
+                    )}
+
+                    <div className={`
+                      absolute inset-0 flex items-center justify-center
+                      transition-opacity duration-300
+                      ${hoveredIndex === index ? "opacity-100" : "opacity-0"}
+                    `}>
+                      <div className="w-16 h-16 rounded-full bg-[#E6B012] flex items-center justify-center shadow-2xl scale-95 group-hover:scale-100 transition-transform duration-300">
+                        <Play size={22} fill="#071F5A" className="text-[#071F5A] ml-1" />
+                      </div>
+                    </div>
                   </div>
-                  <span className={`
-                    text-xs font-bold text-[#071F5A] transition-all duration-300
-                    ${hoveredIndex === index ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}
-                  `}>
-                    {message.type === "Vidéo" ? "Regarder" : "Écouter"} →
-                  </span>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+
+                  {/* CONTENU */}
+                  <div className="p-4 sm:p-6">
+                    <div className="flex items-center gap-2 text-xs text-gray-400 font-medium">
+                      <CalendarDays size={13} className="text-[#E6B012]" />
+                      {formatDate(teaching.date)}
+                    </div>
+
+                    <h3 className={`
+                      mt-3 text-base sm:text-lg font-bold leading-snug transition-colors duration-300 line-clamp-2
+                      ${hoveredIndex === index ? "text-[#071F5A]" : "text-gray-800"}
+                    `}>
+                      {teaching.title}
+                    </h3>
+
+                    <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-full bg-[#071F5A] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                          {initials(teaching.speaker)}
+                        </div>
+                        <span className="text-xs sm:text-sm font-medium text-gray-700 truncate">
+                          {teaching.speaker}
+                        </span>
+                      </div>
+                      <span className={`
+                        text-xs font-bold text-[#071F5A] transition-all duration-300 shrink-0
+                        ${hoveredIndex === index ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}
+                      `}>
+                        {type === "Vidéo" ? "Regarder" : "Écouter"} →
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
 
         {/* ── AUCUN RÉSULTAT ── */}
-        {filteredMessages.length === 0 && (
+        {!loading && !error && filteredTeachings.length === 0 && (
           <div className="text-center mt-20">
             <div className="text-5xl mb-4">🔍</div>
             <p className="text-gray-500 text-lg font-medium">Aucun message trouvé.</p>
@@ -474,25 +512,30 @@ export default function TeachingPlayer() {
         )}
 
         {/* ── CHARGER PLUS ── */}
-        <div className="flex justify-center mt-12 sm:mt-20">
-          <button className="
-            group flex items-center gap-3
-            bg-[#071F5A] hover:bg-[#0a2d7a]
-            text-white font-bold text-base
-            px-8 py-4 rounded-2xl
-            shadow-[0_8px_32px_rgba(7,31,90,0.25)]
-            hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(7,31,90,0.3)]
-            transition-all duration-300
-          ">
-            Charger plus de messages
-            <ChevronDown size={18} className="group-hover:translate-y-1 transition-transform duration-300" />
-          </button>
-        </div>
+        {!loading && hasMore && (
+          <div className="flex justify-center mt-12 sm:mt-20">
+            <button
+              onClick={() => setVisibleCount((c) => c + 6)}
+              className="
+                group flex items-center gap-3
+                bg-[#071F5A] hover:bg-[#0a2d7a]
+                text-white font-bold text-base
+                px-8 py-4 rounded-2xl
+                shadow-[0_8px_32px_rgba(7,31,90,0.25)]
+                hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(7,31,90,0.3)]
+                transition-all duration-300
+              "
+            >
+              Charger plus de messages
+              <ChevronDown size={18} className="group-hover:translate-y-1 transition-transform duration-300" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ── PLAYER MODAL ── */}
-      {activeMessage && (
-        <PlayerModal message={activeMessage} onClose={() => setActiveMessage(null)} />
+      {activeTeaching && (
+        <PlayerModal teaching={activeTeaching} onClose={() => setActiveTeaching(null)} />
       )}
     </section>
   );

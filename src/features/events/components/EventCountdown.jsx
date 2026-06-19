@@ -1,97 +1,91 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Search,
   Calendar,
   ChevronDown,
   MapPin,
   ArrowRight,
+  Loader2,
 } from "lucide-react";
+import api from "../../../shared/services/api";
+import { formatDate } from "../../../shared/utils";
+
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1200&q=80";
+
+const MONTHS_FR = [
+  "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre",
+];
 
 export default function EventCountdown() {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [search, setSearch] = useState("");
   const [selectedDate, setSelectedDate] = useState("Toutes les dates");
   const [openDateFilter, setOpenDateFilter] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(6);
 
-  const events = [
-    {
-      image:
-        "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&q=80",
-      title: "Conférence Ministérielle Internationale",
-      description:
-        "Trois jours d'enseignements, d'adoration et de formation pour les leaders et serviteurs de Dieu.",
-      date: "20 Mars 2026",
-      location: "Temple Principal",
-      url: "https://www.youtube.com/live/jfKfPfyJRdk",
-    },
+  useEffect(() => {
+    let cancelled = false;
 
-    {
-      image:
-        "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1200&q=80",
-      title: "Soirée de Réveil Spirituel",
-      description:
-        "Une nuit de louange, de prière et de restauration dans la présence de Dieu.",
-      date: "24 Mars 2026",
-      location: "Salle de culte",
-      url: "https://www.youtube.com/live/21X5lGlDOfg",
-    },
+    api
+      .get("/events/", { params: { page_size: 100 } })
+      .then((res) => {
+        if (cancelled) return;
+        const data = res.data;
+        const list = Array.isArray(data) ? data : data?.results || [];
+        setEvents(list);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-    {
-      image:
-        "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=1200&q=80",
-      title: "La Foi Sans les Œuvres",
-      description:
-        "Enseignement biblique approfondi sur la foi active et l'obéissance à Dieu.",
-      date: "28 Mars 2026",
-      location: "Auditorium",
-      url: "https://www.youtube.com/watch?v=4xDzrJKXOOY",
-    },
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-    {
-      image:
-        "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=1200&q=80",
-      title: "Retraite Spirituelle",
-      description:
-        "Trois jours de communion fraternelle, de méditation et de prière.",
-      date: "10 Avril 2026",
-      location: "Centre Chrétien",
-      url: "https://www.youtube.com/watch?v=Q2cD4w4kP8Q",
-    },
-
-    {
-      image:
-        "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=1200&q=80",
-      title: "Camp Jeunesse 2026",
-      description:
-        "Un rassemblement exceptionnel pour la jeunesse chrétienne autour de la Parole.",
-      date: "18 Avril 2026",
-      location: "Centre Chrétien",
-      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    },
-
-    {
-      image:
-        "https://images.unsplash.com/photo-1478147427282-58a87a120781?w=1200&q=80",
-      title: "Grande Nuit de Prière",
-      description:
-        "Veillée de prière, intercession et prophétie pour les nations.",
-      date: "25 Avril 2026",
-      location: "Temple Principal",
-      url: "https://www.youtube.com/live/XcrucHc6z2w",
-    },
+  // Liste des "Mois Année" réellement présents dans les événements (pour le filtre)
+  const dateOptions = [
+    "Toutes les dates",
+    ...Array.from(
+      new Set(
+        events.map((e) => {
+          const d = new Date(e.date);
+          return `${MONTHS_FR[d.getMonth()]} ${d.getFullYear()}`;
+        })
+      )
+    ),
   ];
 
   const filteredEvents = events.filter((event) => {
-    const searchMatch =
-      event.title.toLowerCase().includes(search.toLowerCase()) ||
-      event.description.toLowerCase().includes(search.toLowerCase()) ||
-      event.location.toLowerCase().includes(search.toLowerCase());
+    const title = event.title || "";
+    const description = event.description || "";
+    const location = event.location || "";
 
-    const dateMatch =
-      selectedDate === "Toutes les dates" ||
-      event.date.includes(selectedDate);
+    const searchMatch =
+      title.toLowerCase().includes(search.toLowerCase()) ||
+      description.toLowerCase().includes(search.toLowerCase()) ||
+      location.toLowerCase().includes(search.toLowerCase());
+
+    let dateMatch = true;
+    if (selectedDate !== "Toutes les dates") {
+      const d = new Date(event.date);
+      const label = `${MONTHS_FR[d.getMonth()]} ${d.getFullYear()}`;
+      dateMatch = label === selectedDate;
+    }
 
     return searchMatch && dateMatch;
   });
+
+  const visibleEvents = filteredEvents.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredEvents.length;
 
   return (
     <section
@@ -215,13 +209,11 @@ export default function EventCountdown() {
                 border
                 overflow-hidden
                 z-50
+                max-h-64
+                overflow-y-auto
               "
               >
-                {[
-                  "Toutes les dates",
-                  "Mars 2026",
-                  "Avril 2026",
-                ].map((date) => (
+                {dateOptions.map((date) => (
                   <button
                     key={date}
                     onClick={() => {
@@ -245,123 +237,146 @@ export default function EventCountdown() {
         </div>
 
         {/* COMPTEUR */}
-        <div className="text-center mt-10">
-          <span
-            className="
-            inline-flex
-            items-center
-            bg-white
-            px-5
-            py-3
-            rounded-full
-            shadow-md
-            text-[#071F5A]
-            font-semibold
-          "
-          >
-            {filteredEvents.length} événement(s) disponible(s)
-          </span>
-        </div>
+        {!loading && (
+          <div className="text-center mt-10">
+            <span
+              className="
+              inline-flex
+              items-center
+              bg-white
+              px-5
+              py-3
+              rounded-full
+              shadow-md
+              text-[#071F5A]
+              font-semibold
+            "
+            >
+              {filteredEvents.length} événement(s) disponible(s)
+            </span>
+          </div>
+        )}
+
+        {/* ÉTAT DE CHARGEMENT */}
+        {loading && (
+          <div className="flex flex-col items-center justify-center mt-24 gap-4">
+            <Loader2 size={36} className="text-[#071F5A] animate-spin" />
+            <p className="text-gray-400">Chargement des événements...</p>
+          </div>
+        )}
+
+        {/* ERREUR */}
+        {!loading && error && (
+          <div className="text-center mt-20">
+            <p className="text-lg text-red-500">
+              Impossible de charger les événements pour le moment.
+            </p>
+          </div>
+        )}
 
         {/* GRID */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-          {filteredEvents.map((event, index) => (
-            <article
-              key={index}
-              className="
-                group
-                bg-white
-                rounded-3xl
-                overflow-hidden
-                border border-gray-100
-                shadow-[0_4px_24px_rgba(7,31,90,0.08)]
-                hover:-translate-y-3
-                hover:shadow-[0_20px_60px_rgba(7,31,90,0.15)]
-                transition-all
-                duration-500
-              "
-            >
-              <div className="relative overflow-hidden">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className="
-                    h-[260px]
-                    w-full
-                    object-cover
-                    transition-transform
-                    duration-700
-                    group-hover:scale-110
-                  "
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-                <div
-                  className="
-                  absolute top-4 left-4
-                  bg-[#E5B10E]
-                  text-[#071F5A]
-                  px-4 py-2
-                  rounded-full
-                  text-xs
-                  font-bold
-                  uppercase
+        {!loading && !error && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+            {visibleEvents.map((event) => (
+              <article
+                key={event.id}
+                className="
+                  group
+                  bg-white
+                  rounded-3xl
+                  overflow-hidden
+                  border border-gray-100
+                  shadow-[0_4px_24px_rgba(7,31,90,0.08)]
+                  hover:-translate-y-3
+                  hover:shadow-[0_20px_60px_rgba(7,31,90,0.15)]
+                  transition-all
+                  duration-500
                 "
-                >
-                  Événement
-                </div>
-              </div>
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={event.image || FALLBACK_IMAGE}
+                    alt={event.title}
+                    className="
+                      h-[260px]
+                      w-full
+                      object-cover
+                      transition-transform
+                      duration-700
+                      group-hover:scale-110
+                    "
+                  />
 
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-[#071F5A]">
-                  {event.title}
-                </h3>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-                <p className="text-gray-600 mt-4 leading-relaxed">
-                  {event.description}
-                </p>
-
-                <div className="mt-5 flex items-center gap-2 text-[#071F5A]">
-                  <Calendar size={16} />
-                  <span>{event.date}</span>
-                </div>
-
-                <div className="mt-3 flex items-center gap-2 text-[#071F5A]">
-                  <MapPin size={16} />
-                  <span>{event.location}</span>
-                </div>
-
-                <a
-                  href={event.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                    mt-6
-                    inline-flex
-                    items-center
-                    gap-2
+                  <div
+                    className="
+                    absolute top-4 left-4
                     bg-[#E5B10E]
-                    hover:bg-[#d4a40d]
                     text-[#071F5A]
-                    font-semibold
-                    px-6
-                    py-3
-                    rounded-xl
-                    transition-all
-                    duration-300
-                    hover:gap-4
+                    px-4 py-2
+                    rounded-full
+                    text-xs
+                    font-bold
+                    uppercase
                   "
-                >
-                  Participer
-                  <ArrowRight size={18} />
-                </a>
-              </div>
-            </article>
-          ))}
-        </div>
+                  >
+                    {event.category || "Événement"}
+                  </div>
+                </div>
 
-        {filteredEvents.length === 0 && (
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-[#071F5A]">
+                    {event.title}
+                  </h3>
+
+                  <p className="text-gray-600 mt-4 leading-relaxed line-clamp-3">
+                    {event.description}
+                  </p>
+
+                  <div className="mt-5 flex items-center gap-2 text-[#071F5A]">
+                    <Calendar size={16} />
+                    <span>
+                      {formatDate(event.date)}
+                      {event.time && ` à ${event.time.slice(0, 5)}`}
+                    </span>
+                  </div>
+
+                  {event.location && (
+                    <div className="mt-3 flex items-center gap-2 text-[#071F5A]">
+                      <MapPin size={16} />
+                      <span>{event.location}</span>
+                    </div>
+                  )}
+
+                  <button
+                    className="
+                      mt-6
+                      inline-flex
+                      items-center
+                      gap-2
+                      bg-[#E5B10E]
+                      hover:bg-[#d4a40d]
+                      text-[#071F5A]
+                      font-semibold
+                      px-6
+                      py-3
+                      rounded-xl
+                      transition-all
+                      duration-300
+                      hover:gap-4
+                    "
+                  >
+                    Participer
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {!loading && !error && filteredEvents.length === 0 && (
           <div className="text-center mt-20">
             <p className="text-xl text-gray-500">
               Aucun événement trouvé.
@@ -370,25 +385,28 @@ export default function EventCountdown() {
         )}
 
         {/* FOOTER BUTTON */}
-        <div className="flex justify-center mt-20">
-          <button
-            className="
-              bg-[#071F5A]
-              hover:bg-[#0A2D7A]
-              text-white
-              px-10
-              py-4
-              rounded-2xl
-              font-semibold
-              transition-all
-              duration-300
-              hover:-translate-y-1
-              shadow-lg
-            "
-          >
-            Voir tous les événements
-          </button>
-        </div>
+        {!loading && hasMore && (
+          <div className="flex justify-center mt-20">
+            <button
+              onClick={() => setVisibleCount((c) => c + 6)}
+              className="
+                bg-[#071F5A]
+                hover:bg-[#0A2D7A]
+                text-white
+                px-10
+                py-4
+                rounded-2xl
+                font-semibold
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                shadow-lg
+              "
+            >
+              Voir plus d'événements
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
