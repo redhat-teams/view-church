@@ -10,6 +10,8 @@ import {
 } from "react-icons/fa";
 import QRCode from "react-qr-code";
 
+import RouteLoader from "../../shared/components/RouteLoader";
+
 const navLinks = [
 { to: "/", end: true, icon: <FaHome />, label: "Accueil" },
 
@@ -18,12 +20,12 @@ const navLinks = [
   end: true,
   icon: (
     <img
-      src="/ccm-logo.png"
+      src="/logo.png"
       alt="CCM"
       className="w-6 h-6 object-contain"
     />
   ),
-  label: "ccm"
+  label: "CCM"
 },
   { to: "/apropos",       end: false, icon: <FaInfoCircle />,   label: "À propos" },
   { to: "/teachings",     end: false, icon: <FaBookOpen />,     label: "Enseignements" },
@@ -33,7 +35,7 @@ const navLinks = [
   end: true,
   icon: (
     <img
-      src="/preawin-logo.jpeg"
+      src="/preawin.png"
       alt="CCM"
       className="w-6 h-6 object-contain"
     />
@@ -45,7 +47,7 @@ const navLinks = [
   end: true,
   icon: (
     <img
-      src="/evan.png"
+      src="/evan-logo.png"
       alt="CCM"
       className="w-6 h-6 object-contain"
     />
@@ -120,7 +122,7 @@ export default function PublicLayout() {
 
             {/* Logo */}
             <Link to="/" className="flex items-center shrink-0">
-              <img src="/logo.png" alt="Logo" className="h-12 md:h-16 w-auto" />
+              <img src="/ccm.png" alt="Logo" className="h-10 md:h-10 w-auto" />
             </Link>
 
             {/* Desktop nav */}
@@ -334,7 +336,17 @@ export default function PublicLayout() {
         </div>
       )}
 
+
+
+
+
+
+      <RouteLoader />
       <Footer />
+
+
+
+
 
       {/* ===== BOUTONS FLOTTANTS ===== */}
       <div className="fixed bottom-6 right-4 flex flex-col gap-3 z-50">
