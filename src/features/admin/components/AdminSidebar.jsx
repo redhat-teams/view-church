@@ -5,6 +5,7 @@ import {
   CalendarDays,
   BookOpen,
   HandCoins,
+  HeartHandshake,
   Church,
   ArrowLeftToLine,
   X,
@@ -16,6 +17,7 @@ const links = [
   { to: "/admin/events", end: false, icon: CalendarDays, label: "Événements" },
   { to: "/admin/teachings", end: false, icon: BookOpen, label: "Enseignements" },
   { to: "/admin/donations", end: false, icon: HandCoins, label: "Dons" },
+  { to: "/admin/prayers", end: false, icon: HeartHandshake, label: "Demandes de prière" },
 ];
 
 export default function AdminSidebar({ open, onClose }) {

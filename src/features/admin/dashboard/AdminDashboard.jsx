@@ -6,6 +6,9 @@ import {
   HandCoins,
   ArrowRight,
   MapPin,
+  User,
+  PlayCircle,
+  Headphones,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import StatCard from "../components/StatCard";
@@ -29,6 +32,7 @@ const formatAmount = (value, currency = "FCFA") => {
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [recentTeachings, setRecentTeachings] = useState([]);
   const [recentDonations, setRecentDonations] = useState([]);
   const [recentUsers, setRecentUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,6 +52,16 @@ export default function AdminDashboard() {
           setUpcomingEvents(data?.upcoming_events || []);
           setRecentDonations(data?.recent_donations || []);
           setRecentUsers(data?.recent_users || []);
+
+          // L'endpoint /auth/stats/ ne renvoie pas encore les enseignements récents
+          // → on les récupère séparément dans tous les cas.
+          try {
+            const teachingsRes = await getTeachings({ page: 1, page_size: 5 });
+            const teachingsList = normalizeList(teachingsRes.data);
+            if (!cancelled) setRecentTeachings(teachingsList.items.slice(0, 5));
+          } catch {
+            // silencieux : la section sera simplement vide
+          }
         }
       } catch {
         // 2) Repli : on reconstitue les statistiques depuis les listes existantes
@@ -55,7 +69,7 @@ export default function AdminDashboard() {
           const [usersRes, eventsRes, teachingsRes, donationsRes] = await Promise.all([
             getUsers({ page: 1, page_size: 1 }),
             getEvents({ page: 1, page_size: 5 }),
-            getTeachings({ page: 1, page_size: 1 }),
+            getTeachings({ page: 1, page_size: 5 }),
             getDonations({ page: 1, page_size: 5 }),
           ]);
 
@@ -78,6 +92,7 @@ export default function AdminDashboard() {
               donations_total: donationsTotal,
             });
             setUpcomingEvents(eventsList.items.slice(0, 5));
+            setRecentTeachings(teachingsList.items.slice(0, 5));
             setRecentDonations(donationsList.items.slice(0, 5));
           }
         } catch (err2) {
@@ -144,7 +159,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* ===== LISTES ===== */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Événements à venir */}
         <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_4px_24px_rgba(7,31,90,0.06)] p-6">
           <div className="flex items-center justify-between mb-4">
@@ -186,6 +201,54 @@ export default function AdminDashboard() {
                   </div>
                 </li>
               ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Enseignements récents */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_4px_24px_rgba(7,31,90,0.06)] p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bold text-[#071F5A] text-lg">Enseignements récents</h3>
+            <Link
+              to="/admin/teachings"
+              className="text-sm font-semibold text-[#F0B51B] hover:text-[#d89f0d] flex items-center gap-1"
+            >
+              Voir tout <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          {recentTeachings.length === 0 ? (
+            <p className="text-sm text-gray-400 py-8 text-center">
+              Aucun enseignement publié.
+            </p>
+          ) : (
+            <ul className="flex flex-col gap-3">
+              {recentTeachings.map((teaching) => {
+                const isVideo = Boolean(teaching.video_url);
+                return (
+                  <li
+                    key={teaching.id}
+                    className="flex items-center gap-3 p-3 rounded-2xl hover:bg-[#F4F6FB] transition"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-[#0EA5E9]/10 flex items-center justify-center text-[#0EA5E9] shrink-0">
+                      {isVideo ? <PlayCircle size={20} /> : <Headphones size={18} />}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-sm text-[#071F5A] truncate">
+                        {teaching.title}
+                      </p>
+                      <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
+                        {teaching.speaker && (
+                          <span className="flex items-center gap-1 truncate">
+                            <User size={12} /> {teaching.speaker}
+                          </span>
+                        )}
+                        {teaching.date && <span>{formatDate(teaching.date)}</span>}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

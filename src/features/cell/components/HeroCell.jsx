@@ -6,6 +6,7 @@ import {
   Eye,
   Gem,
   CheckCircle2,
+  XCircle,
   X,
   ArrowRight,
   ArrowLeft,
@@ -27,7 +28,8 @@ import { useState, useEffect } from "react";
 // ─────────────────────────────────────────────────────────────────────────────
 
 function CelluleModal({ onClose }) {
-  const [approved, setApproved] = useState(false);
+  // null = en attente | "approved" | "rejected"
+  const [resultStatus, setResultStatus] = useState(null);
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
@@ -50,21 +52,35 @@ function CelluleModal({ onClose }) {
   useEffect(() => {
     const id = localStorage.getItem("prayerRequestId");
     if (!id) return;
-    const interval = setInterval(async () => {
+
+    const checkStatus = async () => {
       try {
         const res = await api.get(`/prayer-requests/${id}/status/`);
-        if (res.data.status === "approved") {
+        const status = res.data.status;
+
+        if (status === "approved") {
           clearInterval(interval);
-          setApproved(true);
+          setResultStatus("approved");
           localStorage.removeItem("prayerRequestId");
+          // Redirection automatique vers le groupe WhatsApp
           setTimeout(() => {
-            window.open("https://chat.whatsapp.com/XXXXXXXXXXXXXXXX", "_blank");
+            window.open("https://chat.whatsapp.com/0503392407", "_blank");
           }, 1500);
+        } else if (status === "rejected") {
+          clearInterval(interval);
+          setResultStatus("rejected");
+          localStorage.removeItem("prayerRequestId");
         }
+        // si "pending" → on continue d'attendre, rien à faire
       } catch (err) {
         console.log(err);
       }
-    }, 5000);
+    };
+
+    // Première vérification immédiate, puis toutes les 5s
+    checkStatus();
+    const interval = setInterval(checkStatus, 5000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -272,7 +288,7 @@ function CelluleModal({ onClose }) {
               </motion.div>
             )}
 
-            {/* ── Succès ── */}
+            {/* ── Étape 3 : attente / résultat ── */}
             {step === 3 && (
               <motion.div
                 key="step3"
@@ -280,18 +296,65 @@ function CelluleModal({ onClose }) {
                 animate={{ opacity: 1 }}
                 className="text-center py-4"
               >
-                {!approved ? (
+                {/* En attente de validation */}
+                {resultStatus === null && (
                   <>
                     <div className="w-16 h-16 border-4 border-[#E5B10E] border-t-transparent rounded-full animate-spin mx-auto mb-6" />
                     <h3 className="text-white text-xl font-bold mb-3">Demande envoyée</h3>
-                    <p className="text-white/70 text-sm sm:text-base">Votre demande est en cours de validation par un administrateur.</p>
+                    <p className="text-white/70 text-sm sm:text-base">
+                      Votre demande est en cours de validation par un administrateur.
+                    </p>
                     <p className="text-[#E5B10E] mt-4 text-sm">Veuillez patienter...</p>
                   </>
-                ) : (
+                )}
+
+                {/* Demande approuvée */}
+                {resultStatus === "approved" && (
                   <>
-                    <CheckCircle2 className="mx-auto text-green-500 mb-4" size={60} />
-                    <h3 className="text-white text-xl font-bold">Validation acceptée</h3>
-                    <p className="text-white/70 mt-3 text-sm sm:text-base">Redirection vers WhatsApp...</p>
+                    <motion.div
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    >
+                      <CheckCircle2 className="mx-auto text-green-500 mb-4" size={60} />
+                    </motion.div>
+                    <h3 className="text-white text-xl font-bold">Demande approuvée 🎉</h3>
+                    <p className="text-white/70 mt-3 text-sm sm:text-base">
+                      Vous allez être redirigé vers le groupe WhatsApp...
+                    </p>
+                    <a
+                      href="https://chat.whatsapp.com/0503392407"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 mt-6 bg-[#25D366] text-white font-bold px-6 py-3 rounded-2xl hover:scale-105 transition-all duration-200"
+                    >
+                      <FaWhatsapp size={18} />
+                      Rejoindre maintenant
+                    </a>
+                  </>
+                )}
+
+                {/* Demande refusée */}
+                {resultStatus === "rejected" && (
+                  <>
+                    <motion.div
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    >
+                      <XCircle className="mx-auto text-red-500 mb-4" size={60} />
+                    </motion.div>
+                    <h3 className="text-white text-xl font-bold">Demande refusée</h3>
+                    <p className="text-white/70 mt-3 text-sm sm:text-base leading-relaxed">
+                      Votre demande n'a pas été retenue pour le moment.
+                      N'hésitez pas à nous contacter pour plus d'informations.
+                    </p>
+                    <button
+                      onClick={onClose}
+                      className="mt-6 bg-white/10 text-white font-bold px-6 py-3 rounded-2xl hover:bg-white/20 transition-all duration-200"
+                    >
+                      Fermer
+                    </button>
                   </>
                 )}
               </motion.div>

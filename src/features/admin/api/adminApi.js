@@ -20,7 +20,7 @@ const multipart = (payload) =>
 /* ============================================================
  * DASHBOARD
  * ========================================================== */
-export const getDashboardStats = () => api.get("/admin/stats/");
+export const getDashboardStats = () => api.get("/auth/stats/");
 
 /* ============================================================
  * UTILISATEURS
@@ -61,3 +61,13 @@ export const getDonation = (id) => api.get(`/donations/${id}/`);
 export const updateDonation = (id, payload) =>
   api.patch(`/donations/${id}/`, payload);
 export const deleteDonation = (id) => api.delete(`/donations/${id}/`);
+
+/* ============================================================
+ * DEMANDES DE PRIÈRE
+ * ========================================================== */
+export const getPrayerRequests = (params) =>
+  api.get("/prayer-requests/list/", { params });
+export const getPrayerRequest = (id) => api.get(`/prayer-requests/${id}/`);
+export const updatePrayerRequest = (id, payload) =>
+  api.patch(`/prayer-requests/${id}/`, payload);
+export const deletePrayerRequest = (id) => api.delete(`/prayer-requests/${id}/`);
