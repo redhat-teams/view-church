@@ -54,7 +54,7 @@ export default function EventCard() {
           </Link>
 
           <Link
-            to="/contact"
+            to="/cellule"
             className="
               bg-[#071F5A]
               hover:bg-[#0b2d7e]
@@ -70,7 +70,7 @@ export default function EventCard() {
               hover:scale-105
             "
           >
-            Participer à un culte
+            Participer à une cellule
           </Link>
         </div>
       </div>

@@ -29,10 +29,10 @@ export default function Footer() {
             </p>
 
             <div className="flex gap-6 text-[#071F5A] text-2xl">
-              <FaFacebookF />
-              <FaTwitter />
-              <FaYoutube />
-              <FaInstagram />
+              <a href="https://www.facebook.com/communauteduchristenmarche" target="_blank"><FaFacebookF /></a>
+              <a href="https://www.youtube.com/@Prayerwin" target="_blank"><FaYoutube /></a>
+              {/* <FaTwitter /> */}
+              <a href="https://www.instagram.com/communaute_du_christ_en_marche/" target="_blank"><FaInstagram /></a>
             </div>
           </div>
 
@@ -46,8 +46,8 @@ export default function Footer() {
             <ul className="space-y-10 text-xl text-[#071F5A]">
               <a href="/"><li>Accueil</li></a>
               <a href="/apropos"><li>Qui sommes-nous</li></a>
-              <a href="events"><li>Évènements</li></a>
-              <a href="teachings"><li>Enseignements</li></a>
+              <a href="/events"><li>Évènements</li></a>
+              <a href="/teachings"><li>Enseignements</li></a>
             </ul>
           </div>
 
@@ -94,7 +94,7 @@ export default function Footer() {
 
               <div className="flex items-center gap-3">
                 <FaMapMarkerAlt />
-                <span>Abidjan</span>
+                <span>Paris</span>
               </div>
 
               <div className="flex items-center gap-3">
@@ -104,7 +104,7 @@ export default function Footer() {
 
               <div className="flex items-center gap-3">
                 <FaPhoneAlt />
-                <span>+2250789767638</span>
+                <span>+225 0705755230</span>
               </div>
 
             </div>

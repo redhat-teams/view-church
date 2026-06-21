@@ -14,11 +14,11 @@ export default function HeroSection() {
           </span>{" "}
           et de la
           <br />
-          <span className="text-[#F0B51B]">prière exaucée</span>
+          <span className="text-[#F0B51B]">prière exaucée </span>
         </>
       ),
-      buttonText: "Découvrir le Ministère",
-      buttonLink: "#ministere-about",
+      buttonText: "Découvrir le Ministère - CCM",
+      buttonLink: "/ccm",
     },
 
     {
@@ -37,8 +37,8 @@ export default function HeroSection() {
           </span>
         </>
       ),
-      buttonText: "Nos Programmes",
-      buttonLink: "/cellule",
+      buttonText: "Enseignements",
+      buttonLink: "/teachings",
     },
 
     {
@@ -53,12 +53,12 @@ export default function HeroSection() {
           <br />
           et expérimenter la{" "}
           <span className="text-[#F0B51B]">
-            prière exaucée
+            prière exaucée 
           </span>
         </>
       ),
-      buttonText: "Rejoindre la Communauté",
-      buttonLink: "/contact",
+      buttonText: "Prayerwin",
+      buttonLink: "/cellule",
     },
   ];
 

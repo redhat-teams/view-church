@@ -7,6 +7,8 @@ import EventsAdmin from "../../features/admin/events/EventsAdmin";
 import TeachingsAdmin from "../../features/admin/teachings/TeachingsAdmin";
 import DonationsAdmin from "../../features/admin/donations/DonationsAdmin";
 import PrayersAdmin from "../../features/admin/prayers/PrayersAdmin";
+import TestimonialsAdmin from "../../features/admin/testimonials/TestimonialsAdmin";
+import SettingsAdmin from "../../features/admin/settings/SettingsAdmin";
 
 export default function AdminRoutes() {
   return (
@@ -19,6 +21,8 @@ export default function AdminRoutes() {
           <Route path="teachings" element={<TeachingsAdmin />} />
           <Route path="donations" element={<DonationsAdmin />} />
           <Route path="prayers" element={<PrayersAdmin />} />
+          <Route path="testimonials" element={<TestimonialsAdmin />} />
+          <Route path="settings" element={<SettingsAdmin />} />
         </Route>
       </Route>
     </Routes>

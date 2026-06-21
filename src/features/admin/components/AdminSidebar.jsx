@@ -6,6 +6,8 @@ import {
   BookOpen,
   HandCoins,
   HeartHandshake,
+  Quote,
+  Settings,
   Church,
   ArrowLeftToLine,
   X,
@@ -18,6 +20,8 @@ const links = [
   { to: "/admin/teachings", end: false, icon: BookOpen, label: "Enseignements" },
   { to: "/admin/donations", end: false, icon: HandCoins, label: "Dons" },
   { to: "/admin/prayers", end: false, icon: HeartHandshake, label: "Demandes de prière" },
+  { to: "/admin/testimonials", end: false, icon: Quote, label: "Témoignages" },
+  { to: "/admin/settings", end: false, icon: Settings, label: "Paramètres" },
 ];
 
 export default function AdminSidebar({ open, onClose }) {

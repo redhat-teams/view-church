@@ -9,7 +9,7 @@ export default function AboutPage() {
       <AboutHeroSection />
       <AboutVisionSection />
       <AboutValuesSection />
-      <AboutLeadersSection />
+      {/* <AboutLeadersSection /> */}
     </>
   );
 }

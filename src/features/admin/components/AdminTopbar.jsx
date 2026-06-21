@@ -11,6 +11,8 @@ const titles = {
   "/admin/teachings": "Enseignements",
   "/admin/donations": "Dons",
   "/admin/prayers": "Demandes de prière",
+  "/admin/testimonials": "Témoignages",
+  "/admin/settings": "Paramètres",
 };
 
 const subtitles = {
@@ -20,6 +22,8 @@ const subtitles = {
   "/admin/teachings": "Gérez les enseignements et médias",
   "/admin/donations": "Suivez les dons reçus",
   "/admin/prayers": "Approuvez ou refusez les demandes de prière",
+  "/admin/testimonials": "Gérez les témoignages affichés sur l'accueil",
+  "/admin/settings": "Personnalisez le site et l'événement majeur",
 };
 
 // Nom de l'événement global déclenché dès qu'une demande de prière

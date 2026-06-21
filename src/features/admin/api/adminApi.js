@@ -71,3 +71,24 @@ export const getPrayerRequest = (id) => api.get(`/prayer-requests/${id}/`);
 export const updatePrayerRequest = (id, payload) =>
   api.patch(`/prayer-requests/${id}/`, payload);
 export const deletePrayerRequest = (id) => api.delete(`/prayer-requests/${id}/`);
+
+/* ============================================================
+ * PARAMÈTRES DE L'ÉGLISE (singleton)
+ * Inclut les infos générales + la section "Événement Majeur"
+ * affichée sur la page d'accueil.
+ * ========================================================== */
+export const getChurchSettings = () => api.get("/settings/");
+export const updateChurchSettings = (payload) =>
+  api.patch("/settings/", payload, multipart(payload));
+
+/* ============================================================
+ * TÉMOIGNAGES
+ * ========================================================== */
+export const getTestimonials = (params) =>
+  api.get("/testimonials/", { params: { all: 1, ...params } });
+export const getTestimonial = (id) => api.get(`/testimonials/${id}/`);
+export const createTestimonial = (payload) =>
+  api.post("/testimonials/", payload, multipart(payload));
+export const updateTestimonial = (id, payload) =>
+  api.patch(`/testimonials/${id}/`, payload, multipart(payload));
+export const deleteTestimonial = (id) => api.delete(`/testimonials/${id}/`);

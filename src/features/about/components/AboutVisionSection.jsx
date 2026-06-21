@@ -23,7 +23,7 @@ export default function AboutVisionSection() {
           <div>
 
             <span className="text-[#071F5A] font-semibold">
-              À PROPOS DE NOUS
+              Qui Sommes-Nous ?
             </span>
 
             <h2 className="mt-4 text-5xl font-bold text-[#071F5A]">
@@ -31,8 +31,14 @@ export default function AboutVisionSection() {
             </h2>
 
             <p className="mt-8 text-gray-600 text-lg leading-relaxed">
-              Notre église est une communauté de foi engagée à conduire
-              chacun dans une relation vivante avec Jésus-Christ.
+              Nous sommes une communauté chrétienne composée d'hommes et
+              de femmes ayant répondu à l'appel de Dieu pour prier, intercéder, évangéliser, 
+              enseigner la Parole et accompagner spirituellement ceux qui désirent marcher avec Dieu. (Actes 1:8)
+            </p>
+            <br />
+            <p>
+              Notre désir n'est pas de bâtir une plateforme centrée sur les hommes,
+              mais de glorifier Jésus-Christ et d'amener les cœurs à Lui.
             </p>
 
             <div className="grid md:grid-cols-2 gap-10 mt-12">

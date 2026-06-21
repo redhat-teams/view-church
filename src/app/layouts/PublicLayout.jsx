@@ -13,14 +13,14 @@ import QRCode from "react-qr-code";
 import RouteLoader from "../../shared/components/RouteLoader";
 
 const navLinks = [
-{ to: "/", end: true, icon: <FaHome />, label: "Accueil" },
+// { to: "/", end: true, icon: <FaHome />, label: "Accueil" },
 
 {
   to: "/ccm",
   end: true,
   icon: (
     <img
-      src="/logo.png"
+      src="/minis1.png"
       alt="CCM"
       className="w-6 h-6 object-contain"
     />
@@ -47,7 +47,7 @@ const navLinks = [
   end: true,
   icon: (
     <img
-      src="/evan-logo.png"
+      src="/evan-pro1.png"
       alt="CCM"
       className="w-6 h-6 object-contain"
     />
@@ -359,7 +359,7 @@ export default function PublicLayout() {
           <FaWhatsapp size={24} className="text-green-500" />
         </a>
         <a
-          href="tel:+2250705755230"
+          href="tel:+225 0705755230"
           className="w-12 h-12 rounded-full bg-red-600 shadow-xl flex items-center justify-center hover:scale-110 transition"
         >
           <FaPhoneAlt size={18} className="text-white" />

@@ -2,9 +2,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { FaMapMarkerAlt, FaArrowRight } from "react-icons/fa";
 
 const services = [
-  { id: 1, title: "Culte du Dimanche",      date: "10 Mars", hour: "10h:00", description: "Un moment de louange, d'adoration et d'enseignement biblique pour toute la famille." },
+  { id: 1, title: "RDV d'adoration",      date: "10 Mars", hour: "10h:00", description: "Un moment de louange, d'adoration et d'enseignement biblique pour toute la famille." },
   { id: 2, title: "Soirée de Réveil",        date: "12 Mars", hour: "20h:00", description: "Une soirée puissante de prière, intercession et miracles. Venez recevoir votre guérison." },
-  { id: 3, title: "Étude Biblique",          date: "15 Mars", hour: "19h:00", description: "Approfondissez votre connaissance de la Parole de Dieu dans une ambiance fraternelle." },
+  { id: 3, title: "Les vendredis de remplissage spirituel",          date: "15 Mars", hour: "19h:00", description: "Approfondissez votre connaissance de la Parole de Dieu dans une ambiance fraternelle." },
   { id: 4, title: "Veillée Prophétique",     date: "18 Mars", hour: "22h:00", description: "Une nuit de prière intense, d'intercession et de manifestations du Saint-Esprit." },
   { id: 5, title: "Formation des Disciples", date: "20 Mars", hour: "18h:00", description: "Programme spécial de croissance spirituelle et d'enseignement biblique." },
   { id: 6, title: "Réveil des Nations",      date: "25 Mars", hour: "17h:00", description: "Un rassemblement international pour prier pour les nations et annoncer l'Évangile." },
