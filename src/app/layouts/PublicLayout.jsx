@@ -145,8 +145,9 @@ export default function PublicLayout() {
 
             <div className="flex items-center gap-3">
               {/* Bouton Don desktop */}
-              <button
-                onClick={openDon}
+              <Link
+                // onClick={openDon}
+                to="/donations"
                 className="
                   hidden md:flex items-center gap-2
                   bg-[#F0B51B] text-[#071F5A] font-bold
@@ -157,7 +158,7 @@ export default function PublicLayout() {
               >
                 <FaHandHoldingHeart />
                 Faire un don
-              </button>
+              </Link>
 
               {/* Hamburger */}
               <button
@@ -191,8 +192,9 @@ export default function PublicLayout() {
                 {icon}{label}
               </NavLink>
             ))}
-            <button
-              onClick={openDon}
+            <Link
+              to="/donations"
+              // onClick={openDon}
               className="
                 mt-4 flex items-center justify-center gap-2
                 bg-[#F0B51B] text-[#071F5A] font-bold
@@ -200,7 +202,7 @@ export default function PublicLayout() {
               "
             >
               <FaHandHoldingHeart />Faire un don
-            </button>
+            </Link>
           </nav>
         </div>
       </header>
