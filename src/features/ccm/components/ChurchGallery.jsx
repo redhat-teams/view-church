@@ -70,9 +70,7 @@ export default function ChurchGallery() {
       : gallery.filter((item) => item.category === selectedCategory);
   }, [selectedCategory, gallery]);
 
-  const filteredImages = categoryFiltered
-  .filter((item) => item.image && item.image.trim() !== "")
-  .slice(0, visibleItems);
+  const filteredImages = categoryFiltered.slice(0, visibleItems);
 
   const currentIndex = gallery.findIndex((item) => item.image === selectedImage);
 
@@ -124,8 +122,8 @@ export default function ChurchGallery() {
       `}</style>
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-slate-950 py-20 sm:py-28 md:py-36">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e3a8a_0%,transparent_60%)]" />
+      <section className="relative overflow-hidden bg-[#071F5A] py-20 sm:py-28 md:py-36">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e3a8a_0%,transparent_40%)]" />
 
         <motion.div
           animate={{ rotate: 360 }}

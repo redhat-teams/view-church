@@ -406,11 +406,11 @@ export default function ChurchPresentation() {
 
       {/* POURQUOI NOUS REJOINDRE */}
 
-      <section className="py-24 bg-[#071F5A]">
+      {/* <section className="py-24 bg-[#071F5A]">
 
         <div className="max-w-5xl mx-auto px-6 text-center">
 
-          {/* <h2 className="text-white text-5xl font-bold">
+          <h2 className="text-white text-5xl font-bold">
             Pourquoi rejoindre MCM ?
           </h2> */}
 
@@ -439,11 +439,11 @@ export default function ChurchPresentation() {
               </div>
             ))}
 
-          </div> */}
+          </div>
 
         </div>
 
-      </section>
+      </section> */}
 
     </section>
   );

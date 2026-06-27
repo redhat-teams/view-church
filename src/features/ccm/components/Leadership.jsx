@@ -25,7 +25,7 @@ export default function Leadership() {
       `}</style>
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-slate-950 py-20 sm:py-28 md:py-36">
+      <section className="relative overflow-hidden bg-[#071F5A] py-20 sm:py-28 md:py-36">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e3a8a_0%,transparent_60%)]" />
 
         <motion.div
