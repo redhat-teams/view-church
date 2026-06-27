@@ -70,7 +70,9 @@ export default function ChurchGallery() {
       : gallery.filter((item) => item.category === selectedCategory);
   }, [selectedCategory, gallery]);
 
-  const filteredImages = categoryFiltered.slice(0, visibleItems);
+  const filteredImages = categoryFiltered
+  .filter((item) => item.image && item.image.trim() !== "")
+  .slice(0, visibleItems);
 
   const currentIndex = gallery.findIndex((item) => item.image === selectedImage);
 
@@ -245,45 +247,6 @@ export default function ChurchGallery() {
           )}
         </div>
       </section>
-
-      {/* VIDEOS PLACEHOLDER */}
-      {/* <section className="pb-24 sm:pb-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="text-center">
-            <span className="text-yellow-500 font-medium text-sm sm:text-base">
-              MÉDIAS
-            </span>
-            <h2 className="mt-3 sm:mt-4 text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
-              Messages &amp; Vidéos
-            </h2>
-          </div>
-
-          <div className="mt-10 sm:mt-16 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
-            {[1, 2, 3].map((item) => (
-              <div
-                key={item}
-                className="group relative overflow-hidden rounded-2xl sm:rounded-[32px] bg-gradient-to-br from-[#071F5A] via-[#0d2b7c] to-[#153c9d] p-7 sm:p-10 min-h-[220px] sm:min-h-[280px]"
-              >
-                <div className="absolute right-0 top-0 h-36 w-36 sm:h-48 sm:w-48 rounded-full bg-yellow-400/10 blur-[80px] sm:blur-[100px]" />
-
-                <div className="relative z-10">
-                  <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-xl">
-                    <ImageIcon className="text-white" size={22} />
-                  </div>
-
-                  <h3 className="mt-6 sm:mt-8 text-xl sm:text-2xl font-bold text-white">
-                    Message inspirant
-                  </h3>
-
-                  <p className="mt-3 sm:mt-4 text-sm sm:text-base text-white/70">
-                    Ajoutez ici vos vidéos YouTube, Facebook ou Vimeo.
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* LIGHTBOX */}
       <AnimatePresence>
