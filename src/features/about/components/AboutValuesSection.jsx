@@ -4,6 +4,7 @@ import {
   FaCross,
   FaPrayingHands,
   FaPeace,
+  FaPray,
 } from "react-icons/fa";
 
 export default function AboutValuesSection() {
@@ -28,6 +29,11 @@ export default function AboutValuesSection() {
       title: "Paix",
       desc: "Nous cultivons l'unité, l'espérance et la réconciliation.",
     },
+    {
+      icon: <FaPray />,
+      title: "Action de grâce",
+      desc: "loyauté, intégrité ,Zèle",
+    }
   ];
 
   const [values, setValues] = useState(initialValues);

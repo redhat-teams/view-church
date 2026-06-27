@@ -9,24 +9,24 @@ const events = [
   {
     title: "Conférence Ministérielle",
     description:
-      "Formation approfondie sur le leadership spirituel et l'évangélisation moderne.",
-    date: "20 Mars 2026",
+      "Formation approfondie sur le leadership spirituel et l'évangélisation moderne. Temps d'impact spirituel.",
+    date: "Du 18 au 20 Mars 2027",
     location: "Salle de culte",
     image: "/cm.png",
   },
   {
     title: "Soirée de réveil",
     description:
-      "Formation approfondie sur le leadership spirituel et l'évangélisation moderne.",
-    date: "24 Mars 2026",
+      "Formation approfondie sur le leadership spirituel et l'évangélisation moderne.Temps de prière intense de délivrance et de restauration divine.",
+    date: "03 juillet 2026 en ligne",
     location: "Salle de culte",
     image: "/sr.png",
   },
   {
     title: "La foi sans les oeuvres",
     description:
-      "Formation approfondie sur le leadership spirituel et l'évangélisation moderne.",
-    date: "28 Mars 2026",
+      "Formation approfondie en vue de la maturité spirituel, le leadership et l'évangélisation moderne.",
+    date: "Du 17 et  18 juillet 2026 en ligne",
     location: "Salle de culte",
     image: "/fo.png",
   },
@@ -110,7 +110,8 @@ export default function UpcomingEvents() {
                   </span>
                 </div>
 
-                <button
+                <Link
+                to='/events'
                   className="
                     bg-[#E8B10F]
                     hover:bg-[#d7a40d]
@@ -125,7 +126,7 @@ export default function UpcomingEvents() {
                 >
                   Lire plus
                   <FaArrowRight />
-                </button>
+                </Link>
               </div>
             </div>
           ))}

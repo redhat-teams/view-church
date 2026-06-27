@@ -16,9 +16,7 @@ export default function FoundationsSection() {
           </h2>
 
           <p className="max-w-4xl mx-auto text-lg md:text-2xl leading-relaxed">
-            Notre Communauté repose sur des valeurs spirituelles solides et une
-            mission centrée sur l'annonce de l'Évangile, l'édification des
-            croyants et l'encouragement des communautés.
+            Notre Communauté repose sur des valeurs spirituelles solides et une mission centrée sur l'Évangélisation des nations, l'édification des croyants et le renforcement des communautés.
           </p>
         </div>
 
@@ -124,10 +122,8 @@ export default function FoundationsSection() {
             </h3>
 
             <p className="text-gray-800 leading-relaxed text-lg">
-              Notre vision est de voir des vies transformées par la puissance
-              de Dieu et des hommes et des femmes marcher dans leur destinée.
-              Nous voulons bâtir une communauté forte, enracinée dans la
-              Parole, engagée dans la prière et active dans l'amour du prochain.
+              Mission : Notre vision est de voir des vies transformées par la puissance de Dieu, permettant à des hommes et des femmes d’accomplir leur destinée. Josué 1verset 8
+Nous voulons bâtir une communauté forte, enracinée dans la Parole et l’amour de Dieu, afin de la préparer au retour de Jésus.  Psaume : 119 verset 105
             </p>
           </div>
         </div>

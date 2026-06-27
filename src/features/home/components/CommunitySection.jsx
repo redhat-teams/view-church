@@ -15,7 +15,7 @@ export default function CommunitySection() {
     setStatus("sending");
 
     try {
-      const res = await fetch("https://formsubmit.co/ajax/redhatteams@gmail.com", {
+      const res = await fetch("https://formsubmit.co/ajax/prayerwinofficiel@gmail.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,8 +64,9 @@ export default function CommunitySection() {
             <Link
               to="/contact"
               className="
-                bg-[#F0B51B] hover:bg-yellow-400
-                text-[#071F5A] font-bold text-lg md:text-1xl
+                hover:bg-yellow-400
+                text-white font-bold text-lg md:text-1xl
+                hover:text-[#071F5A]
                 px-10 md:px-9 py-3 rounded-full
                 transition-all duration-300 hover:scale-105 shadow-xl
               "

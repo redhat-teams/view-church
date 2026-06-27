@@ -21,11 +21,11 @@ const navLinks = [
   icon: (
     <img
       src="/minis1.png"
-      alt="CCM"
+      alt="MCM"
       className="w-6 h-6 object-contain"
     />
   ),
-  label: "CCM"
+  label: "MCM"
 },
   { to: "/apropos",       end: false, icon: <FaInfoCircle />,   label: "À propos" },
   { to: "/teachings",     end: false, icon: <FaBookOpen />,     label: "Enseignements" },

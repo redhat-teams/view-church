@@ -21,20 +21,20 @@ export default function ChurchPresentation() {
     {
       icon: <Church size={32} />,
       title: "Foi",
-      desc: "Nous croyons fermement à la puissance de Dieu et de Sa parole.",
+      desc: "Nous croyons fermement à la puissance transformatrice de la parole.",
     },
     {
       icon: <Users size={32} />,
       title: "Communauté",
-      desc: "Grandir ensemble dans l'unité et le service.",
+      desc: "Grandir ensemble dans l'amour, l'unité et le service.",
     },
   ];
 
   const stats = [
-    { value: "1200+", label: "Membres" },
-    { value: "20+", label: "Ministères" },
-    { value: "15+", label: "Années d'existence" },
-    { value: "300+", label: "Jeunes engagés" },
+    // { value: "1200+", label: "Membres" },
+    // { value: "20+", label: "Ministères" },
+    { value: "25+", label: "Années d'existence" },
+    // { value: "300+", label: "Jeunes engagés" },
   ];
 
   const reasons = [
@@ -127,9 +127,7 @@ export default function ChurchPresentation() {
           </h1>
 
           <p className="text-white/80 max-w-3xl mx-auto mt-8 text-xl leading-relaxed">
-            Une famille spirituelle centrée sur Jésus-Christ,
-            engagée à transformer des vies par la foi,
-            l'amour et le service.
+            Une famille spirituelle centrée sur l'amour de Jésus-Christ, engagée à servir Dieu et guidée par le Saint-Esprit.
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 mt-12">
@@ -194,19 +192,15 @@ export default function ChurchPresentation() {
               </span>
 
               <h2 className="text-5xl font-bold text-[#071F5A] mt-4">
-                Une église bâtie sur la foi et la mission.
+                Un ministère bâtie sur la foi et la mission.  
               </h2>
 
               <p className="mt-8 text-gray-600 leading-relaxed">
-                Depuis plusieurs années, CCM accompagne des hommes,
-                des femmes et des familles dans leur croissance
-                spirituelle à travers l'enseignement de la Parole,
-                la prière et la communion fraternelle.
+                Depuis plusieurs années, MCM accompagne des hommes, des femmes et des familles dans leur croissance spirituelle à travers l'enseignement de la Parole de Dieu, des coaching spirituel, de formation, édification, la prière et la communion fraternelle.
               </p>
 
               <p className="mt-6 text-gray-600 leading-relaxed">
-                Notre désir est de voir chaque personne découvrir
-                son identité en Christ et accomplir son appel.
+                Notre désir est de voir chaque personne découvrir son identité en Christ et accomplir son appel.
               </p>
 
             </div>
@@ -261,7 +255,7 @@ export default function ChurchPresentation() {
                 Mission
               </h3>
               <p className="mt-4 text-gray-600">
-                Conduire les âmes à Christ et les former comme disciples.
+                Conduire les âmes à Jésus-Christ et en faire des disciples.
               </p>
             </div>
 
@@ -281,7 +275,7 @@ export default function ChurchPresentation() {
                 Valeurs
               </h3>
               <p className="mt-4 text-gray-600">
-                Foi, amour, intégrité et excellence dans le service.
+                Foi, amour, intégrité, loyauté, humilité et excellence dans le service.
               </p>
             </div>
 
@@ -416,11 +410,11 @@ export default function ChurchPresentation() {
 
         <div className="max-w-5xl mx-auto px-6 text-center">
 
-          <h2 className="text-white text-5xl font-bold">
-            Pourquoi rejoindre CCM ?
-          </h2>
+          {/* <h2 className="text-white text-5xl font-bold">
+            Pourquoi rejoindre MCM ?
+          </h2> */}
 
-          <div className="grid md:grid-cols-2 gap-6 mt-16">
+          {/* <div className="grid md:grid-cols-2 gap-6 mt-16">
 
             {reasons.map((reason, index) => (
               <div
@@ -445,7 +439,7 @@ export default function ChurchPresentation() {
               </div>
             ))}
 
-          </div>
+          </div> */}
 
         </div>
 

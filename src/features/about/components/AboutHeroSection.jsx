@@ -27,7 +27,7 @@ export default function AboutHeroSection() {
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
         <h1 className="text-white font-bold leading-tight text-4xl md:text-6xl lg:text-7xl">
-          Un lieu de foi, d'amour et de transformation
+          Une famille d'amour, une plateforme de transformation par la foi
           <br />
           où chaque vie compte.
         </h1>

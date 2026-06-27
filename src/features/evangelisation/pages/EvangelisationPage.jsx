@@ -39,15 +39,15 @@ export default function EvangelisationPage() {
   const stats = [
     { value: "2000+", label: "Âmes touchées" },
     { value: "12+", label: "Villes atteintes" },
-    { value: "50+", label: "Évangélistes formés" },
+    // { value: "50+", label: "Évangélistes formés" },
     { value: "100%", label: "Amour de Dieu" },
   ];
 
   const promesses = [
-    "Découvrir le sens et le but de ta vie",
-    "Être libéré de la culpabilité et du passé",
-    "Rejoindre une famille spirituelle aimante",
-    "Vivre une transformation durable par Christ",
+    "Pour être réconcilié avec Dieu",
+    "Pour recevoir le pardon des péchés",
+    "Pour vivre l’éternité avec Dieu",
+    "Pour accomplir sa destinée sur terre",
   ];
 
   const etapes = [
@@ -60,7 +60,7 @@ export default function EvangelisationPage() {
     {
       num: "02",
       titre: "Crois",
-      texte: "Jésus-Christ est mort pour tes péchés et est ressuscité le troisième jour. Il est le Chemin.",
+      texte: "Jésus-Christ est mort pour tes péchés et est ressuscité le troisième jour. Il est le Chemin, la vérité et la vie.",
       icon: <FaBookBible size={28} />,
     },
     {
@@ -316,7 +316,7 @@ export default function EvangelisationPage() {
                 className="relative bg-[#F8F8F8] p-10 rounded-[32px] shadow-lg hover:-translate-y-3 hover:shadow-2xl transition-all duration-500 group"
               >
                 {/* Numéro en fond */}
-                <span className="text-7xl font-black text-[#071F5A]/8 absolute top-4 right-6 select-none leading-none">
+                <span className="text-7xl font-black text-[#0B63CE]  absolute top-4 right-6 select-none leading-none">
                   {etape.num}
                 </span>
 
@@ -347,7 +347,7 @@ export default function EvangelisationPage() {
               {
                 icon: <Target size={36} />,
                 title: "Mission",
-                desc: "Partager l'Évangile à toute créature et faire de toutes les nations des disciples de Christ.",
+                desc: " Partager l'Évangile à toute personne dans le besoin ou désireuse de connaître Dieu, dans toutes les nations, afin d'en faire des disciples de Jésus-Christ.",
               },
               {
                 icon: <Eye size={36} />,
@@ -358,7 +358,7 @@ export default function EvangelisationPage() {
               {
                 icon: <Globe size={36} />,
                 title: "Impact",
-                desc: "Transformer la société de l'intérieur, une vie à la fois, par la puissance de l'Évangile.",
+                desc: "Transformer les vies et les cœurs de l'intérieur par la puissance de l'Évangile.",
               },
             ].map((item, index) => (
               <motion.div

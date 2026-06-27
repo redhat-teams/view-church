@@ -10,7 +10,7 @@ export default function Leadership() {
   ];
 
   const stats = [
-    { icon: Church, value: "20+", label: "Années de ministère" },
+    { icon: Church, value: "20+", label: "Années de l'église" },
     { icon: Users, value: "5000+", label: "Vies impactées" },
     { icon: Award, value: "100+", label: "Leaders formés" },
     { icon: Heart, value: "∞", label: "Passion pour Christ" },
@@ -101,7 +101,7 @@ export default function Leadership() {
 
               <div className="relative overflow-hidden rounded-[28px] sm:rounded-[40px] border border-slate-200 bg-white p-2.5 sm:p-3 shadow-[0_20px_50px_rgba(0,0,0,.08)] sm:shadow-[0_30px_80px_rgba(0,0,0,.08)]">
                 <img
-                  src="/Oratrice.jpeg"
+                  src="/bo.png"
                   alt="Pasteur Principal"
                   loading="lazy"
                   className="w-full aspect-[4/5] sm:aspect-[3/4] lg:aspect-auto lg:h-[650px] rounded-[22px] sm:rounded-[32px] object-cover object-top"
@@ -126,20 +126,21 @@ export default function Leadership() {
               <div className="mt-6 sm:mt-8 h-1 w-20 sm:w-24 rounded-full bg-yellow-400" />
 
               <p className="mt-6 sm:mt-8 text-base sm:text-lg leading-relaxed text-slate-600">
-                Depuis plusieurs années, le Pasteur Claude Ope conduit la
-                vision de CCM avec passion, fidélité et excellence.
+                Depuis 2001, Christine Michaud conduit la vision de MCM avec 
+                passion, zèle, fidélité et excellence.
+                
               </p>
 
               <p className="mt-5 sm:mt-6 text-base sm:text-lg leading-relaxed text-slate-600">
-                Son ministère est centré sur l'enseignement biblique, la
-                formation des disciples et la transformation durable des
-                vies.
+                Son ministère est centré sur évangélisation des nations, le réveil spirituel, 
+                l'enseignement de la Parole de Dieu,
+                la formation de disciples et la transformation durable des vies.
               </p>
 
               <p className="mt-5 sm:mt-6 text-base sm:text-lg leading-relaxed text-slate-600">
-                Son désir est de voir une génération passionnée pour Christ,
-                engagée dans la mission et porteuse d'un impact spirituel
-                profond dans la société.
+                Son désir est de voir les nations vivre un véritable réveil spirituel 
+                et des disciples marcher dans la puissance,
+                l'autorité et la dimension spirituelle des premiers apôtres.
               </p>
 
               <div className="mt-8 sm:mt-10 flex flex-wrap gap-3 sm:gap-4">
@@ -163,16 +164,16 @@ export default function Leadership() {
       <section className="pb-20 sm:pb-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-center">
-            <span className="font-medium text-yellow-500 text-sm sm:text-base">
+            {/* <span className="font-medium text-yellow-500 text-sm sm:text-base">
               ÉQUIPE PASTORALE
-            </span>
+            </span> */}
 
             <h2 className="mt-3 sm:mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold text-[#071F5A]">
               Une vision portée ensemble
             </h2>
           </div>
 
-          <div className="mt-10 sm:mt-16 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-8">
+          {/* <div className="mt-10 sm:mt-16 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-8">
             {leaders.map((leader, index) => (
               <motion.div
                 key={index}
@@ -194,7 +195,7 @@ export default function Leadership() {
                 </p>
               </motion.div>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
 
@@ -224,7 +225,7 @@ export default function Leadership() {
               </h4>
 
               <p className="mt-2 text-sm sm:text-base text-white/60">
-                Fondateur & Pasteur Principal
+                fondateur et pasteur principal ccm
               </p>
             </div>
           </div>

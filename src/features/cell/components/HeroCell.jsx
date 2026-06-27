@@ -6,7 +6,6 @@ import {
   Eye,
   Gem,
   CheckCircle2,
-  XCircle,
   X,
   ArrowRight,
   ArrowLeft,
@@ -28,8 +27,7 @@ import { useState, useEffect } from "react";
 // ─────────────────────────────────────────────────────────────────────────────
 
 function CelluleModal({ onClose }) {
-  // null = en attente | "approved" | "rejected"
-  const [resultStatus, setResultStatus] = useState(null);
+  const [approved, setApproved] = useState(false);
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
@@ -52,35 +50,21 @@ function CelluleModal({ onClose }) {
   useEffect(() => {
     const id = localStorage.getItem("prayerRequestId");
     if (!id) return;
-
-    const checkStatus = async () => {
+    const interval = setInterval(async () => {
       try {
         const res = await api.get(`/prayer-requests/${id}/status/`);
-        const status = res.data.status;
-
-        if (status === "approved") {
+        if (res.data.status === "approved") {
           clearInterval(interval);
-          setResultStatus("approved");
+          setApproved(true);
           localStorage.removeItem("prayerRequestId");
-          // Redirection automatique vers le groupe WhatsApp
           setTimeout(() => {
-            window.open("https://chat.whatsapp.com/0503392407", "_blank");
+            window.open(" https://chat.whatsapp.com/KQMoP9nkM5pFXf6UqceiwR", "_blank");
           }, 1500);
-        } else if (status === "rejected") {
-          clearInterval(interval);
-          setResultStatus("rejected");
-          localStorage.removeItem("prayerRequestId");
         }
-        // si "pending" → on continue d'attendre, rien à faire
       } catch (err) {
         console.log(err);
       }
-    };
-
-    // Première vérification immédiate, puis toutes les 5s
-    checkStatus();
-    const interval = setInterval(checkStatus, 5000);
-
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -288,7 +272,7 @@ function CelluleModal({ onClose }) {
               </motion.div>
             )}
 
-            {/* ── Étape 3 : attente / résultat ── */}
+            {/* ── Succès ── */}
             {step === 3 && (
               <motion.div
                 key="step3"
@@ -296,65 +280,18 @@ function CelluleModal({ onClose }) {
                 animate={{ opacity: 1 }}
                 className="text-center py-4"
               >
-                {/* En attente de validation */}
-                {resultStatus === null && (
+                {!approved ? (
                   <>
                     <div className="w-16 h-16 border-4 border-[#E5B10E] border-t-transparent rounded-full animate-spin mx-auto mb-6" />
                     <h3 className="text-white text-xl font-bold mb-3">Demande envoyée</h3>
-                    <p className="text-white/70 text-sm sm:text-base">
-                      Votre demande est en cours de validation par un administrateur.
-                    </p>
+                    <p className="text-white/70 text-sm sm:text-base">Votre demande est en cours de validation par un administrateur.</p>
                     <p className="text-[#E5B10E] mt-4 text-sm">Veuillez patienter...</p>
                   </>
-                )}
-
-                {/* Demande approuvée */}
-                {resultStatus === "approved" && (
+                ) : (
                   <>
-                    <motion.div
-                      initial={{ scale: 0.6, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                    >
-                      <CheckCircle2 className="mx-auto text-green-500 mb-4" size={60} />
-                    </motion.div>
-                    <h3 className="text-white text-xl font-bold">Demande approuvée 🎉</h3>
-                    <p className="text-white/70 mt-3 text-sm sm:text-base">
-                      Vous allez être redirigé vers le groupe WhatsApp...
-                    </p>
-                    <a
-                      href="https://chat.whatsapp.com/0503392407"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 mt-6 bg-[#25D366] text-white font-bold px-6 py-3 rounded-2xl hover:scale-105 transition-all duration-200"
-                    >
-                      <FaWhatsapp size={18} />
-                      Rejoindre maintenant
-                    </a>
-                  </>
-                )}
-
-                {/* Demande refusée */}
-                {resultStatus === "rejected" && (
-                  <>
-                    <motion.div
-                      initial={{ scale: 0.6, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                    >
-                      <XCircle className="mx-auto text-red-500 mb-4" size={60} />
-                    </motion.div>
-                    <h3 className="text-white text-xl font-bold">Demande refusée</h3>
-                    <p className="text-white/70 mt-3 text-sm sm:text-base leading-relaxed">
-                      Votre demande n'a pas été retenue pour le moment.
-                      N'hésitez pas à nous contacter pour plus d'informations.
-                    </p>
-                    <button
-                      onClick={onClose}
-                      className="mt-6 bg-white/10 text-white font-bold px-6 py-3 rounded-2xl hover:bg-white/20 transition-all duration-200"
-                    >
-                      Fermer
-                    </button>
+                    <CheckCircle2 className="mx-auto text-green-500 mb-4" size={60} />
+                    <h3 className="text-white text-xl font-bold">Validation acceptée</h3>
+                    <p className="text-white/70 mt-3 text-sm sm:text-base">Redirection vers WhatsApp...</p>
                   </>
                 )}
               </motion.div>
@@ -376,22 +313,22 @@ export default function HeroCell() {
 
   const values = [
     { icon: <Heart size={32} />,  title: "Amour",       desc: "Nous accueillons chacun avec compassion, grâce et bienveillance." },
-    { icon: <Church size={32} />, title: "Foi",          desc: "Nous croyons fermement à la puissance de Dieu et de Sa parole." },
-    { icon: <Users size={32} />,  title: "Communauté",  desc: "Grandir ensemble dans l'unité et le service." },
+    { icon: <Church size={32} />, title: "Foi",          desc: "Nous croyons fermement à la puissance de la parole de Dieu.Nous croyons que rien n'est impossible a Dieu. qu'il est capable de changer toutes situations " },                                                   
+    { icon: <Users size={32} />,  title: "Communauté",  desc: " Toute personne qui aspire à un changement dans sa vie et qui choisit de placer sa foi en Dieu pour y parvenir est la bienvenue." },
   ];
 
   const stats = [
-    { value: "1200+", label: "Membres"           },
-    { value: "20+",   label: "Ministères"         },
-    { value: "15+",   label: "Années d'existence" },
-    { value: "300+",  label: "Jeunes engagés"     },
+    { value: "70+", label: "Membres"           },
+    // { value: "20+",   label: "Ministères"         },
+    { value: "4+",   label: "Années d'existence" },
+    // { value: "300+",  label: "Jeunes engagés"     },
   ];
 
   const reasons = [
-    "Une communauté chaleureuse",
-    "Des enseignements bibliques solides",
-    "Des événements pour toute la famille",
-    "Une croissance spirituelle continue",
+    "Une plateforme dynamique.",
+    "Des changements pour toute la famille.",
+    "Des prières inspirées et prophétiques.",
+    "Une croissance spirituelle continue.",
   ];
 
   return (
@@ -509,8 +446,7 @@ export default function HeroCell() {
               transition={{ delay: 0.5 }}
               className="text-white/80 max-w-3xl mx-auto mt-6 text-base sm:text-xl leading-relaxed px-2"
             >
-              Une famille spirituelle centrée sur Jésus-Christ,
-              engagée à transformer des vies par la foi, l'amour et le service.
+              Un autel de retournement des situations par la puissance de Dieu. Le Dieu de toutes les possibilités y est à l'œuvre.
             </motion.p>
           </motion.div>
 
@@ -547,14 +483,14 @@ export default function HeroCell() {
           <div className="grid lg:grid-cols-2 gap-10 sm:gap-20 items-center">
             <div>
               <span className="text-[#E5B10E] font-semibold text-sm sm:text-base">NOTRE HISTOIRE</span>
-              <h2 className="text-3xl sm:text-5xl font-bold text-[#071F5A] mt-3 sm:mt-4 leading-tight">
-                Une église bâtie sur la foi et la mission.
-              </h2>
+              <h6 className="text-xl sm:text-5xl font-bold text-[#071F5A] mt-3 sm:mt-4 leading-tight">
+                Une plateforme bâtie sur la foi dans les promesses de Dieu et sur sa puissance transformatrice.
+              </h6>
               <p className="mt-5 sm:mt-8 text-gray-600 leading-relaxed text-sm sm:text-base">
-                Depuis plusieurs années, CCM accompagne des hommes, des femmes et des familles dans leur croissance spirituelle à travers l'enseignement de la Parole, la prière et la communion fraternelle.
+                Depuis 2022, PrayerWin, dans sa forme actuelle, voit de nombreuses vies transformées par la puissance de Dieu. Des signes, des miracles et de nombreux témoignages attestent de la main puissante de Dieu à l'œuvre à PrayerWin.
               </p>
               <p className="mt-4 sm:mt-6 text-gray-600 leading-relaxed text-sm sm:text-base">
-                Notre désir est de voir chaque personne découvrir son identité en Christ et accomplir son appel.
+                Notre désir est de voir, chaque jour, davantage de personnes expérimenter la puissance du nom de Jésus-Christ.
               </p>
             </div>
             <div className="relative mt-6 lg:mt-0">
@@ -572,9 +508,9 @@ export default function HeroCell() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-8">
             {[
-              { icon: <Target className="text-[#E5B10E]" size={36} />, title: "Mission", desc: "Conduire les âmes à Christ et les former comme disciples." },
-              { icon: <Eye    className="text-[#E5B10E]" size={36} />, title: "Vision",  desc: "Transformer les vies et impacter la société." },
-              { icon: <Gem   className="text-[#E5B10E]" size={36} />, title: "Valeurs", desc: "Foi, amour, intégrité et excellence dans le service." },
+              { icon: <Target className="text-[#E5B10E]" size={36} />, title: "Mission", desc: "Conduire toutes personnes dans une vie de prière, de les former à l'intercession afin qu'elles vivent la délivrance, la restauration et le retournement de leurs situations par la puissance de Dieu." },
+              { icon: <Eye    className="text-[#E5B10E]" size={36} />, title: "Vision",  desc: " Élever une armée de géants de la prière, prête à impacter les nations et à préparer le chemin pour un réveil spirituel mondial." },
+              { icon: <Gem   className="text-[#E5B10E]" size={36} />, title: "Valeurs", desc: "Nos valeurs reposent sur l'amour, la foi, la loyauté, l'intégrité, le courage et le zèle dans le service de Dieu." },
             ].map((item, i) => (
               <div key={i} className="bg-white p-7 sm:p-10 rounded-[24px] sm:rounded-[32px] shadow-xl">
                 {item.icon}

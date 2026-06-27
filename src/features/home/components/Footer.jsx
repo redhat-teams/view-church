@@ -99,7 +99,11 @@ export default function Footer() {
 
               <div className="flex items-center gap-3">
                 <FaEnvelope />
-                <span>contact@moministere.com</span>
+                <span>
+                    <a href="mailto:prayerwinofficiel@gmail.com">
+                        prayerwinofficiel@gmail.com
+                    </a>
+                </span>
               </div>
 
               <div className="flex items-center gap-3">

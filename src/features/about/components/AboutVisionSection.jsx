@@ -27,7 +27,7 @@ export default function AboutVisionSection() {
             </span>
 
             <h2 className="mt-4 text-5xl font-bold text-[#071F5A]">
-              Nous avançons chaque jour pour transformer des vies par la puissance de Dieu.
+              Nous avançons chaque jour avec pour objectif : transformer des vies par la puissance de Dieu.
             </h2>
 
             <p className="mt-8 text-gray-600 text-lg leading-relaxed">
@@ -37,8 +37,8 @@ export default function AboutVisionSection() {
             </p>
             <br />
             <p>
-              Notre désir n'est pas de bâtir une plateforme centrée sur les hommes,
-              mais de glorifier Jésus-Christ et d'amener les cœurs à Lui.
+              Notre désir n'est pas de bâtir une plateforme centrée seulement  sur les hommes,
+              mais de glorifier Jésus-Christ et d'amener les cœurs à Lui
             </p>
 
             <div className="grid md:grid-cols-2 gap-10 mt-12">

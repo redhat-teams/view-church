@@ -119,17 +119,17 @@ export default function AboutSection() {
             >
               <div className="text-center">
                 <h3 className="text-5xl font-bold text-[#F38B00]">
-                  <AnimatedCounter target={8} prefix="+" duration={1400} trigger={tick} />
+                  <AnimatedCounter target={4} prefix="+" duration={1400} trigger={tick} />
                 </h3>
                 <p className="mt-2 text-gray-700">Existence</p>
               </div>
 
-              <div className="text-center">
+              {/* <div className="text-center">
                 <h3 className="text-5xl font-bold text-[#F38B00]">
                   <AnimatedCounter target={7} duration={1200} trigger={tick} />
                 </h3>
                 <p className="mt-2 text-gray-700">Annexes</p>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -140,20 +140,15 @@ export default function AboutSection() {
             </h2>
 
             <p className="text-lg md:text-xl text-gray-800 leading-relaxed mb-8">
-              Nous sommes une plateforme de prière, d'évangélisation et de
-              réveil spirituel, inspirée et instituée par le Seigneur Jésus et
-              motivée par le désir de voir des vies transformées par
-              Jésus-Christ et des nations revenir à Dieu.
+              Nous sommes une plateforme de prière, d'évangélisation et de réveil spirituel, inspirée et instituée par le Seigneur Jésus. Motivée par le désir de voir des vies transformées par Jésus-Christ et des nations revenir à Dieu
             </p>
 
             <p className="text-lg md:text-xl text-gray-800 leading-relaxed mb-8">
-              Cette page existe pour annoncer l'Évangile avec vérité, amour et
-              puissance afin que les âmes soient sauvées, restaurées, guéries
-              et établies dans une relation vivante avec le Seigneur.
+              Cette page existe pour annoncer l'Évangile avec vérité, amour et puissance afin que les âmes soient sauvées, restaurées, guéries et établies dans une relation vivante avec le Seigneur.
             </p>
 
             <p className="italic text-gray-500 text-lg mb-14">
-              "Allez, faites de toutes les nations des disciples..." — La Bible
+              "Allez, faites de toutes les nations des disciples..." — Mathieu 28 Verset 19
             </p>
 
             {/* STATS */}
