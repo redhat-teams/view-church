@@ -8,6 +8,7 @@ import TeachingsAdmin from "../../features/admin/teachings/TeachingsAdmin";
 import DonationsAdmin from "../../features/admin/donations/DonationsAdmin";
 import PrayersAdmin from "../../features/admin/prayers/PrayersAdmin";
 import TestimonialsAdmin from "../../features/admin/testimonials/TestimonialsAdmin";
+import GalleryAdmin from "../../features/admin/gallery/GalleryAdmin";
 import SettingsAdmin from "../../features/admin/settings/SettingsAdmin";
 
 export default function AdminRoutes() {
@@ -16,13 +17,14 @@ export default function AdminRoutes() {
       <Route element={<RequireAdmin />}>
         <Route element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
-          <Route path="users" element={<UsersAdmin />} />
-          <Route path="events" element={<EventsAdmin />} />
-          <Route path="teachings" element={<TeachingsAdmin />} />
-          <Route path="donations" element={<DonationsAdmin />} />
-          <Route path="prayers" element={<PrayersAdmin />} />
+          <Route path="users"        element={<UsersAdmin />} />
+          <Route path="events"       element={<EventsAdmin />} />
+          <Route path="teachings"    element={<TeachingsAdmin />} />
+          <Route path="donations"    element={<DonationsAdmin />} />
+          <Route path="prayers"      element={<PrayersAdmin />} />
           <Route path="testimonials" element={<TestimonialsAdmin />} />
-          <Route path="settings" element={<SettingsAdmin />} />
+          <Route path="gallery"      element={<GalleryAdmin />} />
+          <Route path="settings"     element={<SettingsAdmin />} />
         </Route>
       </Route>
     </Routes>

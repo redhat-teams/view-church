@@ -92,3 +92,15 @@ export const createTestimonial = (payload) =>
 export const updateTestimonial = (id, payload) =>
   api.patch(`/testimonials/${id}/`, payload, multipart(payload));
 export const deleteTestimonial = (id) => api.delete(`/testimonials/${id}/`);
+
+/* ============================================================
+ * GALERIE PHOTOS
+ * ========================================================== */
+export const getGalleryImages = (params) =>
+  api.get("/gallery/", { params: { all: 1, ...params } });
+export const getGalleryImage = (id) => api.get(`/gallery/${id}/`);
+export const createGalleryImage = (payload) =>
+  api.post("/gallery/", payload, multipart(payload));
+export const updateGalleryImage = (id, payload) =>
+  api.patch(`/gallery/${id}/`, payload, multipart(payload));
+export const deleteGalleryImage = (id) => api.delete(`/gallery/${id}/`);

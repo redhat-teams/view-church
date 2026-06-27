@@ -5,25 +5,27 @@ import useAdminAuth from "../hooks/useAdminAuth";
 import { getPrayerRequests } from "../api/adminApi";
 
 const titles = {
-  "/admin": "Tableau de bord",
-  "/admin/users": "Utilisateurs",
-  "/admin/events": "Événements",
-  "/admin/teachings": "Enseignements",
-  "/admin/donations": "Dons",
-  "/admin/prayers": "Demandes de prière",
-  "/admin/testimonials": "Témoignages",
-  "/admin/settings": "Paramètres",
+  "/admin":               "Tableau de bord",
+  "/admin/users":         "Utilisateurs",
+  "/admin/events":        "Événements",
+  "/admin/teachings":     "Enseignements",
+  "/admin/donations":     "Dons",
+  "/admin/prayers":       "Demandes de prière",
+  "/admin/testimonials":  "Témoignages",
+  "/admin/gallery":       "Galerie",
+  "/admin/settings":      "Paramètres",
 };
 
 const subtitles = {
-  "/admin": "Vue d'ensemble de l'activité de l'église",
-  "/admin/users": "Gérez les membres et leurs rôles",
-  "/admin/events": "Planifiez et publiez les événements",
-  "/admin/teachings": "Gérez les enseignements et médias",
-  "/admin/donations": "Suivez les dons reçus",
-  "/admin/prayers": "Approuvez ou refusez les demandes de prière",
-  "/admin/testimonials": "Gérez les témoignages affichés sur l'accueil",
-  "/admin/settings": "Personnalisez le site et l'événement majeur",
+  "/admin":               "Vue d'ensemble de l'activité de l'église",
+  "/admin/users":         "Gérez les membres et leurs rôles",
+  "/admin/events":        "Planifiez et publiez les événements",
+  "/admin/teachings":     "Gérez les enseignements et médias",
+  "/admin/donations":     "Suivez les dons reçus",
+  "/admin/prayers":       "Approuvez ou refusez les demandes de prière",
+  "/admin/testimonials":  "Gérez les témoignages affichés sur l'accueil",
+  "/admin/gallery":       "Ajoutez et organisez les photos de la galerie",
+  "/admin/settings":      "Personnalisez le site et l'événement majeur",
 };
 
 // Nom de l'événement global déclenché dès qu'une demande de prière

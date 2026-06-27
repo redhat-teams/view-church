@@ -7,6 +7,7 @@ import {
   HandCoins,
   HeartHandshake,
   Quote,
+  Images,
   Settings,
   Church,
   ArrowLeftToLine,
@@ -14,14 +15,15 @@ import {
 } from "lucide-react";
 
 const links = [
-  { to: "/admin", end: true, icon: LayoutDashboard, label: "Tableau de bord" },
-  { to: "/admin/users", end: false, icon: Users, label: "Utilisateurs" },
-  { to: "/admin/events", end: false, icon: CalendarDays, label: "Événements" },
-  { to: "/admin/teachings", end: false, icon: BookOpen, label: "Enseignements" },
-  { to: "/admin/donations", end: false, icon: HandCoins, label: "Dons" },
-  { to: "/admin/prayers", end: false, icon: HeartHandshake, label: "Demandes de prière" },
-  { to: "/admin/testimonials", end: false, icon: Quote, label: "Témoignages" },
-  { to: "/admin/settings", end: false, icon: Settings, label: "Paramètres" },
+  { to: "/admin",             end: true,  icon: LayoutDashboard, label: "Tableau de bord" },
+  { to: "/admin/users",       end: false, icon: Users,           label: "Utilisateurs" },
+  { to: "/admin/events",      end: false, icon: CalendarDays,    label: "Événements" },
+  { to: "/admin/teachings",   end: false, icon: BookOpen,        label: "Enseignements" },
+  { to: "/admin/donations",   end: false, icon: HandCoins,       label: "Dons" },
+  { to: "/admin/prayers",     end: false, icon: HeartHandshake,  label: "Demandes de prière" },
+  { to: "/admin/testimonials",end: false, icon: Quote,           label: "Témoignages" },
+  { to: "/admin/gallery",     end: false, icon: Images,          label: "Galerie" },
+  { to: "/admin/settings",    end: false, icon: Settings,        label: "Paramètres" },
 ];
 
 export default function AdminSidebar({ open, onClose }) {

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, ImageIcon } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, ImageIcon, Loader2 } from "lucide-react";
 import api from "../../../shared/services/api";
 
 const CATEGORY_MAP = {
@@ -13,90 +13,80 @@ const CATEGORY_MAP = {
 };
 
 export default function ChurchGallery() {
-  const [gallery, setGallery] = useState([]);
+  const [images, setImages] = useState([]);
+  const [apiLoading, setApiLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [shimmerDone, setShimmerDone] = useState(false);
   const [visibleItems, setVisibleItems] = useState(8);
 
-  // ── Fetch depuis le backend ──────────────────────────────────────────────
+  // Chargement initial depuis le backend
   useEffect(() => {
     let cancelled = false;
-
-    // On garde le délai shimmer de 900ms de l'original
-    const shimmerTimer = setTimeout(() => {
-      if (!cancelled) setLoading(false);
-    }, 900);
+    // shimmer de 900ms comme dans l'original
+    const shimmerTimer = setTimeout(() => { if (!cancelled) setShimmerDone(true); }, 900);
 
     api
-      .get("/gallery/", { params: { page_size: 500 } })
+      .get("/gallery/", { params: { page_size: 200 } })
       .then((res) => {
         if (cancelled) return;
         const data = res.data;
         const list = Array.isArray(data) ? data : data?.results || [];
-        // Normalise vers le même format { image, category } attendu par la page
-        setGallery(
-          list.map((item) => ({
-            id:       item.id,
-            image:    item.image,
-            category: CATEGORY_MAP[item.category] || item.category || "Autre",
-            caption:  item.caption || "",
-          }))
-        );
+        setImages(list);
       })
       .catch(() => {
-        // Si l'API est indisponible, la galerie reste vide proprement
+        // Galerie vide si l'API est indisponible
+      })
+      .finally(() => {
+        if (!cancelled) setApiLoading(false);
       });
 
-    return () => {
-      cancelled = true;
-      clearTimeout(shimmerTimer);
-    };
+    return () => { cancelled = true; clearTimeout(shimmerTimer); };
   }, []);
 
-  // ── Catégories dynamiques issues des vraies données ──────────────────────
+  // Catégories dynamiques issues des vraies données
   const categories = useMemo(() => {
-    const cats = [...new Set(gallery.map((item) => item.category))];
-    return ["Tous", ...cats];
-  }, [gallery]);
+    const cats = [...new Set(images.map((img) => img.category))];
+    return ["Tous", ...cats.map((c) => CATEGORY_MAP[c] || c)];
+  }, [images]);
 
-  useEffect(() => {
-    setVisibleItems(8);
-  }, [selectedCategory]);
+  useEffect(() => { setVisibleItems(8); }, [selectedCategory]);
+
+  const loading = apiLoading || !shimmerDone;
 
   const categoryFiltered = useMemo(() => {
-    return selectedCategory === "Tous"
-      ? gallery
-      : gallery.filter((item) => item.category === selectedCategory);
-  }, [selectedCategory, gallery]);
+    if (selectedCategory === "Tous") return images;
+    return images.filter(
+      (img) => (CATEGORY_MAP[img.category] || img.category) === selectedCategory
+    );
+  }, [images, selectedCategory]);
 
   const filteredImages = categoryFiltered.slice(0, visibleItems);
 
-  const currentIndex = gallery.findIndex((item) => item.image === selectedImage);
+  const currentIndex = images.findIndex((img) => img.image === selectedImage);
 
   const nextImage = () => {
-    const next = (currentIndex + 1) % gallery.length;
-    setSelectedImage(gallery[next].image);
+    const next = (currentIndex + 1) % images.length;
+    setSelectedImage(images[next].image);
   };
-
   const prevImage = () => {
-    const prev = (currentIndex - 1 + gallery.length) % gallery.length;
-    setSelectedImage(gallery[prev].image);
+    const prev = (currentIndex - 1 + images.length) % images.length;
+    setSelectedImage(images[prev].image);
   };
 
-  // Keyboard navigation in lightbox
+  // Navigation clavier dans le lightbox
   useEffect(() => {
     if (!selectedImage) return;
     const onKey = (e) => {
-      if (e.key === "Escape")     setSelectedImage(null);
-      if (e.key === "ArrowRight") nextImage();
-      if (e.key === "ArrowLeft")  prevImage();
+      if (e.key === "Escape")      setSelectedImage(null);
+      if (e.key === "ArrowRight")  nextImage();
+      if (e.key === "ArrowLeft")   prevImage();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [selectedImage, currentIndex]);
 
-  // Lock body scroll while lightbox is open
+  // Blocage du scroll body quand le lightbox est ouvert
   useEffect(() => {
     document.body.style.overflow = selectedImage ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -150,7 +140,7 @@ export default function ChurchGallery() {
         </div>
       </section>
 
-      {/* FILTRES — scrollable on mobile, wraps on desktop */}
+      {/* FILTRES */}
       <section className="py-8 sm:py-14 sticky top-0 z-20 bg-slate-50/90 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex gap-2.5 sm:gap-3 overflow-x-auto sm:overflow-visible sm:flex-wrap sm:justify-center pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x snap-mandatory scrollbar-none">
@@ -191,7 +181,7 @@ export default function ChurchGallery() {
                   ))
                 : filteredImages.map((item, index) => (
                     <motion.div
-                      key={item.id ?? item.image + index}
+                      key={item.id}
                       layout
                       initial={{ opacity: 0, scale: 0.96 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -212,12 +202,10 @@ export default function ChurchGallery() {
 
                       <div className="absolute bottom-3 left-3 sm:bottom-5 sm:left-5 translate-y-0 sm:translate-y-6 opacity-100 sm:opacity-0 transition-all duration-500 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
                         <span className="rounded-full bg-white/15 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-white backdrop-blur-xl">
-                          {item.category}
+                          {CATEGORY_MAP[item.category] || item.category}
                         </span>
                         {item.caption && (
-                          <p className="mt-1 text-white/80 text-xs px-1 line-clamp-1">
-                            {item.caption}
-                          </p>
+                          <p className="mt-1 text-white/80 text-xs px-1 line-clamp-1">{item.caption}</p>
                         )}
                       </div>
                     </motion.div>
@@ -238,9 +226,9 @@ export default function ChurchGallery() {
 
           {!loading && filteredImages.length === 0 && (
             <p className="text-center text-slate-500 py-16">
-              {gallery.length === 0
-                ? "La galerie ne contient pas encore de photos. Ajoutez-en depuis l'espace admin."
-                : "Aucune photo dans cette catégorie pour le moment."}
+              {images.length === 0
+                ? "La galerie ne contient pas encore de photos."
+                : "Aucune photo dans cette catégorie."}
             </p>
           )}
         </div>
@@ -250,9 +238,7 @@ export default function ChurchGallery() {
       <section className="pb-24 sm:pb-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-center">
-            <span className="text-yellow-500 font-medium text-sm sm:text-base">
-              MÉDIAS
-            </span>
+            <span className="text-yellow-500 font-medium text-sm sm:text-base">MÉDIAS</span>
             <h2 className="mt-3 sm:mt-4 text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
               Messages &amp; Vidéos
             </h2>
@@ -265,16 +251,13 @@ export default function ChurchGallery() {
                 className="group relative overflow-hidden rounded-2xl sm:rounded-[32px] bg-gradient-to-br from-[#071F5A] via-[#0d2b7c] to-[#153c9d] p-7 sm:p-10 min-h-[220px] sm:min-h-[280px]"
               >
                 <div className="absolute right-0 top-0 h-36 w-36 sm:h-48 sm:w-48 rounded-full bg-yellow-400/10 blur-[80px] sm:blur-[100px]" />
-
                 <div className="relative z-10">
                   <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-xl">
                     <ImageIcon className="text-white" size={22} />
                   </div>
-
                   <h3 className="mt-6 sm:mt-8 text-xl sm:text-2xl font-bold text-white">
                     Message inspirant
                   </h3>
-
                   <p className="mt-3 sm:mt-4 text-sm sm:text-base text-white/70">
                     Ajoutez ici vos vidéos YouTube, Facebook ou Vimeo.
                   </p>
