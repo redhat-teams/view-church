@@ -247,7 +247,7 @@ export default function ChurchGallery() {
       </section>
 
       {/* VIDEOS PLACEHOLDER */}
-      <section className="pb-24 sm:pb-32">
+      {/* <section className="pb-24 sm:pb-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="text-center">
             <span className="text-yellow-500 font-medium text-sm sm:text-base">
@@ -283,7 +283,7 @@ export default function ChurchGallery() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* LIGHTBOX */}
       <AnimatePresence>
