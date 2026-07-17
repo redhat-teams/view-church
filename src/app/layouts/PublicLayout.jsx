@@ -90,9 +90,10 @@ export default function PublicLayout() {
                 <span>+336 74 38 61 52</span>
               </div>
               <div className="flex items-center gap-3 text-sm shrink-0">
-                {[FaFacebookF, FaTwitter, FaYoutube, FaInstagram].map((Icon, i) => (
-                  <Icon key={i} className="cursor-pointer hover:scale-110 transition" />
-                ))}
+                <a href="https://www.facebook.com/communauteduchristenmarche" target="_blank"><FaFacebookF /></a>
+              <a href="https://www.youtube.com/@Prayerwin" target="_blank"><FaYoutube /></a>
+              {/* <FaTwitter /> */}
+              <a href="https://www.instagram.com/communaute_du_christ_en_marche/" target="_blank"><FaInstagram /></a>
               </div>
             </div>
           </div>
@@ -101,14 +102,15 @@ export default function PublicLayout() {
           <div className="hidden md:flex justify-between items-center text-sm">
             <div className="flex flex-wrap gap-5">
               <span className="flex items-center gap-2"><FaMapMarkerAlt />France</span>
-              <span className="flex items-center gap-2"><FaEnvelope />contact@moministere.com</span>
+              <span className="flex items-center gap-2"><FaEnvelope />prayerwinofficiel@gmail.com</span>
               <span className="flex items-center gap-2"><FaPhoneAlt />+225 0705755230</span>
               <span>+336 74 38 61 52</span>
             </div>
             <div className="flex items-center gap-4 text-base">
-              {[FaFacebookF, FaTwitter, FaYoutube, FaInstagram].map((Icon, i) => (
-                <Icon key={i} className="cursor-pointer hover:scale-110 transition" />
-              ))}
+              <a href="https://www.facebook.com/communauteduchristenmarche" target="_blank"><FaFacebookF /></a>
+              <a href="https://www.youtube.com/@Prayerwin" target="_blank"><FaYoutube /></a>
+              {/* <FaTwitter /> */}
+              <a href="https://www.instagram.com/communaute_du_christ_en_marche/" target="_blank"><FaInstagram /></a>
             </div>
           </div>
 
