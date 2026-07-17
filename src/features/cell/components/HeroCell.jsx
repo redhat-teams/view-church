@@ -10,6 +10,7 @@ import {
   ArrowRight,
   ArrowLeft,
   Send,
+  ChevronDown,
 } from "lucide-react";
 import {
   FaHandsPraying,
@@ -20,7 +21,94 @@ import { FaWhatsapp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import api from "../../../shared/services/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LISTE DES PAYS (drapeau, indicatif, nombre de chiffres attendu)
+// ─────────────────────────────────────────────────────────────────────────────
+// "len" = nombre de chiffres du numéro local (sans l'indicatif, sans le 0 initial)
+const COUNTRIES = [
+  { code: "CI", name: "Côte d'Ivoire",  flag: "🇨🇮", dial: "+225", len: 10 },
+  { code: "SN", name: "Sénégal",        flag: "🇸🇳", dial: "+221", len: 9  },
+  { code: "ML", name: "Mali",           flag: "🇲🇱", dial: "+223", len: 8  },
+  { code: "BF", name: "Burkina Faso",   flag: "🇧🇫", dial: "+226", len: 8  },
+  { code: "BJ", name: "Bénin",          flag: "🇧🇯", dial: "+229", len: 8  },
+  { code: "TG", name: "Togo",           flag: "🇹🇬", dial: "+228", len: 8  },
+  { code: "NE", name: "Niger",          flag: "🇳🇪", dial: "+227", len: 8  },
+  { code: "GN", name: "Guinée",         flag: "🇬🇳", dial: "+224", len: 9  },
+  { code: "CM", name: "Cameroun",       flag: "🇨🇲", dial: "+237", len: 9  },
+  { code: "GA", name: "Gabon",          flag: "🇬🇦", dial: "+241", len: 8  },
+  { code: "CG", name: "Congo",          flag: "🇨🇬", dial: "+242", len: 9  },
+  { code: "CD", name: "RD Congo",       flag: "🇨🇩", dial: "+243", len: 9  },
+  { code: "MA", name: "Maroc",          flag: "🇲🇦", dial: "+212", len: 9  },
+  { code: "NG", name: "Nigeria",        flag: "🇳🇬", dial: "+234", len: 10 },
+  { code: "GH", name: "Ghana",          flag: "🇬🇭", dial: "+233", len: 9  },
+  { code: "FR", name: "France",         flag: "🇫🇷", dial: "+33",  len: 9  },
+  { code: "BE", name: "Belgique",       flag: "🇧🇪", dial: "+32",  len: 9  },
+  { code: "CA", name: "Canada",         flag: "🇨🇦", dial: "+1",   len: 10 },
+  { code: "US", name: "États-Unis",     flag: "🇺🇸", dial: "+1",   len: 10 },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SÉLECTEUR DE PAYS (drapeau + indicatif)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function CountrySelect({ country, onChange, hasError }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative shrink-0" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={`h-11 px-3 rounded-xl border flex items-center gap-1.5 bg-white/10 text-white text-sm transition-all duration-200 ${
+          hasError ? "border-red-400" : "border-white/20 hover:border-white/40"
+        }`}
+      >
+        <span className="text-base leading-none">{country.flag}</span>
+        <span className="text-xs sm:text-sm font-medium">{country.dial}</span>
+        <ChevronDown size={14} className={`text-white/50 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.15 }}
+            className="absolute z-50 mt-2 w-64 max-h-64 overflow-y-auto rounded-xl border border-white/20 shadow-2xl"
+            style={{ background: "#0B2E7F" }}
+          >
+            {COUNTRIES.map((c) => (
+              <button
+                key={c.code}
+                type="button"
+                onClick={() => { onChange(c); setOpen(false); }}
+                className={`w-full flex items-center gap-2 px-3 py-2 text-left text-sm hover:bg-white/10 transition-colors ${
+                  c.code === country.code ? "bg-white/10" : ""
+                }`}
+              >
+                <span className="text-base leading-none">{c.flag}</span>
+                <span className="text-white flex-1 truncate">{c.name}</span>
+                <span className="text-white/50">{c.dial}</span>
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // COMPOSANT MODAL
@@ -30,6 +118,7 @@ function CelluleModal({ onClose }) {
   const [approved, setApproved] = useState(false);
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
+  const [country, setCountry] = useState(COUNTRIES[0]); // Côte d'Ivoire par défaut
   const [form, setForm] = useState({
     prenom: "", nom: "", tel: "", ville: "", situation: "", priere: "",
   });
@@ -38,7 +127,12 @@ function CelluleModal({ onClose }) {
     if (!validateStep2()) return;
     try {
       setErrors({});
-      const response = await api.post("/prayer-requests/", form);
+      const payload = {
+        ...form,
+        tel: `${country.dial}${form.tel.replace(/\D/g, "")}`,
+        pays: country.name,
+      };
+      const response = await api.post("/prayer-requests/", payload);
       localStorage.setItem("prayerRequestId", response.data.id);
       setStep(3);
     } catch (error) {
@@ -59,23 +153,42 @@ function CelluleModal({ onClose }) {
           localStorage.removeItem("prayerRequestId");
           setTimeout(() => {
             window.open(" https://chat.whatsapp.com/KQMoP9nkM5pFXf6UqceiwR", "_blank");
-          }, 1500);
+          }, 1000);
         }
       } catch (err) {
         console.log(err);
       }
-    }, 5000);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
   const set = (field) => (e) =>
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
+  const setTel = (e) => {
+    // On ne garde que les chiffres, limités à la longueur attendue pour le pays sélectionné
+    const digits = e.target.value.replace(/\D/g, "").slice(0, country.len);
+    setForm((prev) => ({ ...prev, tel: digits }));
+  };
+
+  const handleCountryChange = (c) => {
+    setCountry(c);
+    // On retronque le numéro déjà saisi à la nouvelle longueur attendue
+    setForm((prev) => ({ ...prev, tel: prev.tel.slice(0, c.len) }));
+  };
+
   function validateStep1() {
     const errs = {};
-    if (!form.prenom.trim())        errs.prenom = "Champ requis";
-    if (!form.nom.trim())           errs.nom    = "Champ requis";
-    if (form.tel.trim().length < 8) errs.tel    = "Numéro invalide";
+    if (!form.prenom.trim()) errs.prenom = "Champ requis";
+    if (!form.nom.trim())    errs.nom    = "Champ requis";
+
+    const digits = form.tel.replace(/\D/g, "");
+    if (!digits) {
+      errs.tel = "Numéro requis";
+    } else if (digits.length !== country.len) {
+      errs.tel = `Le numéro ${country.name} doit contenir ${country.len} chiffres`;
+    }
+
     setErrors(errs);
     return Object.keys(errs).length === 0;
   }
@@ -197,7 +310,24 @@ function CelluleModal({ onClose }) {
 
                 <div className="mb-4">
                   <label className={labelCls}>Numéro WhatsApp</label>
-                  <input className={inputCls("tel")} placeholder="+225 07 00 00 00 00" type="tel" value={form.tel} onChange={set("tel")} />
+                  <div className="flex gap-2">
+                    <CountrySelect
+                      country={country}
+                      onChange={handleCountryChange}
+                      hasError={!!errors.tel}
+                    />
+                    <input
+                      className={inputCls("tel") + " flex-1"}
+                      placeholder={"0".repeat(country.len)}
+                      type="tel"
+                      inputMode="numeric"
+                      value={form.tel}
+                      onChange={setTel}
+                    />
+                  </div>
+                  <p className="text-white/40 text-xs mt-1">
+                    {country.name} — {country.len} chiffres attendus (ex : {country.dial} {"X".repeat(country.len)})
+                  </p>
                   {errors.tel && <p className={errCls}>{errors.tel}</p>}
                 </div>
 
@@ -237,10 +367,10 @@ function CelluleModal({ onClose }) {
                     onChange={set("situation")}
                   >
                     <option value="" disabled>-- Sélectionner --</option>
-                    <option value="nouveau">Nouveau converti</option>
-                    <option value="engage">Chrétien engagé</option>
-                    <option value="recherche">En recherche spirituelle</option>
-                    <option value="autre">Autre</option>
+                    <option value="nouveau" className="text-black" >Nouveau converti</option>
+                    <option value="engage" className="text-black">Chrétien engagé</option>
+                    <option value="recherche" className="text-black">En recherche spirituelle</option>
+                    <option value="autre" className="text-black">Autre</option>
                   </select>
                   {errors.situation && <p className={errCls}>{errors.situation}</p>}
                 </div>
