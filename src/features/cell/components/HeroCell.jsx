@@ -255,7 +255,7 @@ function CelluleModal({ onClose }) {
                 Intégrer la cellule
               </p>
               <p className="text-white/50 text-xs truncate">
-                Prayer Winner — Groupe WhatsApp
+                Prayer Win — Groupe WhatsApp
               </p>
             </div>
           </div>
