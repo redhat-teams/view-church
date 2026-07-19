@@ -82,7 +82,7 @@ export default function PublicLayout() {
           <div className="flex flex-col gap-1 md:hidden">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs">
               <span className="flex items-center gap-1"><FaMapMarkerAlt className="shrink-0" />France</span>
-              <span className="flex items-center gap-1 min-w-0"><FaEnvelope className="shrink-0" /><span className="truncate">contact@moministere.com</span></span>
+              <span className="flex items-center gap-1 min-w-0"><FaEnvelope className="shrink-0" /><span className="truncate">prayerwinofficiel@gmail.com</span></span>
             </div>
             <div className="flex items-center justify-between gap-2">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs">
