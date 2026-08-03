@@ -82,8 +82,9 @@ export default function ContactForm() {
     },
   ];
 
+  // Champs adaptés à un fond blanc : texte foncé, bordure discrète, placeholder gris
   const fieldClass =
-    "w-full bg-transparent border-0 border-b border-white/15 outline-none text-white text-sm sm:text-base placeholder:text-white/30 focus:border-[#E5B10E]/60 transition-colors duration-300 py-3";
+    "w-full bg-transparent border-0 border-b border-[#071F5A]/15 outline-none text-[#071F5A] text-sm sm:text-base placeholder:text-[#071F5A]/35 focus:border-[#E5B10E] transition-colors duration-300 py-3";
 
   return (
     <section className="relative overflow-hidden py-16 sm:py-28 bg-[#071F5A]">
@@ -235,21 +236,21 @@ export default function ContactForm() {
             }}
           />
 
-          {/* Papier à lettre */}
+          {/* Papier à lettre — fond blanc */}
           <div
             className="relative rounded-[4px] sm:rounded-[6px] p-6 sm:p-10 md:p-14"
             style={{
-              background: "#0B2E7F",
-              border: "1px solid rgba(229,177,14,0.15)",
-              boxShadow: "0 30px 80px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03)",
+              background: "#FFFFFF",
+              border: "1px solid rgba(229,177,14,0.35)",
+              boxShadow: "0 30px 80px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.6)",
             }}
           >
             {/* Liseré doré en haut */}
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#E5B10E]/50 to-transparent" />
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#E5B10E]/70 to-transparent" />
 
             <div className="grid sm:grid-cols-2 gap-x-8 gap-y-1">
               <div>
-                <label className="block text-white/40 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
+                <label className="block text-[#071F5A]/50 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
                   De la part de
                 </label>
                 <input
@@ -262,7 +263,7 @@ export default function ContactForm() {
                 />
               </div>
               <div>
-                <label className="block text-white/40 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
+                <label className="block text-[#071F5A]/50 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
                   Email
                 </label>
                 <input
@@ -278,7 +279,7 @@ export default function ContactForm() {
 
             <div className="grid sm:grid-cols-2 gap-x-8 gap-y-1 mt-5 sm:mt-6">
               <div>
-                <label className="block text-white/40 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
+                <label className="block text-[#071F5A]/50 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
                   Téléphone
                 </label>
                 <input
@@ -291,7 +292,7 @@ export default function ContactForm() {
                 />
               </div>
               <div>
-                <label className="block text-white/40 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
+                <label className="block text-[#071F5A]/50 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
                   Objet
                 </label>
                 <input
@@ -306,7 +307,7 @@ export default function ContactForm() {
             </div>
 
             <div className="mt-5 sm:mt-6">
-              <label className="block text-white/40 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
+              <label className="block text-[#071F5A]/50 text-[10px] sm:text-xs uppercase tracking-widest mb-0">
                 Votre message
               </label>
               <textarea
@@ -321,8 +322,8 @@ export default function ContactForm() {
             </div>
 
             {/* Ligne de signature + bouton */}
-            <div className="flex items-end justify-between mt-8 sm:mt-12 pt-6 border-t border-white/10">
-              <p className="text-white/40 text-[11px] sm:text-xs italic">
+            <div className="flex items-end justify-between mt-8 sm:mt-12 pt-6 border-t border-[#071F5A]/10">
+              <p className="text-[#071F5A]/50 text-[11px] sm:text-xs italic">
                 Réponse sous 24 à 48 heures ouvrées.
               </p>
 
